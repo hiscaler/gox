@@ -2,7 +2,7 @@ package timex
 
 import "time"
 
-// IsAmericaSummerTime 是否夏令时
+// IsAmericaSummerTime 是否为美国夏令时间
 // 夏令时开始于每年3月的第二个周日凌晨，人们需要将时间调早 (顺时针) 1个小时；
 // 夏令时结束于每年11月的第一个周日凌晨，人们需要将时间调晚 (逆时针) 1个小时。
 func IsAmericaSummerTime(t time.Time) (yes bool) {

@@ -36,3 +36,32 @@ func ToJson(i interface{}, defaultValue string) string {
 
 	return buf.String()
 }
+
+// EmptyObjectRawMessage 空对象
+func EmptyObjectRawMessage() json.RawMessage {
+	v := json.RawMessage{}
+	v.UnmarshalJSON([]byte("{}"))
+	return v
+}
+
+// EmptyArrayRawMessage 空数组
+func EmptyArrayRawMessage() json.RawMessage {
+	v := json.RawMessage{}
+	v.UnmarshalJSON([]byte("[]"))
+	return v
+}
+
+// IsEmptyRawMessage 验证数据是否为空
+func IsEmptyRawMessage(data json.RawMessage) bool {
+	b, err := data.MarshalJSON()
+	if err == nil {
+		s := string(bytes.TrimSpace(b))
+		if s == "" || s == "[]" || s == "{}" || strings.EqualFold(s, "null") {
+			return true
+		} else {
+			return false
+		}
+	} else {
+		return true
+	}
+}
