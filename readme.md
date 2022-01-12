@@ -1,7 +1,7 @@
 gox
 ===
 
-Golang 实用函数库
+Golang functions library
 
 - filex
   - IsDir
@@ -16,6 +16,11 @@ Golang 实用函数库
     - EmptyObjectRawMessage
     - EmptyArrayRawMessage
     - IsEmptyRawMessage
+- nullx
+    - StringFrom
+    - NullString
+    - TimeFrom
+    - NullTime
 - randx
   - Letter
   - Number
@@ -24,9 +29,11 @@ Golang 实用函数库
   - ToStringSet
   - ToIntSet
 - slicex
-  - ToInterfaceSlice
+  - StringSliceToInterfaceSlice
+  - IntSliceToInterfaceSlice
 - stringx
   - IsEmpty
   - ToNumber
+  - ContainsChinese
 - timex
   - IsAmericaSummerTime
