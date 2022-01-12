@@ -10,6 +10,8 @@ Golang functions library
 - inx
   - StringIn
   - IntIn
+- isx
+  - Number
 - jsonx
     - ToRawMessage
     - ToJson
