@@ -1,6 +1,9 @@
 package stringx
 
-import "strings"
+import (
+	"strings"
+	"unicode"
+)
 
 // IsEmpty 判断字符串是否为空
 func IsEmpty(s string) bool {
@@ -23,4 +26,13 @@ func ToNumber(s string) int {
 		number += ((x << 16) | (x >> 16)) ^ int(r)
 	}
 	return number
+}
+
+func ContainsChinese(str string) bool {
+	for _, v := range str {
+		if unicode.Is(unicode.Han, v) {
+			return true
+		}
+	}
+	return false
 }
