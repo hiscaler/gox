@@ -18,6 +18,8 @@ Golang functions library
     - EmptyObjectRawMessage
     - EmptyArrayRawMessage
     - IsEmptyRawMessage
+- keyx
+    - Generate
 - nullx
     - StringFrom
     - NullString
