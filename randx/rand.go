@@ -22,14 +22,17 @@ func generateValues(str string, len int, upper bool) string {
 	return s
 }
 
+// Letter Generate letter rand string
 func Letter(len int, upper bool) string {
 	return generateValues("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", len, upper)
 }
 
+// Number Generate number rand string
 func Number(len int) string {
 	return generateValues("0123456789", len, false)
 }
 
+// Any Generate number and letter combined string
 func Any(len int) string {
 	return generateValues("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", len, false)
 }
