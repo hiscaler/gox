@@ -8,6 +8,9 @@ import (
 )
 
 func generateValues(str string, len int, upper bool) string {
+	if len <= 0 {
+		return ""
+	}
 	buffer := bytes.NewBufferString(str)
 	bigInt := big.NewInt(int64(buffer.Len()))
 	buffer.Reset()
