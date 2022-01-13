@@ -53,6 +53,9 @@ func EmptyArrayRawMessage() json.RawMessage {
 
 // IsEmptyRawMessage 验证数据是否为空
 func IsEmptyRawMessage(data json.RawMessage) bool {
+	if data == nil {
+		return true
+	}
 	b, err := data.MarshalJSON()
 	if err == nil {
 		s := string(bytes.TrimSpace(b))
