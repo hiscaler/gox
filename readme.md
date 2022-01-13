@@ -35,6 +35,8 @@ Golang functions library
 - slicex
   - StringToInterface
   - IntToInterface
+  - StringSliceEqual
+  - IntSliceEqual
 - stringx
   - IsEmpty
   - ToNumber
