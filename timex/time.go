@@ -19,3 +19,12 @@ func IsAmericaSummerTime(t time.Time) (yes bool) {
 	}
 	return
 }
+
+// ChineseTimeLocation Return chinese time location
+func ChineseTimeLocation() *time.Location {
+	loc, err := time.LoadLocation("Asia/Shanghai")
+	if err != nil {
+		loc = time.FixedZone("CST", 8*3600)
+	}
+	return loc
+}
