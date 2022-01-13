@@ -31,8 +31,8 @@ Golang functions library
   - ToStringSet
   - ToIntSet
 - slicex
-  - StringSliceToInterfaceSlice
-  - IntSliceToInterfaceSlice
+  - StringToInterface
+  - IntToInterface
 - stringx
   - IsEmpty
   - ToNumber

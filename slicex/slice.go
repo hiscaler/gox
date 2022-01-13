@@ -1,7 +1,7 @@
 package slicex
 
-// StringSliceToInterfaceSlice Change string slice to interface slice
-func StringSliceToInterfaceSlice(values []string) []interface{} {
+// StringToInterface Change string slice to interface slice
+func StringToInterface(values []string) []interface{} {
 	if values == nil {
 		return make([]interface{}, 0)
 	}
@@ -13,8 +13,8 @@ func StringSliceToInterfaceSlice(values []string) []interface{} {
 	return is
 }
 
-// IntSliceToInterfaceSlice Change int slice to interface slice
-func IntSliceToInterfaceSlice(values []int) []interface{} {
+// IntToInterface Change int slice to interface slice
+func IntToInterface(values []int) []interface{} {
 	is := make([]interface{}, len(values))
 	for i, value := range values {
 		is[i] = value
