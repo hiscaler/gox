@@ -24,6 +24,8 @@ func TestStringSliceEqual(t *testing.T) {
 		{[]string{"A", "B", "C"}, []string{"a", "b", "c"}, true, true, true, true},
 		{[]string{"A", "B", "C"}, []string{"b", "c", "a"}, true, true, true, true},
 		{[]string{"   ", "", " "}, []string{""}, true, true, true, true},
+		{[]string{}, []string{" ", ""}, true, true, true, true},
+		{[]string{}, []string{"a", "b"}, true, true, true, false},
 	}
 	for i, testCase := range testCases {
 		equal := StringSliceEqual(testCase.A, testCase.B, testCase.IgnoreCase, testCase.IgnoreEmpty, testCase.Trim)
