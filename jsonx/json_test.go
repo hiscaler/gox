@@ -6,6 +6,37 @@ import (
 	"testing"
 )
 
+func TestToJson(t *testing.T) {
+	testCases := []struct {
+		Number       int
+		Value        interface{}
+		DefaultValue string
+		Except       string
+	}{
+		{1, []string{}, "[]", "[]"},
+		{2, struct{}{}, "", "{}"},
+		{3, struct {
+			Name string
+			Age  int
+		}{"Hello", 12}, "", `{"Name":"hello","Age":12}`},
+		{4, struct {
+			Name string `json:"a"`
+			Age  int    `json:"b"`
+		}{"Hello", 12}, "", `{"a":"hello","b":12}`},
+		{5, nil, "abc", "null"},
+		{6, []int{1, 2}, "null", "[1,2]"},
+		{7, []string{"a", "b"}, "null", `["a","b"]`},
+		{8, 1, "[]", "1"},
+		{9, "abc", "[]", `"abc"`},
+	}
+	for _, testCase := range testCases {
+		s := ToJson(testCase.Value, testCase.DefaultValue)
+		if !strings.EqualFold(s, testCase.Except) {
+			t.Errorf("%d %#v except: %s actual: %s", testCase.Number, testCase.Value, testCase.Except, s)
+		}
+	}
+}
+
 func TestEmptyObject(t *testing.T) {
 	result := "{}"
 	if b, err := EmptyObjectRawMessage().MarshalJSON(); err == nil {

@@ -11,8 +11,8 @@ func ToRawMessage(i interface{}, defaultValue string) (json.RawMessage, error) {
 	var b []byte
 	var err error
 	if b, err = json.Marshal(&i); err == nil {
-		sb := strings.TrimSpace(string(b))
-		if sb == "null" || sb == "" {
+		b = bytes.TrimSpace(b)
+		if len(b) == 0 || bytes.EqualFold(b, []byte("null")) {
 			b = []byte(defaultValue)
 		}
 		if err = m.UnmarshalJSON(b); err != nil {
@@ -33,8 +33,11 @@ func ToJson(i interface{}, defaultValue string) string {
 	if err != nil {
 		return defaultValue
 	}
-
-	return buf.String()
+	if json.Valid(buf.Bytes()) {
+		return buf.String()
+	} else {
+		return defaultValue
+	}
 }
 
 // EmptyObjectRawMessage 空对象
