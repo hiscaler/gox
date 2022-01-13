@@ -1,18 +1,25 @@
 package filex
 
-import "os"
+import (
+	"os"
+)
 
 func IsFile(path string) bool {
-	return !IsDir(path)
+	fi, err := os.Stat(path)
+	if err != nil {
+		return false
+	}
+
+	return !fi.IsDir()
 }
 
 func IsDir(path string) bool {
 	fi, err := os.Stat(path)
-	if os.IsExist(err) && fi.IsDir() {
-		return true
+	if err != nil {
+		return false
 	}
 
-	return false
+	return fi.IsDir()
 }
 
 func Exists(path string) bool {
