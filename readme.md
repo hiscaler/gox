@@ -3,6 +3,8 @@ gox
 
 Golang functions library
 
+- bytex
+  - IsEmpty 
 - filex
   - IsDir
   - IsFile
@@ -37,9 +39,13 @@ Golang functions library
   - IntToInterface
   - StringSliceEqual
   - IntSliceEqual
+  - StringSliceReverse
+  - IntSliceReverse
 - stringx
   - IsEmpty
   - ToNumber
   - ContainsChinese
+  - ToHalfWidth
 - timex
   - IsAmericaSummerTime
+  - ChineseTimeLocation
