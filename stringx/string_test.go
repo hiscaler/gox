@@ -49,3 +49,22 @@ func TestContainsChinese(t *testing.T) {
 		}
 	}
 }
+
+func TestToHalfWidth(t *testing.T) {
+	testCasts := []struct {
+		Before string
+		After  string
+	}{
+		{"aｂｃ", "abc"},
+		{"a０", "a0"},
+		{"￣！＠#＄％＾＆＊（）－＋", "~!@#$%^&*()-+"},
+		{"０１２３４５６７８９", "0123456789"},
+		{"a０", "a0"},
+	}
+	for _, tc := range testCasts {
+		after := ToHalfWidth(tc.Before)
+		if after != tc.After {
+			t.Errorf("%s except %v, actual：%v", tc.Before, tc.After, after)
+		}
+	}
+}
