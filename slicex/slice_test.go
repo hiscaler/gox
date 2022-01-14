@@ -56,3 +56,28 @@ func TestIntSliceEqual(t *testing.T) {
 		}
 	}
 }
+
+func TestStringSliceReverse(t *testing.T) {
+	testCases := []struct {
+		Before []string
+		After  []string
+	}{
+		{[]string{"a"}, []string{"a"}},
+		{[]string{"a", "b"}, []string{"b", "a"}},
+		{[]string{"a", "b", "c"}, []string{"c", "b", "a"}},
+	}
+
+	for _, testCase := range testCases {
+		values := StringSliceReverse(testCase.Before)
+		if len(values) != len(testCase.After) {
+			t.Errorf("%#v reverse after value except: %#v, actual: %#v", testCase.Before, testCase.After, values)
+		} else {
+			for j, v := range values {
+				if testCase.After[j] != v {
+					t.Errorf("%#v reverse after value except: %#v, actual: %#v", testCase.Before, testCase.After, values)
+					break
+				}
+			}
+		}
+	}
+}
