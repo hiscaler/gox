@@ -4,7 +4,9 @@ gox
 Golang functions library
 
 - bytex
-  - IsEmpty 
+  - IsEmpty
+- cryptox
+  - Md5String
 - filex
   - IsDir
   - IsFile
