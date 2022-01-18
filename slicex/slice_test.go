@@ -81,3 +81,74 @@ func TestStringSliceReverse(t *testing.T) {
 		}
 	}
 }
+
+func TestStringSliceDiff(t *testing.T) {
+	testCases := []struct {
+		Number         int
+		OriginalValues [][]string
+		DiffValue      []string
+	}{
+		{
+			1,
+			[][]string{
+				{"a", "b", "c"},
+				{"a", "b", "d"},
+			},
+			[]string{"c"},
+		},
+		{
+			2,
+			[][]string{
+				{"a", "b", "c"},
+				{"a", "b", "c"},
+			},
+			[]string{},
+		},
+		{
+			3,
+			[][]string{
+				{"a", "b", ""},
+				{"a", "b", "c"},
+			},
+			[]string{""},
+		},
+		{
+			4,
+			[][]string{
+				{"a", "b", "c"},
+				{"a", "b"},
+				{"c"},
+			},
+			[]string{},
+		},
+	}
+
+	for _, testCase := range testCases {
+		values := StringSliceDiff(testCase.OriginalValues...)
+		if !StringSliceEqual(values, testCase.DiffValue, true, false, true) {
+			t.Errorf("%d: diff values except: %#v, actual: %#v", testCase.Number, testCase.DiffValue, values)
+		}
+	}
+}
+
+func TestIntSliceDiff(t *testing.T) {
+	testCases := []struct {
+		Number         int
+		OriginalValues [][]int
+		DiffValue      []int
+	}{
+		{1, [][]int{{1, 2, 3}, {1, 2, 4}}, []int{3}},
+		{2, [][]int{{1, 2, 3}, {1, 2, 2, 3}, {3, 4, 5}}, []int{}},
+		{3, [][]int{{1, 2, 3}, {1}, {2}, {3}}, []int{}},
+		{4, [][]int{{1, 2, 3}, {1, 2, 4, 0, 2, 1}}, []int{3}},
+		{5, [][]int{{1, 2, 2, 3}, {1}}, []int{2, 2, 3}},
+		{6, [][]int{}, []int{}},
+	}
+
+	for _, testCase := range testCases {
+		values := IntSliceDiff(testCase.OriginalValues...)
+		if !IntSliceEqual(values, testCase.DiffValue) {
+			t.Errorf("%d: diff values except: %#v, actual: %#v", testCase.Number, testCase.DiffValue, values)
+		}
+	}
+}

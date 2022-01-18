@@ -43,6 +43,8 @@ Golang functions library
   - IntSliceEqual
   - StringSliceReverse
   - IntSliceReverse
+  - StringSliceDiff
+  - IntSliceDiff
 - stringx
   - IsEmpty
   - ToNumber

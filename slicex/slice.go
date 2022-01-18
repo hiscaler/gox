@@ -1,6 +1,8 @@
 package slicex
 
-import "strings"
+import (
+	"strings"
+)
 
 // StringToInterface Change string slice to interface slice
 func StringToInterface(values []string) []interface{} {
@@ -110,4 +112,58 @@ func IntSliceReverse(ss []int) []int {
 		}
 	}
 	return ss
+}
+
+func StringSliceDiff(ss ...[]string) []string {
+	diffValues := make([]string, 0)
+	if len(ss) == 1 {
+		diffValues = ss[0]
+	} else if len(ss) > 1 {
+		for _, v1 := range ss[0] {
+			exists := false
+			for _, items := range ss[1:] {
+				for _, v2 := range items {
+					if strings.EqualFold(v1, v2) {
+						exists = true
+						break
+					}
+				}
+				if exists {
+					break
+				}
+			}
+			if !exists {
+				diffValues = append(diffValues, v1)
+			}
+		}
+	}
+
+	return diffValues
+}
+
+func IntSliceDiff(ss ...[]int) []int {
+	diffValues := make([]int, 0)
+	if len(ss) == 1 {
+		diffValues = ss[0]
+	} else if len(ss) > 1 {
+		for _, v1 := range ss[0] {
+			exists := false
+			for _, items := range ss[1:] {
+				for _, v2 := range items {
+					if v1 == v2 {
+						exists = true
+						break
+					}
+				}
+				if exists {
+					break
+				}
+			}
+			if !exists {
+				diffValues = append(diffValues, v1)
+			}
+		}
+	}
+
+	return diffValues
 }
