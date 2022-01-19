@@ -1,6 +1,7 @@
 package stringx
 
 import (
+	"regexp"
 	"strings"
 	"unicode"
 )
@@ -35,6 +36,16 @@ func ContainsChinese(str string) bool {
 		}
 	}
 	return false
+}
+
+// IsSafeCharacters Only include a-zA-Z0-9.-_
+// Reference https://www.quora.com/What-are-valid-file-names
+func IsSafeCharacters(str string) bool {
+	if str == "" {
+		return false
+	}
+	re, _ := regexp.Compile(`^[a-zA-Z0-9\.\-_][a-zA-Z0-9\.\-_]*$`)
+	return re.MatchString(str)
 }
 
 // ToHalfWidth Full width string to half width
