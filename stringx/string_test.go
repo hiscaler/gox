@@ -1,6 +1,7 @@
 package stringx
 
 import (
+	"github.com/hiscaler/gox/slicex"
 	"testing"
 )
 
@@ -90,6 +91,35 @@ func TestToHalfWidth(t *testing.T) {
 		after := ToHalfWidth(tc.Before)
 		if after != tc.After {
 			t.Errorf("%s except %v, actual：%v", tc.Before, tc.After, after)
+		}
+	}
+}
+
+func TestSplit(t *testing.T) {
+	type testCast struct {
+		Number int
+		String string
+		Seps   []string
+		Values []string
+	}
+	testCasts := []testCast{
+		{1, "abc", []string{}, []string{"abc"}},
+		{2, "a b c", []string{}, []string{"a", "b", "c"}},
+		{3, "a b c,d", []string{}, []string{"a", "b", "c,d"}},
+		{4, "a b c,d", []string{",", " "}, []string{"a", "b", "c", "d"}},
+		{5, "a,b,c,d", []string{",", " "}, []string{"a", "b", "c", "d"}},
+		{6, "a,b,c,d e", []string{",", " "}, []string{"a", "b", "c", "d", "e"}},
+		{7, "a.,b,c,d e", []string{",", " "}, []string{"a.", "b", "c", "d", "e"}},
+		{8, "a.,b,c,d e", []string{",", ".", " "}, []string{"a", "b", "c", "d", "e"}},
+		{9, "a.,b,c,d e", []string{",", " "}, []string{"a.", "b", "c", "d", "e"}},
+		{10, "a.,b,c,d e", []string{",", "", " "}, []string{"a", ".", "b", "c", "d", "e"}},
+		{11, "hello, world!!!", []string{",", " ", "!"}, []string{"hello", "world"}},
+		{12, "WaterWipes Original Baby Wipes, 99.9% Water, Unscented & Hypoallergenic for Sensitive Newborn Skin, 3 Packs (180 Count)", []string{",", " ", "!"}, []string{"WaterWipes", "Original", "Baby", "Wipes", "99.9%", "Water", "Unscented", "&", "Hypoallergenic", "for", "Sensitive", "Newborn", "Skin", "3", "Packs", "(180", "Count)"}},
+	}
+	for _, tc := range testCasts {
+		values := SplitWord(tc.String, tc.Seps...)
+		if !slicex.StringSliceEqual(values, tc.Values, false, false, true) {
+			t.Errorf("%d except %#v, actual：%#v", tc.Number, tc.Values, values)
 		}
 	}
 }

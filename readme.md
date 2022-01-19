@@ -51,6 +51,7 @@ Golang functions library
   - ContainsChinese
   - IsSafeCharacters
   - ToHalfWidth
+  - SplitWord
 - timex
   - IsAmericaSummerTime
   - ChineseTimeLocation
