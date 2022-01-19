@@ -49,6 +49,7 @@ Golang functions library
   - IsEmpty
   - ToNumber
   - ContainsChinese
+  - IsSafeCharacters
   - ToHalfWidth
 - timex
   - IsAmericaSummerTime
