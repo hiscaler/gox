@@ -24,6 +24,9 @@ Golang functions library
     - IsEmptyRawMessage
 - keyx
     - Generate
+- net
+    - urlx
+      - NewURL
 - nullx
     - StringFrom
     - NullString
