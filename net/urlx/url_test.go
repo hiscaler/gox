@@ -41,6 +41,7 @@ func TestURL_DeleteValue(t *testing.T) {
 	}
 	testCases := []testCase{
 		{1, "https://www.example.com/a/b/c/1.txt?a=1&b=2#abc", []string{"a", "b"}, "https://www.example.com/a/b/c/1.txt?#abc"},
+		{2, "https://www.example.com/a/b/c/1.txt", []string{"a", "b"}, "https://www.example.com/a/b/c/1.txt"},
 	}
 
 	for _, tc := range testCases {

@@ -7,7 +7,7 @@ import (
 
 type URL struct {
 	Path    string     // URL path
-	URL     *url.URL   // A URL represents
+	URL     *url.URL   // A url.URL represents
 	Invalid bool       // Path is a valid url
 	Values  url.Values // Query values
 }
