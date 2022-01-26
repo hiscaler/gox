@@ -6,9 +6,7 @@ import (
 )
 
 func StringFrom(s string) null.String {
-	if s != "" {
-		s = strings.TrimSpace(s)
-	}
+	s = strings.TrimSpace(s)
 	if s == "" {
 		return NullString()
 	} else {
