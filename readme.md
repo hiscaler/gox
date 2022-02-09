@@ -27,6 +27,12 @@ Golang functions library
 - net
     - urlx
       - NewURL
+      - GetValue
+      - SetValue
+      - AddValue
+      - DelKey
+      - HasKey
+      - String
 - nullx
     - StringFrom
     - NullString

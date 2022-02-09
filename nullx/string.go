@@ -9,9 +9,8 @@ func StringFrom(s string) null.String {
 	s = strings.TrimSpace(s)
 	if s == "" {
 		return NullString()
-	} else {
-		return null.NewString(s, true)
 	}
+	return null.NewString(s, true)
 }
 
 func NullString() null.String {

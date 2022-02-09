@@ -25,7 +25,6 @@ func NewURL(path string) *URL {
 			u.values = values
 		}
 	}
-
 	return u
 }
 

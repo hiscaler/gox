@@ -13,7 +13,6 @@ func StringToInterface(values []string) []interface{} {
 	for i, value := range values {
 		is[i] = value
 	}
-
 	return is
 }
 
@@ -23,7 +22,6 @@ func IntToInterface(values []int) []interface{} {
 	for i, value := range values {
 		is[i] = value
 	}
-
 	return is
 }
 
@@ -137,7 +135,6 @@ func StringSliceDiff(ss ...[]string) []string {
 			}
 		}
 	}
-
 	return diffValues
 }
 
@@ -164,6 +161,5 @@ func IntSliceDiff(ss ...[]int) []int {
 			}
 		}
 	}
-
 	return diffValues
 }

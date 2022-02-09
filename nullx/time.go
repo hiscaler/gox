@@ -8,9 +8,8 @@ import (
 func TimeFrom(t time.Time) null.Time {
 	if t.IsZero() {
 		return NullTime()
-	} else {
-		return null.TimeFrom(t)
 	}
+	return null.TimeFrom(t)
 }
 
 func NullTime() null.Time {
