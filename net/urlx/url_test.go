@@ -13,6 +13,7 @@ func TestURL_AddValue(t *testing.T) {
 	}
 	testCases := []testCase{
 		{1, "https://www.example.com/a/b/c/1.txt?a=1&b=2", map[string]string{"a": "11", "b": "22"}, "https://www.example.com/a/b/c/1.txt?a=11&b=22"},
+		{1, "https://www.example.com/a/b/c/1.txt?a=1&b=2&c=3", map[string]string{"a": "11", "c": "33"}, "https://www.example.com/a/b/c/1.txt?a=11&b=2&c=33"},
 		{2, "https://www.example.com/a/b/c/1.txt?a=1&b=2#abc", map[string]string{"a": "11"}, "https://www.example.com/a/b/c/1.txt?a=11&b=2#abc"},
 		{3, "https://www.example.com/a/b/c/1.txt?a=1&b=2#abc", map[string]string{"A": "11"}, "https://www.example.com/a/b/c/1.txt?A=11&a=1&b=2#abc"},
 		{4, "https://www.example.com/a/b/c/1.txt?b=1&a=2#abc", map[string]string{"A": "11"}, "https://www.example.com/a/b/c/1.txt?A=11&a=2&b=1#abc"},
@@ -41,7 +42,9 @@ func TestURL_DeleteValue(t *testing.T) {
 	}
 	testCases := []testCase{
 		{1, "https://www.example.com/a/b/c/1.txt?a=1&b=2#abc", []string{"a", "b"}, "https://www.example.com/a/b/c/1.txt?#abc"},
+		{1, "https://www.example.com/a/b/c/1.txt?a=1&b=2#abc", []string{"a"}, "https://www.example.com/a/b/c/1.txt?b=2#abc"},
 		{2, "https://www.example.com/a/b/c/1.txt", []string{"a", "b"}, "https://www.example.com/a/b/c/1.txt"},
+		{2, "https://www/a/b/c/1.txt", []string{"a", "b"}, "https://www/a/b/c/1.txt"},
 	}
 
 	for _, tc := range testCases {
