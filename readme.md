@@ -7,6 +7,9 @@ Golang functions library
   - IsEmpty
 - cryptox
   - Md5String
+- filepathx
+  - Dirs
+  - Files
 - filex
   - IsDir
   - IsFile
