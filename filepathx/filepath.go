@@ -14,9 +14,9 @@ const (
 )
 
 type WalkOption struct {
-	Filter        func(path string) bool // 自定义函数，返回 true 则会加到列表中，否则忽略。当定义该函数时，将会忽略掉 Except, Only 设置
-	Except        []string               // 排除的文件或者目录（仅当 Filter 未设置时起作用）
-	Only          []string               // 仅仅符合列表中的文件或者目录才会返回（仅当 Filter 未设置时起作用）
+	FilterFunc    func(path string) bool // 自定义函数，返回 true 则会加到列表中，否则忽略。当定义该函数时，将会忽略掉 Except, Only 设置
+	Except        []string               // 排除的文件或者目录（仅当 FilterFunc 未设置时起作用）
+	Only          []string               // 仅仅符合列表中的文件或者目录才会返回（仅当 FilterFunc 未设置时起作用）
 	CaseSensitive bool                   // 是否区分大小写（作用于 Except 和 Only 设置）
 	Recursive     bool                   // 是否递归查询下级目录
 }
@@ -46,8 +46,8 @@ func readDir(root string, recursive bool, returnType int) []fs.DirEntry {
 }
 
 func filterPath(path string, opt WalkOption) (ok bool) {
-	if (opt.Filter == nil && len(opt.Only) == 0 && len(opt.Except) == 0) ||
-		(opt.Filter != nil && opt.Filter(path)) {
+	if (opt.FilterFunc == nil && len(opt.Only) == 0 && len(opt.Except) == 0) ||
+		(opt.FilterFunc != nil && opt.FilterFunc(path)) {
 		return true
 	}
 

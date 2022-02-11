@@ -28,7 +28,7 @@ func TestDirs(t *testing.T) {
 			root,
 			WalkOption{
 				CaseSensitive: false,
-				Filter: func(path string) bool {
+				FilterFunc: func(path string) bool {
 					return path == "2"
 				},
 				Recursive: true,
@@ -111,7 +111,7 @@ func TestFiles(t *testing.T) {
 			root,
 			WalkOption{
 				CaseSensitive: false,
-				Filter: func(path string) bool {
+				FilterFunc: func(path string) bool {
 					return path == "2.txt"
 				},
 				Recursive: true,
