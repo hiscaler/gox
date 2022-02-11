@@ -72,6 +72,14 @@ func TestDirs(t *testing.T) {
 			},
 			[]string{"1", "1.1", "2"},
 		},
+		{
+			7,
+			root + "/test",
+			WalkOption{
+				Recursive: false,
+			},
+			[]string{"1", "2"},
+		},
 	}
 	for _, testCase := range testCases {
 		dirs := Dirs(testCase.Path, testCase.Option)
@@ -146,6 +154,14 @@ func TestFiles(t *testing.T) {
 				Recursive: true,
 			},
 			[]string{"1.1.txt", "2.txt"},
+		},
+		{
+			7,
+			root + "/test",
+			WalkOption{
+				Recursive: false,
+			},
+			[]string{},
 		},
 	}
 	for _, testCase := range testCases {
