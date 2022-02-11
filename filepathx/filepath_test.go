@@ -74,12 +74,12 @@ func TestDirs(t *testing.T) {
 		},
 	}
 	for _, testCase := range testCases {
-		files := Dirs(testCase.Path, testCase.Option)
-		for i, file := range files {
-			files[i] = filepath.Base(file)
+		dirs := Dirs(testCase.Path, testCase.Option)
+		for i, file := range dirs {
+			dirs[i] = filepath.Base(file)
 		}
-		if !slicex.StringSliceEqual(files, testCase.Files, true, true, true) {
-			t.Errorf("%d: except %v actual %v", testCase.Number, testCase.Files, files)
+		if !slicex.StringSliceEqual(dirs, testCase.Files, true, true, true) {
+			t.Errorf("%d: except %v actual %v", testCase.Number, testCase.Files, dirs)
 		}
 	}
 }

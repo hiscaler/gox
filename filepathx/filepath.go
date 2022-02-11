@@ -3,9 +3,14 @@ package filepathx
 import (
 	"github.com/hiscaler/gox/inx"
 	"io/fs"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"strings"
+)
+
+const (
+	returnDir = iota
+	returnFile
 )
 
 type WalkOption struct {
@@ -16,19 +21,41 @@ type WalkOption struct {
 	Recursive     bool                   // 是否递归查询下级目录
 }
 
-func readDir(root string, recursive bool) []fs.FileInfo {
-	fileInfos := make([]fs.FileInfo, 0)
+func readDir(root string, recursive bool, returnType int) []fs.DirEntry {
+	fileInfos := make([]fs.DirEntry, 0)
 	if recursive {
-		filepath.Walk(root, func(path string, info fs.FileInfo, err error) error {
+		filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
 			if err == nil && path != "." && path != ".." {
-				fileInfos = append(fileInfos, info)
+				ok := false
+				if returnType == returnDir {
+					ok = d.IsDir()
+				} else {
+					ok = !d.IsDir()
+				}
+				if ok {
+					fileInfos = append(fileInfos, d)
+				}
 			}
 			return nil
 		})
 	} else {
-		files, err := ioutil.ReadDir(root)
+		files, err := os.ReadDir(root)
 		if err == nil {
-			fileInfos = files
+			for _, fi := range files {
+				if fi.Name() == "." || fi.Name() == ".." {
+					continue
+				}
+
+				ok := false
+				if returnType == returnDir {
+					ok = fi.IsDir()
+				} else {
+					ok = !fi.IsDir()
+				}
+				if ok {
+					fileInfos = append(fileInfos, fi)
+				}
+			}
 		}
 	}
 	return fileInfos
@@ -75,13 +102,15 @@ func filterPath(path string, opt WalkOption) (ok bool) {
 }
 
 func Dirs(root string, opt WalkOption) []string {
-	dirPath := filepath.Dir(root)
 	dirs := make([]string, 0)
-	fileInfos := readDir(root, opt.Recursive)
-	dirBase := filepath.Base(root)
-	for _, fi := range fileInfos {
-		if fi.IsDir() && filterPath(fi.Name(), opt) && !strings.EqualFold(fi.Name(), dirBase) {
-			dirs = append(dirs, filepath.Join(dirPath, fi.Name()))
+	fileInfos := readDir(root, opt.Recursive, returnDir)
+	if len(fileInfos) > 0 {
+		dirBase := filepath.Base(root)
+		dirPath := filepath.Dir(root)
+		for _, fi := range fileInfos {
+			if fi.IsDir() && filterPath(fi.Name(), opt) && !strings.EqualFold(fi.Name(), dirBase) {
+				dirs = append(dirs, filepath.Join(dirPath, fi.Name()))
+			}
 		}
 	}
 	return dirs
@@ -89,13 +118,16 @@ func Dirs(root string, opt WalkOption) []string {
 
 // Files 获取指定目录下的所有文件
 func Files(root string, opt WalkOption) []string {
-	dirPath := filepath.Dir(root)
 	files := make([]string, 0)
-	fileInfos := readDir(root, opt.Recursive)
-	for _, fi := range fileInfos {
-		if !fi.IsDir() && filterPath(fi.Name(), opt) {
-			files = append(files, filepath.Join(dirPath, fi.Name()))
+	fileInfos := readDir(root, opt.Recursive, returnFile)
+	if len(fileInfos) > 0 {
+		dirPath := filepath.Dir(root)
+		for _, fi := range fileInfos {
+			if !fi.IsDir() && filterPath(fi.Name(), opt) {
+				files = append(files, filepath.Join(dirPath, fi.Name()))
+			}
 		}
 	}
+
 	return files
 }
