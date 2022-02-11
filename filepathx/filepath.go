@@ -46,11 +46,8 @@ func readDir(root string, recursive bool, returnType int) []fs.DirEntry {
 }
 
 func filterPath(path string, opt WalkOption) (ok bool) {
-	if opt.Filter == nil && len(opt.Only) == 0 && len(opt.Except) == 0 {
-		return true
-	}
-
-	if opt.Filter != nil && opt.Filter(path) {
+	if (opt.Filter == nil && len(opt.Only) == 0 && len(opt.Except) == 0) ||
+		(opt.Filter != nil && opt.Filter(path)) {
 		return true
 	}
 
@@ -85,6 +82,7 @@ func filterPath(path string, opt WalkOption) (ok bool) {
 	return
 }
 
+// Dirs 获取指定目录下的所有目录
 func Dirs(root string, opt WalkOption) []string {
 	dirs := make([]string, 0)
 	ds := readDir(root, opt.Recursive, returnDir)
