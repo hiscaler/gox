@@ -147,3 +147,22 @@ func TestString(t *testing.T) {
 		}
 	}
 }
+
+func TestRemoveEmoji(t *testing.T) {
+	testCases := []struct {
+		Number       int
+		BeforeString string
+		AfterString  string
+	}{
+		{1, "👶hi", "hi"},
+		{2, "1👰", "1"},
+		{3, "1👉2🤟👉👰3🤟👉👶你好🤟", "123你好"},
+		{4, "1👉2🤟👉👰3🤟👉👶你  　　好🤟", "123你  　　好"},
+	}
+	for _, testCase := range testCases {
+		s := RemoveEmoji(testCase.BeforeString, true)
+		if !strings.EqualFold(s, testCase.AfterString) {
+			t.Errorf("%d except: %s, actual: %s", testCase.Number, testCase.AfterString, s)
+		}
+	}
+}
