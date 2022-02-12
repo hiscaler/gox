@@ -1,7 +1,6 @@
 package filepathx
 
 import (
-	"fmt"
 	"github.com/hiscaler/gox/slicex"
 	"os"
 	"path/filepath"
@@ -10,7 +9,6 @@ import (
 
 func TestDirs(t *testing.T) {
 	root, _ := os.Getwd()
-	fmt.Println(root)
 	testCases := []struct {
 		Number int
 		Path   string
@@ -29,7 +27,7 @@ func TestDirs(t *testing.T) {
 			WalkOption{
 				CaseSensitive: false,
 				FilterFunc: func(path string) bool {
-					return path == "2"
+					return filepath.Base(path) == "2"
 				},
 				Recursive: true,
 			},
@@ -83,8 +81,8 @@ func TestDirs(t *testing.T) {
 	}
 	for _, testCase := range testCases {
 		dirs := Dirs(testCase.Path, testCase.Option)
-		for i, file := range dirs {
-			dirs[i] = filepath.Base(file)
+		for i, dir := range dirs {
+			dirs[i] = filepath.Base(dir)
 		}
 		if !slicex.StringSliceEqual(dirs, testCase.Files, true, true, true) {
 			t.Errorf("%d: except %v actual %v", testCase.Number, testCase.Files, dirs)
@@ -112,7 +110,7 @@ func TestFiles(t *testing.T) {
 			WalkOption{
 				CaseSensitive: false,
 				FilterFunc: func(path string) bool {
-					return path == "2.txt"
+					return filepath.Base(path) == "2.txt"
 				},
 				Recursive: true,
 			},
