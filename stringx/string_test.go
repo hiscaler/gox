@@ -2,6 +2,7 @@ package stringx
 
 import (
 	"github.com/hiscaler/gox/slicex"
+	"strings"
 	"testing"
 )
 
@@ -120,6 +121,29 @@ func TestSplit(t *testing.T) {
 		values := SplitWord(tc.String, tc.Seps...)
 		if !slicex.StringSliceEqual(values, tc.Values, false, false, true) {
 			t.Errorf("%d except %#v, actual：%#v", tc.Number, tc.Values, values)
+		}
+	}
+}
+
+func TestString(t *testing.T) {
+	testCases := []struct {
+		Number int
+		Value  interface{}
+		Except string
+	}{
+		{1, false, "false"},
+		{2, true, "true"},
+		{3, 1, "1"},
+		{4, 1.1, "1.1"},
+		{5, "abc", "abc"},
+		{6, [2]int{1, 2}, "[1,2]"},
+		{7, []int{1, 2}, "[1,2]"},
+		{8, []string{"a", "b"}, `["a","b"]`},
+	}
+	for _, testCase := range testCases {
+		s := String(testCase.Value)
+		if !strings.EqualFold(s, testCase.Except) {
+			t.Errorf("%d except: %s, actual: %s", testCase.Number, testCase.Except, s)
 		}
 	}
 }
