@@ -99,9 +99,9 @@ func Dirs(root string, opt WalkOption) []string {
 // Files 获取指定目录下的所有文件
 func Files(root string, opt WalkOption) []string {
 	files := make([]string, 0)
-	path := readDir(root, opt.Recursive, returnFile)
-	if len(path) > 0 {
-		for _, path := range path {
+	paths := readDir(root, opt.Recursive, returnFile)
+	if len(paths) > 0 {
+		for _, path := range paths {
 			if filterPath(path, opt) {
 				files = append(files, path)
 			}
