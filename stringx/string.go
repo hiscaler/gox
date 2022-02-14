@@ -246,3 +246,30 @@ func RemoveEmoji(str string, trim bool) string {
 
 	return str
 }
+
+// TrimSpecial 移除指定的内容
+func TrimSpecial(s string, ss ...string) string {
+	s = strings.TrimSpace(s)
+	n := len(ss)
+	if s == "" || n == 0 {
+		return s
+	}
+
+	oldNew := make([]string, n*2)
+	for i := 0; i < n; i += 2 {
+		oldNew[i] = ss[i]
+		oldNew[i+1] = ""
+	}
+	return strings.TrimSpace(strings.NewReplacer(oldNew...).Replace(s))
+}
+
+// RemoveExtraSpace 移除多余的空格
+func RemoveExtraSpace(s string) string {
+	if s != "" {
+		s = strings.TrimSpace(s)
+	}
+	if s == "" {
+		return s
+	}
+	return regexp.MustCompile("\\s{2,}").ReplaceAllLiteralString(strings.Replace(s, "　", " ", -1), " ")
+}

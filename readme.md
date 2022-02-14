@@ -64,6 +64,10 @@ Golang functions library
   - IsSafeCharacters
   - ToHalfWidth
   - SplitWord
+  - String
+  - RemoveEmoji
+  - TrimSpecial
+  - RemoveExtraSpace
 - timex
   - IsAmericaSummerTime
   - ChineseTimeLocation

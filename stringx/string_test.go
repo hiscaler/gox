@@ -166,3 +166,59 @@ func TestRemoveEmoji(t *testing.T) {
 		}
 	}
 }
+
+func TestTrimSpecial(t *testing.T) {
+	var testCases = []struct {
+		string       string
+		replacePairs []string
+		expected     string
+	}{
+		{"  a", []string{}, "a"},
+		{"  a", []string{"b", "c"}, "a"},
+		{"  a", []string{"a", "c"}, ""},
+		{" a       ", []string{}, "a"},
+		{`
+						
+a
+
+`, []string{}, "a"},
+		{"  ab", []string{"b"}, "a"},
+		{"  a b ", []string{"b"}, "a"},
+		{"  a b b", []string{"b"}, "a"},
+		{"  a b a", []string{"b"}, "a  a"},
+	}
+	for _, testCase := range testCases {
+		actual := TrimSpecial(testCase.string, testCase.replacePairs...)
+		if actual != testCase.expected {
+			t.Errorf("TrimSpecial(%s, %s) = %s; expected %s", testCase.string, testCase.replacePairs, actual, testCase.expected)
+		}
+	}
+}
+
+func TestRemoveExtraSpace(t *testing.T) {
+	var testCases = []struct {
+		number   int
+		string   string
+		expected string
+	}{
+		{1, "  a", "a"},
+		{2, "  a", "a"},
+		{3, "  a", "a"},
+		{4, " a       ", "a"},
+		{5, `
+						
+a
+
+`, "a"},
+		{6, "  ab", "ab"},
+		{7, "  a b ", "a b"},
+		{8, "  a b    b", "a b b"},
+		{9, "　　　hello,    world!", "hello, world!"},
+	}
+	for _, testCase := range testCases {
+		actual := RemoveExtraSpace(testCase.string)
+		if actual != testCase.expected {
+			t.Errorf("%d RemoveExtraSpace(%s) = '%s'; expected %s", testCase.number, testCase.string, actual, testCase.expected)
+		}
+	}
+}
