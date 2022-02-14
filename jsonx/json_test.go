@@ -63,8 +63,9 @@ func TestEmptyArray(t *testing.T) {
 
 func TestIsEmpty(t *testing.T) {
 	type testCase struct {
-		Value json.RawMessage
-		Empty bool
+		Number int
+		Value  json.RawMessage
+		Empty  bool
 	}
 	v1, _ := ToRawMessage([]string{}, "[]")
 	v2, _ := ToRawMessage([]string{"a", "b"}, "[]")
@@ -78,23 +79,26 @@ func TestIsEmpty(t *testing.T) {
 	a.UnmarshalJSON([]byte("null"))
 	b := json.RawMessage{}
 	b.UnmarshalJSON([]byte(""))
+	c := json.RawMessage{}
+	c.UnmarshalJSON([]byte("[    ]"))
 	testCases := []testCase{
-		{json.RawMessage{}, true},
-		{EmptyObjectRawMessage(), true},
-		{EmptyArrayRawMessage(), true},
-		{v1, true},
-		{v2, false},
-		{v3, false},
-		{v4, false},
-		{v5, true},
-		{a, true},
-		{b, true},
+		{1, json.RawMessage{}, true},
+		{2, EmptyObjectRawMessage(), true},
+		{3, EmptyArrayRawMessage(), true},
+		{4, v1, true},
+		{5, v2, false},
+		{6, v3, false},
+		{7, v4, false},
+		{8, v5, true},
+		{9, a, true},
+		{10, b, true},
+		{11, c, true},
 	}
 
-	for _, c := range testCases {
-		v := IsEmptyRawMessage(c.Value)
-		if v != c.Empty {
-			t.Errorf("except: %v, actual: %v", c.Empty, v)
+	for _, tc := range testCases {
+		v := IsEmptyRawMessage(tc.Value)
+		if v != tc.Empty {
+			t.Errorf("%d except: %v, actual: %v", tc.Number, tc.Empty, v)
 		}
 	}
 }

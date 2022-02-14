@@ -59,13 +59,15 @@ func IsEmptyRawMessage(data json.RawMessage) bool {
 	if data == nil {
 		return true
 	}
+
 	b, err := data.MarshalJSON()
 	if err == nil {
 		s := string(bytes.TrimSpace(b))
 		if s == "" || s == "[]" || s == "{}" || strings.EqualFold(s, "null") {
 			return true
 		} else {
-			return false
+			s = strings.Replace(s, " ", "", -1)
+			return s == "[]" || s == "{}"
 		}
 	} else {
 		return true
