@@ -9,6 +9,12 @@ func TestNumber(t *testing.T) {
 	}{
 		{"a", false},
 		{"111", true},
+		{"1.23", true},
+		{"1,234.5", true},
+		{"1234.5,", false},
+		{"12345.", false},
+		{" 12345.6   ", true},
+		{" 12345. 6   ", false},
 	}
 	for _, testCase := range testCases {
 		v := Number(testCase.Value)
