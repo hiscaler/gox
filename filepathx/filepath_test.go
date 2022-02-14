@@ -51,7 +51,7 @@ func TestDirs(t *testing.T) {
 				Except:        []string{"2"},
 				Recursive:     true,
 			},
-			[]string{"test", "1", "1.1"},
+			[]string{"testdata", "1", "1.1"},
 		},
 		{
 			5,
@@ -60,11 +60,11 @@ func TestDirs(t *testing.T) {
 				CaseSensitive: false,
 				Recursive:     true,
 			},
-			[]string{"test", "1", "1.1", "2"},
+			[]string{"testdata", "1", "1.1", "2"},
 		},
 		{
 			6,
-			root + "/test",
+			root + "/testdata",
 			WalkOption{
 				Recursive: true,
 			},
@@ -72,7 +72,7 @@ func TestDirs(t *testing.T) {
 		},
 		{
 			7,
-			root + "/test",
+			root + "/testdata",
 			WalkOption{
 				Recursive: false,
 			},
@@ -147,7 +147,7 @@ func TestFiles(t *testing.T) {
 		},
 		{
 			6,
-			root + "/test",
+			root + "/testdata",
 			WalkOption{
 				Recursive: true,
 			},
@@ -155,7 +155,7 @@ func TestFiles(t *testing.T) {
 		},
 		{
 			7,
-			root + "/test",
+			root + "/testdata",
 			WalkOption{
 				Recursive: false,
 			},
