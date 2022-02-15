@@ -15,6 +15,7 @@ Golang functions library
   - IsFile
   - Exists
 - fmtx
+  - SprettyPrint
   - PrettyPrint
   - PrettyPrintln
 - inx

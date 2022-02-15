@@ -18,6 +18,10 @@ func toJson(prefix string, data interface{}) string {
 	return s
 }
 
+func SprettyPrint(data interface{}) string {
+	return toJson("", data)
+}
+
 func PrettyPrint(prefix string, data interface{}) {
 	fmt.Print(toJson(prefix, data))
 }
