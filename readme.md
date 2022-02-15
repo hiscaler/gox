@@ -14,6 +14,9 @@ Golang functions library
   - IsDir
   - IsFile
   - Exists
+- fmtx
+  - PrettyPrint
+  - PrettyPrintln
 - inx
   - StringIn
   - IntIn
