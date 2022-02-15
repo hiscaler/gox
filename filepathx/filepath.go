@@ -22,9 +22,10 @@ type WalkOption struct {
 }
 
 func readDir(root string, recursive bool, returnType int) []string {
+	dfs := os.DirFS(root)
 	paths := make([]string, 0)
 	if recursive {
-		filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
+		fs.WalkDir(dfs, ".", func(path string, d fs.DirEntry, err error) error {
 			if err == nil && path != "." && path != ".." &&
 				((returnType == returnDir && d.IsDir()) || (returnType == returnFile && !d.IsDir())) {
 				paths = append(paths, path)
@@ -32,7 +33,7 @@ func readDir(root string, recursive bool, returnType int) []string {
 			return nil
 		})
 	} else {
-		ds, err := os.ReadDir(root)
+		ds, err := fs.ReadDir(dfs, ".")
 		if err == nil {
 			for _, d := range ds {
 				if d.Name() != "." && d.Name() != ".." &&
