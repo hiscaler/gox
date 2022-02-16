@@ -17,9 +17,9 @@ func IsAmericaSummerTime(t time.Time) (yes bool) {
 	case 3, 11:
 		day := t.Day()
 		t1 := t.AddDate(0, 0, -day+1)
-		days := int(t1.Weekday())
-		if (month == 3 && day >= t1.AddDate(0, 0, 14-days).Day()) ||
-			(month == 11 && day < t1.AddDate(0, 0, 7-days).Day()) {
+		weekday := int(t1.Weekday())
+		if (month == 3 && day >= t1.AddDate(0, 0, 14-weekday).Day()) ||
+			(month == 11 && day < t1.AddDate(0, 0, 7-weekday).Day()) {
 			yes = true
 		}
 	}
