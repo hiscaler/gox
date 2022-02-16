@@ -6,14 +6,20 @@ import "time"
 // 夏令时开始于每年3月的第二个周日凌晨，人们需要将时间调早 (顺时针) 1个小时；
 // 夏令时结束于每年11月的第一个周日凌晨，人们需要将时间调晚 (逆时针) 1个小时。
 func IsAmericaSummerTime(t time.Time) (yes bool) {
-	switch t.Month() {
+	if t.IsZero() {
+		return
+	}
+
+	month := t.Month()
+	switch month {
 	case 4, 5, 6, 7, 8, 9, 10:
 		yes = true
 	case 3, 11:
-		t1 := t.AddDate(0, 0, -t.Day()+1)
-		d := int(t1.Weekday())
-		if (t.Month() == 3 && t.Day() >= t1.AddDate(0, 0, 14-d).Day()) ||
-			(t.Month() == 11 && t.Day() < t1.AddDate(0, 0, 7-d).Day()) {
+		day := t.Day()
+		t1 := t.AddDate(0, 0, -day+1)
+		days := int(t1.Weekday())
+		if (month == 3 && day >= t1.AddDate(0, 0, 14-days).Day()) ||
+			(month == 11 && day < t1.AddDate(0, 0, 7-days).Day()) {
 			yes = true
 		}
 	}
