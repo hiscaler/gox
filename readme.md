@@ -32,6 +32,8 @@ Golang functions library
     - IsEmptyRawMessage
 - keyx
     - Generate
+- map
+    - StringKeys
 - net
     - urlx
       - NewURL
