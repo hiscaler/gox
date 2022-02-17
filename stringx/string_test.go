@@ -214,6 +214,14 @@ a
 		{7, "  a b ", "a b"},
 		{8, "  a b    b", "a b b"},
 		{9, "　　　hello,    world!", "hello, world!"},
+		{10, `
+　　　hello,    
+
+
+
+
+					world!
+`, "hello, world!"},
 	}
 	for _, testCase := range testCases {
 		actual := RemoveExtraSpace(testCase.string)
