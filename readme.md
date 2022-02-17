@@ -23,6 +23,7 @@ Golang functions library
   - IntIn
 - isx
   - Number
+  - Empty
 - jsonx
     - ToRawMessage
     - ToJson
