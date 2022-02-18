@@ -52,7 +52,6 @@ func Empty(value interface{}) bool {
 			return true
 		}
 	}
-
 	return false
 }
 
@@ -73,7 +72,5 @@ func Equal(expected interface{}, actual interface{}) bool {
 
 		return bytes.Equal(exp, act)
 	}
-
 	return reflect.DeepEqual(expected, actual)
-
 }
