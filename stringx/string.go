@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 	"unicode"
+	"unsafe"
 )
 
 // IsEmpty 判断字符串是否为空
@@ -272,4 +273,14 @@ func RemoveExtraSpace(s string) string {
 		return s
 	}
 	return regexp.MustCompile("\\s{2,}").ReplaceAllLiteralString(strings.Replace(s, "　", " ", -1), " ")
+}
+
+func ToBytes(s string) []byte {
+	sh := (*reflect.StringHeader)(unsafe.Pointer(&s))
+	bh := reflect.SliceHeader{
+		Data: sh.Data,
+		Len:  sh.Len,
+		Cap:  sh.Len,
+	}
+	return *(*[]byte)(unsafe.Pointer(&bh))
 }

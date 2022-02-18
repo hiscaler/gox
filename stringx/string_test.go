@@ -2,6 +2,7 @@ package stringx
 
 import (
 	"github.com/hiscaler/gox/slicex"
+	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
 )
@@ -228,5 +229,21 @@ a
 		if actual != testCase.expected {
 			t.Errorf("%d RemoveExtraSpace(%s) = '%s'; expected %s", testCase.number, testCase.string, actual, testCase.expected)
 		}
+	}
+}
+
+func TestToBytes(t *testing.T) {
+	tests := []struct {
+		tag        string
+		bytesValue []byte
+		string     string
+	}{
+		{"t1", []byte{'a'}, "a"},
+		{"t2", []byte("abc"), "abc"},
+		{"t3", []byte("a b c "), "a b c "},
+	}
+	for _, test := range tests {
+		b := ToBytes(test.string)
+		assert.Equal(t, test.bytesValue, b, test.tag)
 	}
 }

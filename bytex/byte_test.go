@@ -1,6 +1,9 @@
 package bytex
 
-import "testing"
+import (
+	"github.com/stretchr/testify/assert"
+	"testing"
+)
 
 func TestIsEmpty(t *testing.T) {
 	testCases := []struct {
@@ -18,5 +21,21 @@ func TestIsEmpty(t *testing.T) {
 		if isEmpty != testCase.Except {
 			t.Errorf("%d except: %#v, actual: %#v", testCase.Number, testCase.Except, isEmpty)
 		}
+	}
+}
+
+func TestToString(t *testing.T) {
+	tests := []struct {
+		tag        string
+		bytesValue []byte
+		string     string
+	}{
+		{"t1", []byte{'a'}, "a"},
+		{"t2", []byte("abc"), "abc"},
+		{"t3", []byte("a b c "), "a b c "},
+	}
+	for _, test := range tests {
+		s := ToString(test.bytesValue)
+		assert.Equal(t, test.string, s, test.tag)
 	}
 }

@@ -5,6 +5,7 @@ Golang functions library
 
 - bytex
   - IsEmpty
+  - ToString
 - cryptox
   - Md5String
 - filepathx
@@ -75,6 +76,7 @@ Golang functions library
   - RemoveEmoji
   - TrimSpecial
   - RemoveExtraSpace
+  - ToBytes
 - timex
   - IsAmericaSummerTime
   - ChineseTimeLocation

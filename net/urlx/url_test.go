@@ -57,5 +57,4 @@ func TestURL_DeleteValue(t *testing.T) {
 			t.Errorf("%d except: %s, actual: %s", tc.Number, tc.Except, s)
 		}
 	}
-
 }

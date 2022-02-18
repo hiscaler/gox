@@ -2,6 +2,7 @@ package bytex
 
 import (
 	"bytes"
+	"unsafe"
 )
 
 // IsEmpty Check byte is empty
@@ -10,4 +11,8 @@ func IsEmpty(b []byte) bool {
 		return true
 	}
 	return false
+}
+
+func ToString(b []byte) string {
+	return *(*string)(unsafe.Pointer(&b))
 }
