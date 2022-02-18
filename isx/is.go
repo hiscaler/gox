@@ -1,6 +1,7 @@
 package isx
 
 import (
+	"bytes"
 	"reflect"
 	"regexp"
 	"strings"
@@ -53,4 +54,26 @@ func Empty(value interface{}) bool {
 	}
 
 	return false
+}
+
+func Equal(expected interface{}, actual interface{}) bool {
+	if expected == nil || actual == nil {
+		return expected == actual
+	}
+
+	if exp, ok := expected.([]byte); ok {
+		act, ok := actual.([]byte)
+		if !ok {
+			return false
+		}
+
+		if exp == nil || act == nil {
+			return true
+		}
+
+		return bytes.Equal(exp, act)
+	}
+
+	return reflect.DeepEqual(expected, actual)
+
 }

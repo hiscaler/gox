@@ -25,6 +25,7 @@ Golang functions library
 - isx
   - Number
   - Empty
+  - Equal
 - jsonx
     - ToRawMessage
     - ToJson
