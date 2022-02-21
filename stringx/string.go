@@ -284,3 +284,20 @@ func ToBytes(s string) []byte {
 	}
 	return *(*[]byte)(unsafe.Pointer(&bh))
 }
+
+// Matched 判断 s 中是否包含 words
+func Matched(s string, words []string, caseSensitive bool) bool {
+	if s == "" || len(words) == 0 {
+		return false
+	}
+
+	expr := ""
+	if caseSensitive {
+		expr = "(?i)"
+	}
+	expr += fmt.Sprintf(`\b(%s)\b`, strings.Join(words, "|"))
+	if re, err := regexp.Compile(expr); err == nil {
+		return re.MatchString(s)
+	}
+	return false
+}

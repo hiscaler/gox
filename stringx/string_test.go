@@ -247,3 +247,32 @@ func TestToBytes(t *testing.T) {
 		assert.Equal(t, test.bytesValue, b, test.tag)
 	}
 }
+
+func TestMatched(t *testing.T) {
+	tests := []struct {
+		tag           string
+		string        string
+		words         []string
+		caseSensitive bool
+		except        bool
+	}{
+		// Towels
+		{"t1", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"Towels", "B"}, false, true},
+		// towels
+		{"t2", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"towels", "B"}, true, true},
+		// a
+		{"t3.1", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"tow", "A", "B"}, true, true},
+		{"t3.2", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"tow", "A", "B"}, false, false},
+		{"t4", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"tow"}, true, false},
+		{"t5", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"20"}, true, false},
+		{"t6", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"Blue Shop"}, false, true},
+		{"t7.1", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"blue shop"}, true, true},
+		{"t7.2", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"blue shop"}, false, false},
+		{"t8", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"Scott "}, true, true},
+		{"t9", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"Sheets "}, true, false},
+	}
+	for _, test := range tests {
+		b := Matched(test.string, test.words, test.caseSensitive)
+		assert.Equal(t, test.except, b, test.tag)
+	}
+}
