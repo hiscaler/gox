@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	returnDir = iota
-	returnFile
+	searchDir = iota
+	searchFile
 )
 
 type WalkOption struct {
@@ -21,13 +21,13 @@ type WalkOption struct {
 	Recursive     bool                   // 是否递归查询下级目录
 }
 
-func readDir(root string, recursive bool, returnType int) []string {
+func readDir(root string, recursive bool, searchType int) []string {
 	dfs := os.DirFS(root)
 	paths := make([]string, 0)
 	if recursive {
 		fs.WalkDir(dfs, ".", func(path string, d fs.DirEntry, err error) error {
 			if err == nil && path != "." && path != ".." &&
-				((returnType == returnDir && d.IsDir()) || (returnType == returnFile && !d.IsDir())) {
+				((searchType == searchDir && d.IsDir()) || (searchType == searchFile && !d.IsDir())) {
 				paths = append(paths, path)
 			}
 			return nil
@@ -37,7 +37,7 @@ func readDir(root string, recursive bool, returnType int) []string {
 		if err == nil {
 			for _, d := range ds {
 				if d.Name() != "." && d.Name() != ".." &&
-					((returnType == returnDir && d.IsDir()) || (returnType == returnFile && !d.IsDir())) {
+					((searchType == searchDir && d.IsDir()) || (searchType == searchFile && !d.IsDir())) {
 					paths = append(paths, filepath.Join(root, d.Name()))
 				}
 			}
@@ -86,7 +86,7 @@ func filterPath(path string, opt WalkOption) (ok bool) {
 // Dirs 获取指定目录下的所有目录
 func Dirs(root string, opt WalkOption) []string {
 	dirs := make([]string, 0)
-	paths := readDir(root, opt.Recursive, returnDir)
+	paths := readDir(root, opt.Recursive, searchDir)
 	if len(paths) > 0 {
 		for _, path := range paths {
 			if filterPath(path, opt) && !strings.EqualFold(path, root) {
@@ -100,7 +100,7 @@ func Dirs(root string, opt WalkOption) []string {
 // Files 获取指定目录下的所有文件
 func Files(root string, opt WalkOption) []string {
 	files := make([]string, 0)
-	paths := readDir(root, opt.Recursive, returnFile)
+	paths := readDir(root, opt.Recursive, searchFile)
 	if len(paths) > 0 {
 		for _, path := range paths {
 			if filterPath(path, opt) {
@@ -108,6 +108,5 @@ func Files(root string, opt WalkOption) []string {
 			}
 		}
 	}
-
 	return files
 }
