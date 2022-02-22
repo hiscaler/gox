@@ -11,6 +11,7 @@ Golang functions library
 - filepathx
   - Dirs
   - Files
+  - GenerateDirNames
 - filex
   - IsDir
   - IsFile
@@ -26,6 +27,7 @@ Golang functions library
   - Number
   - Empty
   - Equal
+  - SafeCharacters
 - jsonx
     - ToRawMessage
     - ToJson
@@ -70,7 +72,6 @@ Golang functions library
   - IsEmpty
   - ToNumber
   - ContainsChinese
-  - IsSafeCharacters
   - ToHalfWidth
   - SplitWord
   - String

@@ -74,3 +74,13 @@ func Equal(expected interface{}, actual interface{}) bool {
 	}
 	return reflect.DeepEqual(expected, actual)
 }
+
+// SafeCharacters Only include a-zA-Z0-9.-_
+// Reference https://www.quora.com/What-are-valid-file-names
+func SafeCharacters(str string) bool {
+	if str == "" {
+		return false
+	}
+	re, _ := regexp.Compile(`^[a-zA-Z0-9\.\-_][a-zA-Z0-9\.\-_]*$`)
+	return re.MatchString(str)
+}

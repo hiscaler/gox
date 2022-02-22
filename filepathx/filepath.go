@@ -110,3 +110,49 @@ func Files(root string, opt WalkOption) []string {
 	}
 	return files
 }
+
+// GenerateDirNames 生成目录名
+func GenerateDirNames(s string, n, level int, caseSensitive bool) []string {
+	if s == "" {
+		return []string{}
+	}
+
+	isValidCharFunc := func(r rune) bool {
+		return 'A' <= r && r <= 'Z' || 'a' <= r && r <= 'z' || '0' <= r && r <= '9'
+	}
+	var b strings.Builder
+	for _, r := range s {
+		if isValidCharFunc(r) {
+			b.WriteRune(r)
+		}
+	}
+	if b.Len() == 0 {
+		return []string{}
+	}
+
+	s = b.String() // Clean s string
+	if caseSensitive {
+		s = strings.ToLower(s)
+	}
+	if n <= 0 {
+		return []string{s}
+	}
+
+	if level <= 0 {
+		level = 1
+	}
+	names := make([]string, 0)
+	sLen := len(s)
+	for i := 0; i < sLen; i += n {
+		if len(names) == level {
+			break
+		}
+
+		lastIndex := i + n
+		if lastIndex >= sLen {
+			lastIndex = sLen
+		}
+		names = append(names, s[i:lastIndex])
+	}
+	return names
+}

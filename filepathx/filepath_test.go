@@ -2,6 +2,7 @@ package filepathx
 
 import (
 	"github.com/hiscaler/gox/slicex"
+	"github.com/stretchr/testify/assert"
 	"os"
 	"path/filepath"
 	"testing"
@@ -170,5 +171,31 @@ func TestFiles(t *testing.T) {
 		if !slicex.StringSliceEqual(files, testCase.Files, true, true, true) {
 			t.Errorf("%d: except %v actual %v", testCase.Number, testCase.Files, files)
 		}
+	}
+}
+
+func TestGenerateDirNames(t *testing.T) {
+	tests := []struct {
+		tag           string
+		string        string
+		n             int
+		level         int
+		caseSensitive bool
+		dirs          []string
+	}{
+		{"t1", "abc", 0, 1, true, []string{"abc"}},
+		{"t2", "abc", 1, 1, true, []string{"a"}},
+		{"t3", "abc", 1, 2, true, []string{"a", "b"}},
+		{"t4", "abc", 1, 3, true, []string{"a", "b", "c"}},
+		{"t5", "abc", 2, 1, true, []string{"ab"}},
+		{"t6", "abc", 2, 2, true, []string{"ab", "c"}},
+		{"t7", " a b c ", 2, 2, true, []string{"ab", "c"}},
+		{"t7", " a b cdefghijklmn ", 2, 3, true, []string{"ab", "cd", "ef"}},
+		{"t8", " a", 12, 3, true, []string{"a"}},
+		{"t9", " a中文$b", 12, 3, true, []string{"ab"}},
+	}
+	for _, test := range tests {
+		names := GenerateDirNames(test.string, test.n, test.level, test.caseSensitive)
+		assert.Equal(t, test.dirs, names, test.tag)
 	}
 }

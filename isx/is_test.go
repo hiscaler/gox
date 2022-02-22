@@ -138,3 +138,28 @@ func TestIsEqual(t *testing.T) {
 		assert.Equal(t, test.except, equal, test.tag)
 	}
 }
+
+func TestSafeCharacters(t *testing.T) {
+	type testCast struct {
+		String string
+		Safe   bool
+	}
+	testCasts := []testCast{
+		{"", false},
+		{" ", false},
+		{"a", true},
+		{"111", true},
+		{"ａ", false},
+		{"A_B", true},
+		{"A_中B", false},
+		{"a.b-c_", true},
+		{"_.a.b-c_", true},
+		{`\.a.b-c_`, false},
+	}
+	for _, tc := range testCasts {
+		safe := SafeCharacters(tc.String)
+		if safe != tc.Safe {
+			t.Errorf("%s except %v, actual：%v", tc.String, tc.Safe, safe)
+		}
+	}
+}
