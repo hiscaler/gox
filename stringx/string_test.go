@@ -290,3 +290,9 @@ func TestWordMatched(t *testing.T) {
 		assert.Equal(t, test.except, b, test.tag)
 	}
 }
+
+func BenchmarkWordMatched(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		WordMatched("Scott Blue Shop Towels in a Box--200 Sheets", []string{"Throw Pillow Covers", "Throw Pillows", "Patio Furniture Pillows", "Pillow Covers", "Pillowcases", "Pillow Case", "Pillow Cover", "scot", "scottt", "blu", "Shop Towels"}, true)
+	}
+}

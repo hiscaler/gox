@@ -292,6 +292,11 @@ func WordMatched(s string, words []string, caseSensitive bool) bool {
 		return false
 	}
 
+	var b strings.Builder
+	if caseSensitive {
+		b.WriteString("(?i)")
+	}
+	b.WriteString(`\b(`)
 	replacer := strings.NewReplacer(
 		"\\\\", "\\\\\\",
 		"(", "\\(",
@@ -318,15 +323,14 @@ func WordMatched(s string, words []string, caseSensitive bool) bool {
 		if n == len(word) {
 			return false
 		}
-		words[i] = replacer.Replace(word)
-	}
 
-	expr := ""
-	if caseSensitive {
-		expr = "(?i)"
+		if i != 0 {
+			b.WriteString("|")
+		}
+		b.WriteString(replacer.Replace(word))
 	}
-	expr += fmt.Sprintf(`\b(%s)\b`, strings.Join(words, "|"))
-	if re, err := regexp.Compile(expr); err == nil {
+	b.WriteString(`)\b`)
+	if re, err := regexp.Compile(b.String()); err == nil {
 		return re.MatchString(s)
 	}
 	return false
