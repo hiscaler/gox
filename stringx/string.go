@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"reflect"
 	"regexp"
+	"regexp/syntax"
 	"strconv"
 	"strings"
 	"unicode"
@@ -285,10 +286,39 @@ func ToBytes(s string) []byte {
 	return *(*[]byte)(unsafe.Pointer(&bh))
 }
 
-// Matched 判断 s 中是否包含 words
-func Matched(s string, words []string, caseSensitive bool) bool {
+// WordMatched 判断 s 中是否包含 words 的单词（仅支持英文）
+func WordMatched(s string, words []string, caseSensitive bool) bool {
 	if s == "" || len(words) == 0 {
 		return false
+	}
+
+	replacer := strings.NewReplacer(
+		"\\\\", "\\\\\\",
+		"(", "\\(",
+		"|", "\\|",
+		")", "\\)",
+		"^", "\\^",
+		"$", "\\$",
+		".", "\\.",
+		"[", "\\[",
+		"*", "\\*",
+		"+", "\\+",
+		"?", "\\?",
+		"{", "\\{",
+		"-", "\\-",
+		",", "\\,",
+	)
+	for i, word := range words {
+		n := 0
+		for _, w := range word {
+			if !syntax.IsWordChar(w) {
+				n++
+			}
+		}
+		if n == len(word) {
+			return false
+		}
+		words[i] = replacer.Replace(word)
 	}
 
 	expr := ""

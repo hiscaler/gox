@@ -248,7 +248,7 @@ func TestToBytes(t *testing.T) {
 	}
 }
 
-func TestMatched(t *testing.T) {
+func TestWordMatched(t *testing.T) {
 	tests := []struct {
 		tag           string
 		string        string
@@ -256,23 +256,37 @@ func TestMatched(t *testing.T) {
 		caseSensitive bool
 		except        bool
 	}{
-		// Towels
 		{"t1", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"Towels", "B"}, false, true},
-		// towels
 		{"t2", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"towels", "B"}, true, true},
-		// a
 		{"t3.1", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"tow", "A", "B"}, true, true},
 		{"t3.2", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"tow", "A", "B"}, false, false},
 		{"t4", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"tow"}, true, false},
-		{"t5", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"20"}, true, false},
+		{"t5.1", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"20"}, true, false},
+		{"t5.2", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"200"}, true, true},
 		{"t6", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"Blue Shop"}, false, true},
 		{"t7.1", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"blue shop"}, true, true},
 		{"t7.2", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"blue shop"}, false, false},
 		{"t8", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"Scott "}, true, true},
 		{"t9", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"Sheets "}, true, false},
+		{"t10.1", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{`.`}, true, false},
+		{"t10.2", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{`...................`}, true, false},
+		{"t11", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"*"}, true, false},
+		{"t12", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"***"}, true, false},
+		{"t13.1", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{`.*`}, true, false},
+		{"t13.2", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{`B.*x`}, true, false},
+		{"t14", "Scott Blue Shop Towels in a Box - 200 Sheets.", []string{"."}, true, false},
+		{"t14.1", "Scott Blue Shop Towels in a Box - 200 Sheets.", []string{".*"}, true, false},
+		{"t14.2", "Scott Blue Shop Towels in a Box - 200 Sheets.", []string{"Sheets."}, true, false},
+		{"t15", "Scott Blue Shop Towels in a Box - 200 Sheets?", []string{"?"}, true, false},
+		{"t16", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"[Sheets]"}, true, false},
+		{"t17", "Scott Blue Shop Towels in a Box a-a 200 Sheets", []string{"a-a"}, true, true},
+		{"t18", "Scott Blue Shop Towels in a Box--200 Sheets", []string{"-"}, true, false},
+		{"t19", "Scott Blue Shop Towels in a Box--200 Sheets", []string{"--"}, true, false},
+		{"t20", "Scott Blue Shop Towels in a Box--200 Sheets", []string{"Box--200"}, true, true},
+		{"t20", "Scott Blue Shop Towels in a Box--200 Sheets 中文", []string{"中文"}, true, false},
 	}
 	for _, test := range tests {
-		b := Matched(test.string, test.words, test.caseSensitive)
+		b := WordMatched(test.string, test.words, test.caseSensitive)
 		assert.Equal(t, test.except, b, test.tag)
 	}
 }

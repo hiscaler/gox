@@ -78,7 +78,7 @@ Golang functions library
   - TrimSpecial
   - RemoveExtraSpace
   - ToBytes
-  - Matched
+  - WordMatched
 - timex
   - IsAmericaSummerTime
   - ChineseTimeLocation
