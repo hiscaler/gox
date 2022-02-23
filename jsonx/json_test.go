@@ -61,7 +61,7 @@ func TestEmptyArray(t *testing.T) {
 	}
 }
 
-func TestIsEmpty(t *testing.T) {
+func TestIsEmptyRawMessage(t *testing.T) {
 	type testCase struct {
 		Number int
 		Value  json.RawMessage

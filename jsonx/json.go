@@ -66,7 +66,9 @@ func IsEmptyRawMessage(data json.RawMessage) bool {
 		if s == "" || s == "[]" || s == "{}" || strings.EqualFold(s, "null") {
 			return true
 		} else {
-			s = strings.Replace(s, " ", "", -1)
+			if strings.Index(s, " ") != -1 {
+				s = strings.Replace(s, " ", "", -1)
+			}
 			return s == "[]" || s == "{}"
 		}
 	} else {
