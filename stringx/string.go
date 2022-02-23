@@ -400,27 +400,3 @@ func Contains(s string, ss []string, caseSensitive bool) bool {
 	}
 	return has
 }
-
-func SplitL(s, sep string, l int) []string {
-	s = strings.TrimSpace(s)
-	n := len(s)
-	if n <= l {
-		return []string{s}
-	}
-
-	size := n / l
-	if n%l != 0 {
-		size++
-	}
-	items := make([]string, size)
-	for i := 0; i < n; i += l {
-		item := ""
-		if i+l >= n {
-			item = s[i:]
-		} else {
-			item = s[i : i+l]
-		}
-		items = append(items, item)
-	}
-	return items
-}
