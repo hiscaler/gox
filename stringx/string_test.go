@@ -271,3 +271,65 @@ func BenchmarkWordMatched(b *testing.B) {
 		WordMatched("Scott Blue Shop Towels in a Box--200 Sheets", []string{"Throw Pillow Covers", "Throw Pillows", "Patio Furniture Pillows", "Pillow Covers", "Pillowcases", "Pillow Case", "Pillow Cover", "scot", "scottt", "blu", "Shop Towels"}, true)
 	}
 }
+
+func TestStartsWith(t *testing.T) {
+	tests := []struct {
+		tag           string
+		string        string
+		words         []string
+		caseSensitive bool
+		except        bool
+	}{
+		{"t1", "Hello world!", []string{"he", "He"}, false, true},
+		{"t2", "Hello world!", []string{"he", "He"}, true, true},
+		{"t3", "Hello world!", []string{"he"}, true, false},
+		{"t4", "", []string{""}, true, true},
+		{"t5", "Hello world!", []string{""}, true, true},
+	}
+	for _, test := range tests {
+		b := StartsWith(test.string, test.words, test.caseSensitive)
+		assert.Equal(t, test.except, b, test.tag)
+	}
+}
+
+func TestEndsWith(t *testing.T) {
+	tests := []struct {
+		tag           string
+		string        string
+		words         []string
+		caseSensitive bool
+		except        bool
+	}{
+		{"t1", "Hello world!", []string{"he", "He"}, false, false},
+		{"t2", "Hello world!", []string{"he", "He"}, true, false},
+		{"t3", "Hello world!", []string{"d!", "!"}, true, true},
+		{"t4", "Hello world!", []string{"WORLD!"}, false, true},
+		{"t5", "", []string{""}, true, true},
+		{"t6", "Hello world!", []string{""}, true, true},
+	}
+	for _, test := range tests {
+		b := EndsWith(test.string, test.words, test.caseSensitive)
+		assert.Equal(t, test.except, b, test.tag)
+	}
+}
+
+func TestContains(t *testing.T) {
+	tests := []struct {
+		tag           string
+		string        string
+		words         []string
+		caseSensitive bool
+		except        bool
+	}{
+		{"t1", "Hello world!", []string{"ol", "LL"}, false, true},
+		{"t2", "Hello world!", []string{"ol", "LL"}, true, false},
+		{"t3", "Hello world!", []string{"notfound", "world"}, false, true},
+		{"t4", "Hello world!", []string{"notfound", "world"}, true, true},
+		{"t5", "", []string{""}, true, true},
+		{"t6", "Hello world!", []string{""}, true, true},
+	}
+	for _, test := range tests {
+		b := Contains(test.string, test.words, test.caseSensitive)
+		assert.Equal(t, test.except, b, test.tag)
+	}
+}

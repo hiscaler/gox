@@ -326,15 +326,101 @@ func WordMatched(s string, words []string, caseSensitive bool) bool {
 	return false
 }
 
-func HasPrefix(s, prefix string) bool {
-	return strings.HasPrefix(strings.ToLower(s), strings.ToLower(prefix))
+func StartsWith(s string, ss []string, caseSensitive bool) bool {
+	if !caseSensitive {
+		for k, v := range ss {
+			if v == "" {
+				return true
+			}
+			ss[k] = strings.ToLower(v)
+		}
+		s = strings.ToLower(s)
+	}
+
+	has := false
+	for _, prefix := range ss {
+		if prefix == "" {
+			has = true
+		} else {
+			has = strings.HasPrefix(s, prefix)
+		}
+		if has {
+			break
+		}
+	}
+	return has
 }
 
-func HasSuffix(s, suffix string) bool {
-	return strings.HasSuffix(strings.ToLower(s), strings.ToLower(suffix))
+func EndsWith(s string, ss []string, caseSensitive bool) bool {
+	if !caseSensitive {
+		for k, v := range ss {
+			if v == "" {
+				return true
+			}
+			ss[k] = strings.ToLower(v)
+		}
+		s = strings.ToLower(s)
+	}
+
+	has := false
+	for _, suffix := range ss {
+		if suffix == "" {
+			has = true
+		} else {
+			has = strings.HasSuffix(s, suffix)
+		}
+		if has {
+			break
+		}
+	}
+	return has
 }
 
-func Contains(s, substr string) bool {
-	return strings.Contains(strings.ToLower(s), strings.ToLower(substr))
+func Contains(s string, ss []string, caseSensitive bool) bool {
+	if !caseSensitive {
+		for k, v := range ss {
+			if v == "" {
+				return true
+			}
+			ss[k] = strings.ToLower(v)
+		}
+		s = strings.ToLower(s)
+	}
+
+	has := false
+	for _, substr := range ss {
+		if substr == "" {
+			has = true
+		} else {
+			has = strings.Contains(s, substr)
+		}
+		if has {
+			break
+		}
+	}
+	return has
 }
 
+func SplitL(s, sep string, l int) []string {
+	s = strings.TrimSpace(s)
+	n := len(s)
+	if n <= l {
+		return []string{s}
+	}
+
+	size := n / l
+	if n%l != 0 {
+		size++
+	}
+	items := make([]string, size)
+	for i := 0; i < n; i += l {
+		item := ""
+		if i+l >= n {
+			item = s[i:]
+		} else {
+			item = s[i : i+l]
+		}
+		items = append(items, item)
+	}
+	return items
+}
