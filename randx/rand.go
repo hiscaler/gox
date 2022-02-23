@@ -7,10 +7,16 @@ import (
 	"strings"
 )
 
+const (
+	randNumberChars = "0123456789"
+	randLetterChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+)
+
 func generateValues(str string, len int, upper bool) string {
 	if len <= 0 {
 		return ""
 	}
+
 	buffer := bytes.NewBufferString(str)
 	bigInt := big.NewInt(int64(buffer.Len()))
 	buffer.Reset()
@@ -27,15 +33,15 @@ func generateValues(str string, len int, upper bool) string {
 
 // Letter Generate letter rand string
 func Letter(len int, upper bool) string {
-	return generateValues("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", len, upper)
+	return generateValues(randLetterChars, len, upper)
 }
 
 // Number Generate number rand string
 func Number(len int) string {
-	return generateValues("0123456789", len, false)
+	return generateValues(randNumberChars, len, false)
 }
 
 // Any Generate number and letter combined string
 func Any(len int) string {
-	return generateValues("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", len, false)
+	return generateValues(randLetterChars+randNumberChars, len, false)
 }
