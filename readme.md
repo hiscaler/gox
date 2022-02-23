@@ -80,6 +80,9 @@ Golang functions library
   - RemoveExtraSpace
   - ToBytes
   - WordMatched
+  - HasPrefix
+  - HasSuffix
+  - Contains
 - timex
   - IsAmericaSummerTime
   - ChineseTimeLocation

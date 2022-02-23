@@ -325,3 +325,16 @@ func WordMatched(s string, words []string, caseSensitive bool) bool {
 	}
 	return false
 }
+
+func HasPrefix(s, prefix string) bool {
+	return strings.HasPrefix(strings.ToLower(s), strings.ToLower(prefix))
+}
+
+func HasSuffix(s, suffix string) bool {
+	return strings.HasSuffix(strings.ToLower(s), strings.ToLower(suffix))
+}
+
+func Contains(s, substr string) bool {
+	return strings.Contains(strings.ToLower(s), strings.ToLower(substr))
+}
+
