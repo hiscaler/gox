@@ -12,6 +12,7 @@ Golang functions library
   - Dirs
   - Files
   - GenerateDirNames
+  - Ext
 - filex
   - IsDir
   - IsFile

@@ -53,6 +53,9 @@ func TestExists(t *testing.T) {
 		{root, true},
 		{root + "/file.go", true},
 		{root + "/file", false},
+		{root + "/1.jpg", false},
+		{"https://golang.org/doc/gopher/fiveyears.jpg", false},
+		{"https://golang.org/doc/gopher/not-found.jpg", false},
 	}
 	for _, testCase := range testCases {
 		v := Exists(testCase.Path)

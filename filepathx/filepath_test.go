@@ -199,3 +199,24 @@ func TestGenerateDirNames(t *testing.T) {
 		assert.Equal(t, test.dirs, names, test.tag)
 	}
 }
+
+func TestExt(t *testing.T) {
+	root, _ := os.Getwd()
+	tests := []struct {
+		tag  string
+		path string
+		b    []byte
+		ext  string
+	}{
+		{"t1", "/a/b", nil, ""},
+		{"t2", "https://golang.org/doc/gopher/fiveyears.jpg", nil, ".jpg"},
+		{"t2", filepath.Join(root, "/testdata/2/2.txt"), nil, ".txt"},
+		{"t2", filepath.Join(root, "/testdata/2/1.jpg"), nil, ".jpg"},
+		{"t2", filepath.Join(root, "/testdata/2/1.pdf"), nil, ".pdf"},
+		{"t2", filepath.Join(root, "/testdata/2/1111.pdf"), nil, ".pdf"},
+	}
+	for _, test := range tests {
+		ext := Ext(test.path, test.b)
+		assert.Equal(t, test.ext, ext, test.tag)
+	}
+}

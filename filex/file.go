@@ -22,8 +22,8 @@ func IsDir(path string) bool {
 
 func Exists(path string) bool {
 	_, err := os.Stat(path)
-	if err != nil && os.IsNotExist(err) {
-		return false
+	if err == nil || os.IsExist(err) {
+		return true
 	}
-	return true
+	return false
 }

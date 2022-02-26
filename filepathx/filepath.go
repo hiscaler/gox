@@ -1,8 +1,11 @@
 package filepathx
 
 import (
+	"github.com/hiscaler/gox/filex"
 	"github.com/hiscaler/gox/inx"
 	"io/fs"
+	"mime"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
@@ -155,4 +158,42 @@ func GenerateDirNames(s string, n, level int, caseSensitive bool) []string {
 		names = append(names, s[i:lastIndex])
 	}
 	return names
+}
+
+// Ext 获取资源扩展名
+func Ext(path string, b []byte) string {
+	if path == "" && b == nil {
+		return ""
+	}
+
+	if b == nil && filex.Exists(path) {
+		if b1, err := os.ReadFile(path); err == nil {
+			b = b1
+		}
+	}
+
+	ext := ""
+	if b != nil {
+		contentType := http.DetectContentType(b)
+		if extensions, err := mime.ExtensionsByType(contentType); err == nil && extensions != nil {
+			n := len(extensions)
+			if n == 1 {
+				ext = extensions[0]
+			} else {
+				typeExt := map[string]string{
+					"text/plain; charset=utf-8": ".txt",
+					"image/jpeg":                ".jpg",
+				}
+				if v, exists := typeExt[contentType]; exists {
+					ext = v
+				} else {
+					ext = extensions[0]
+				}
+			}
+		}
+	}
+	if ext == "" {
+		ext = filepath.Ext(path)
+	}
+	return ext
 }
