@@ -369,26 +369,22 @@ func EndsWith(s string, ss []string, caseSensitive bool) bool {
 }
 
 func Contains(s string, ss []string, caseSensitive bool) bool {
+	in := false
 	if !caseSensitive {
-		for k, v := range ss {
-			if v == "" {
-				return true
-			}
-			ss[k] = strings.ToLower(v)
-		}
 		s = strings.ToLower(s)
 	}
-
-	has := false
 	for _, substr := range ss {
 		if substr == "" {
-			has = true
+			in = true
 		} else {
-			has = strings.Contains(s, substr)
+			if !caseSensitive {
+				substr = strings.ToLower(substr)
+			}
+			in = strings.Contains(s, substr)
 		}
-		if has {
+		if in {
 			break
 		}
 	}
-	return has
+	return in
 }
