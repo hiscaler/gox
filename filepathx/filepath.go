@@ -2,6 +2,7 @@ package filepathx
 
 import (
 	"github.com/hiscaler/gox/inx"
+	"github.com/hiscaler/gox/stringx"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -17,7 +18,7 @@ type WalkOption struct {
 	FilterFunc    func(path string) bool // 自定义函数，返回 true 则会加到列表中，否则忽略。当定义该函数时，将会忽略掉 Except, Only 设置
 	Except        []string               // 排除的文件或者目录（仅当 FilterFunc 未设置时起作用）
 	Only          []string               // 仅仅符合列表中的文件或者目录才会返回（仅当 FilterFunc 未设置时起作用）
-	CaseSensitive bool                   // 是否区分大小写（作用于 Except 和 Only 设置）
+	CaseSensitive bool                   // 区分大小写（作用于 Except 和 Only 设置）
 	Recursive     bool                   // 是否递归查询下级目录
 }
 
@@ -56,8 +57,6 @@ func filterPath(path string, opt WalkOption) (ok bool) {
 		name := filepath.Base(path)
 		if len(opt.Except) > 0 {
 			if opt.CaseSensitive {
-				ok = !inx.StringIn(path, opt.Except...)
-			} else {
 				ok = true
 				for _, s := range opt.Except {
 					if s == name {
@@ -65,18 +64,20 @@ func filterPath(path string, opt WalkOption) (ok bool) {
 						break
 					}
 				}
+			} else {
+				ok = !inx.StringIn(name, opt.Except...)
 			}
 		}
 		if len(opt.Only) > 0 {
 			if opt.CaseSensitive {
-				ok = inx.StringIn(path, opt.Only...)
-			} else {
 				for _, s := range opt.Only {
 					if s == name {
 						ok = true
 						break
 					}
 				}
+			} else {
+				ok = inx.StringIn(name, opt.Only...)
 			}
 		}
 	}
@@ -131,7 +132,7 @@ func GenerateDirNames(s string, n, level int, caseSensitive bool) []string {
 	}
 
 	s = b.String() // Clean s string
-	if caseSensitive {
+	if !caseSensitive {
 		s = strings.ToLower(s)
 	}
 	if n <= 0 {
