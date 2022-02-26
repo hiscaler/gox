@@ -2,7 +2,6 @@ package filepathx
 
 import (
 	"github.com/hiscaler/gox/inx"
-	"github.com/hiscaler/gox/stringx"
 	"io/fs"
 	"os"
 	"path/filepath"
