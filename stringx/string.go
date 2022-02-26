@@ -327,21 +327,17 @@ func WordMatched(s string, words []string, caseSensitive bool) bool {
 }
 
 func StartsWith(s string, ss []string, caseSensitive bool) bool {
+	has := false
 	if !caseSensitive {
-		for k, v := range ss {
-			if v == "" {
-				return true
-			}
-			ss[k] = strings.ToLower(v)
-		}
 		s = strings.ToLower(s)
 	}
-
-	has := false
 	for _, prefix := range ss {
 		if prefix == "" {
 			has = true
 		} else {
+			if !caseSensitive {
+				prefix = strings.ToLower(prefix)
+			}
 			has = strings.HasPrefix(s, prefix)
 		}
 		if has {
@@ -352,21 +348,17 @@ func StartsWith(s string, ss []string, caseSensitive bool) bool {
 }
 
 func EndsWith(s string, ss []string, caseSensitive bool) bool {
+	has := false
 	if !caseSensitive {
-		for k, v := range ss {
-			if v == "" {
-				return true
-			}
-			ss[k] = strings.ToLower(v)
-		}
 		s = strings.ToLower(s)
 	}
-
-	has := false
 	for _, suffix := range ss {
 		if suffix == "" {
 			has = true
 		} else {
+			if !caseSensitive {
+				suffix = strings.ToLower(suffix)
+			}
 			has = strings.HasSuffix(s, suffix)
 		}
 		if has {
