@@ -163,3 +163,28 @@ func TestSafeCharacters(t *testing.T) {
 		}
 	}
 }
+
+func TestHttpURL(t *testing.T) {
+	tests := []struct {
+		tag    string
+		url    string
+		except bool
+	}{
+		{"t0", "www.example.com", true},
+		{"t1", "http://www.example.com", true},
+		{"t2", "https://www.example.com", true},
+		{"t3", "https://www.com", true},
+		{"t4", "https://a", true}, // is valid URL?
+		{"t5", "https://127.0.0.1", true},
+		{"t6", "https://", false},
+		{"t7", "https://a", true},
+		{"t8", "", false},
+		{"t9", "aaa", false},
+		{"t10", "https://www.example.com:8080", true},
+	}
+
+	for _, test := range tests {
+		equal := HttpURL(test.url)
+		assert.Equal(t, test.except, equal, test.tag)
+	}
+}

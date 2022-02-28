@@ -29,6 +29,7 @@ Golang functions library
   - Empty
   - Equal
   - SafeCharacters
+  - HttpURL
 - jsonx
     - ToRawMessage
     - ToJson
