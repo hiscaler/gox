@@ -6,6 +6,8 @@ Golang functions library
 - bytex
   - IsEmpty
   - ToString
+  - StartsWith
+  - EndsWith
 - cryptox
   - Md5String
 - filepathx
