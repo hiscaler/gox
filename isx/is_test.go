@@ -93,6 +93,11 @@ func TestEmpty(t *testing.T) {
 		{"t10.2", &time1, false},
 		{"t10.3", time2, true},
 		{"t10.4", &time2, true},
+		// rune
+		{"t11.1", 'a', false},
+		// byte
+		{"t12.1", []byte(""), true},
+		{"t12.2", []byte(" "), false},
 	}
 
 	for _, test := range tests {
