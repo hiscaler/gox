@@ -13,6 +13,8 @@ func TestGenerate(t *testing.T) {
 		Key    string
 	}
 
+	b1 := []byte("")
+	b2 := []byte("abc")
 	testCases := []testCase{
 		{1, []interface{}{1, 2, 3}, "123"},
 		{2, []interface{}{0, -1, 2, 3}, "0-123"},
@@ -35,6 +37,10 @@ func TestGenerate(t *testing.T) {
 			ID:   1,
 			Name: "John",
 		}}, "User:ID1NameJohn"},
+		// byte
+		{13, []interface{}{b1, b2}, "abc"},
+		// rune
+		{14, []interface{}{'a', 'b', 'c'}, "abc"},
 	}
 	for _, tc := range testCases {
 		key := Generate(tc.Values...)
