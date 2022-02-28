@@ -284,7 +284,9 @@ func TestStartsWith(t *testing.T) {
 		{"t2", "Hello world!", []string{"he", "He"}, true, true},
 		{"t3", "Hello world!", []string{"he"}, true, false},
 		{"t4", "", []string{""}, true, true},
-		{"t5", "Hello world!", []string{""}, true, true},
+		{"t5", "", nil, true, true},
+		{"t6", "", []string{}, true, true},
+		{"t7", "Hello world!", []string{""}, true, true},
 	}
 	for _, test := range tests {
 		b := StartsWith(test.string, test.words, test.caseSensitive)
@@ -305,7 +307,9 @@ func TestEndsWith(t *testing.T) {
 		{"t3", "Hello world!", []string{"d!", "!"}, true, true},
 		{"t4", "Hello world!", []string{"WORLD!"}, false, true},
 		{"t5", "", []string{""}, true, true},
-		{"t6", "Hello world!", []string{""}, true, true},
+		{"t6", "", nil, true, true},
+		{"t7", "", []string{}, true, true},
+		{"t8", "Hello world!", []string{""}, true, true},
 	}
 	for _, test := range tests {
 		b := EndsWith(test.string, test.words, test.caseSensitive)

@@ -327,6 +327,10 @@ func WordMatched(s string, words []string, caseSensitive bool) bool {
 }
 
 func StartsWith(s string, ss []string, caseSensitive bool) bool {
+	if ss == nil || len(ss) == 0 {
+		return true
+	}
+
 	has := false
 	if !caseSensitive {
 		s = strings.ToLower(s)
@@ -348,6 +352,10 @@ func StartsWith(s string, ss []string, caseSensitive bool) bool {
 }
 
 func EndsWith(s string, ss []string, caseSensitive bool) bool {
+	if ss == nil || len(ss) == 0 {
+		return true
+	}
+
 	has := false
 	if !caseSensitive {
 		s = strings.ToLower(s)
