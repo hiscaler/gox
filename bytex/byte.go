@@ -66,3 +66,24 @@ func EndsWith(s []byte, ss [][]byte, caseSensitive bool) bool {
 	}
 	return has
 }
+
+func Contains(s []byte, ss [][]byte, caseSensitive bool) bool {
+	in := false
+	if !caseSensitive {
+		s = bytes.ToLower(s)
+	}
+	for _, substr := range ss {
+		if len(substr) == 0 {
+			in = true
+		} else {
+			if !caseSensitive {
+				substr = bytes.ToLower(substr)
+			}
+			in = bytes.Contains(s, substr)
+		}
+		if in {
+			break
+		}
+	}
+	return in
+}

@@ -84,3 +84,24 @@ func TestEndsWith(t *testing.T) {
 		assert.Equal(t, test.except, b, test.tag)
 	}
 }
+
+func TestContains(t *testing.T) {
+	tests := []struct {
+		tag           string
+		string        []byte
+		words         [][]byte
+		caseSensitive bool
+		except        bool
+	}{
+		{"t1", []byte("Hello world!"), [][]byte{[]byte("ol"), []byte("LL")}, false, true},
+		{"t2", []byte("Hello world!"), [][]byte{[]byte("ol"), []byte("LL")}, true, false},
+		{"t3", []byte("Hello world!"), [][]byte{[]byte("notfound"), []byte("world")}, false, true},
+		{"t4", []byte("Hello world!"), [][]byte{[]byte("notfound"), []byte("world")}, true, true},
+		{"t5", []byte(""), [][]byte{[]byte("")}, true, true},
+		{"t6", []byte("Hello world!"), [][]byte{[]byte("")}, true, true},
+	}
+	for _, test := range tests {
+		b := Contains(test.string, test.words, test.caseSensitive)
+		assert.Equal(t, test.except, b, test.tag)
+	}
+}

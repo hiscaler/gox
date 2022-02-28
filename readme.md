@@ -8,6 +8,7 @@ Golang functions library
   - ToString
   - StartsWith
   - EndsWith
+  - Contains
 - cryptox
   - Md5String
 - filepathx
