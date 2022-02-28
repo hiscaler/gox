@@ -21,6 +21,8 @@ Golang functions library
   - SprettyPrint
   - PrettyPrint
   - PrettyPrintln
+- htmlx
+  - Strip
 - inx
   - StringIn
   - IntIn
