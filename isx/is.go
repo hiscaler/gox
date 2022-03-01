@@ -29,6 +29,10 @@ func Number(s string) bool {
 
 // Empty 判断是否为空
 func Empty(value interface{}) bool {
+	if value == nil {
+		return true
+	}
+
 	v := reflect.ValueOf(value)
 	switch v.Kind() {
 	case reflect.String, reflect.Array, reflect.Map, reflect.Slice:
