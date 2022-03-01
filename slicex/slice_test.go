@@ -1,8 +1,30 @@
 package slicex
 
 import (
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
+
+func TestStringToInterface(t *testing.T) {
+	tests := []struct {
+		tag      string
+		input    []string
+		expected []interface{}
+	}{
+		{"t0", []string{"a", "b", "c"}, []interface{}{"a", "b", "c"}},
+		{"t1", nil, []interface{}{}},
+	}
+	for _, test := range tests {
+		v := StringToInterface(test.input)
+		assert.Equal(t, test.expected, v, test.tag)
+	}
+}
+
+func BenchmarkStringToInterface(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		StringToInterface([]string{"a", "b", "c"})
+	}
+}
 
 func TestStringSliceEqual(t *testing.T) {
 	testCases := []struct {
@@ -26,6 +48,9 @@ func TestStringSliceEqual(t *testing.T) {
 		{[]string{"   ", "", " "}, []string{""}, true, true, true, true},
 		{[]string{}, []string{" ", ""}, true, true, true, true},
 		{[]string{}, []string{"a", "b"}, true, true, true, false},
+		{nil, []string{}, true, true, true, false},
+		{[]string{}, nil, true, true, true, false},
+		{nil, nil, true, true, true, true},
 	}
 	for i, testCase := range testCases {
 		equal := StringSliceEqual(testCase.A, testCase.B, testCase.IgnoreCase, testCase.IgnoreEmpty, testCase.Trim)
@@ -47,6 +72,9 @@ func TestIntSliceEqual(t *testing.T) {
 		{[]int{0, 1, 2}, []int{1, 2}, false},
 		{[]int{0, 1, 1, 2}, []int{0, 1, 2}, false},
 		{[]int{0, 1, 1, 2}, []int{0, 1, 2, 1}, true},
+		{nil, []int{}, false},
+		{nil, nil, true},
+		{[]int{}, nil, false},
 	}
 
 	for i, testCase := range testCases {

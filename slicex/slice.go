@@ -6,9 +6,10 @@ import (
 
 // StringToInterface Change string slice to interface slice
 func StringToInterface(values []string) []interface{} {
-	if values == nil {
-		return make([]interface{}, 0)
+	if values == nil || len(values) == 0 {
+		return []interface{}{}
 	}
+
 	is := make([]interface{}, len(values))
 	for i, value := range values {
 		is[i] = value
@@ -18,6 +19,10 @@ func StringToInterface(values []string) []interface{} {
 
 // IntToInterface Change int slice to interface slice
 func IntToInterface(values []int) []interface{} {
+	if values == nil || len(values) == 0 {
+		return []interface{}{}
+	}
+
 	is := make([]interface{}, len(values))
 	for i, value := range values {
 		is[i] = value
@@ -27,6 +32,12 @@ func IntToInterface(values []int) []interface{} {
 
 // StringSliceEqual Check a, b is equal
 func StringSliceEqual(a, b []string, ignoreCase, ignoreEmpty, trim bool) bool {
+	if a == nil && b == nil {
+		return true
+	} else if a == nil || b == nil {
+		return false
+	}
+
 	if ignoreCase || ignoreEmpty || trim {
 		fixFunc := func(ss []string) []string {
 			if len(ss) == 0 {
@@ -71,7 +82,9 @@ func StringSliceEqual(a, b []string, ignoreCase, ignoreEmpty, trim bool) bool {
 
 // IntSliceEqual Check a, b is equal
 func IntSliceEqual(a, b []int) bool {
-	if len(a) != len(b) {
+	if a == nil && b == nil {
+		return true
+	} else if a == nil || b == nil || len(a) != len(b) {
 		return false
 	}
 
