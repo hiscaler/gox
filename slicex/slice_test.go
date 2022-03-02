@@ -116,39 +116,15 @@ func TestStringSliceDiff(t *testing.T) {
 		OriginalValues [][]string
 		DiffValue      []string
 	}{
-		{
-			1,
-			[][]string{
-				{"a", "b", "c"},
-				{"a", "b", "d"},
-			},
-			[]string{"c"},
-		},
-		{
-			2,
-			[][]string{
-				{"a", "b", "c"},
-				{"a", "b", "c"},
-			},
-			[]string{},
-		},
-		{
-			3,
-			[][]string{
-				{"a", "b", ""},
-				{"a", "b", "c"},
-			},
-			[]string{""},
-		},
-		{
-			4,
-			[][]string{
-				{"a", "b", "c"},
-				{"a", "b"},
-				{"c"},
-			},
-			[]string{},
-		},
+		{1, [][]string{{"a", "b", "c"}, {"a", "b", "d"}}, []string{"c"}},
+		{2, [][]string{{"a", "b", "d"}, {"a", "b", "c"}}, []string{"d"}},
+		{3, [][]string{{"a", "b", "c"}, {"a", "b", "c"}}, []string{}},
+		{4, [][]string{{"a", "b", ""}, {"a", "b", "c"}}, []string{""}},
+		{5, [][]string{{"a", "b", "c"}, {"a", "b"}, {"c"}}, []string{}},
+		{6, [][]string{{"a"}, {"b"}, {"c", "c1"}, {"d"}}, []string{"a"}},
+		{7, [][]string{nil, {"a"}, {"b"}, {"c", "c1"}, {"d"}}, []string{}},
+		{8, [][]string{nil}, []string{}},
+		{9, [][]string{nil, nil, nil}, []string{}},
 	}
 
 	for _, testCase := range testCases {
@@ -171,6 +147,8 @@ func TestIntSliceDiff(t *testing.T) {
 		{4, [][]int{{1, 2, 3}, {1, 2, 4, 0, 2, 1}}, []int{3}},
 		{5, [][]int{{1, 2, 2, 3}, {1}}, []int{2, 2, 3}},
 		{6, [][]int{}, []int{}},
+		{7, [][]int{nil, {1, 2, 3}}, []int{}},
+		{8, [][]int{nil, nil, {1, 2, 3}}, []int{}},
 	}
 
 	for _, testCase := range testCases {

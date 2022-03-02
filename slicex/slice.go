@@ -127,9 +127,11 @@ func IntSliceReverse(ss []int) []int {
 
 func StringSliceDiff(ss ...[]string) []string {
 	diffValues := make([]string, 0)
-	if len(ss) == 1 {
-		diffValues = ss[0]
-	} else if len(ss) > 1 {
+	if len(ss) == 0 || ss[0] == nil {
+		return diffValues
+	} else if len(ss) == 1 {
+		return ss[0]
+	} else {
 		for _, v1 := range ss[0] {
 			exists := false
 			for _, items := range ss[1:] {
