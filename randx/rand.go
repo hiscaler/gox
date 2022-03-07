@@ -1,7 +1,6 @@
 package randx
 
 import (
-	"bytes"
 	"crypto/rand"
 	"math/big"
 	"strings"
@@ -12,19 +11,19 @@ const (
 	randLetterChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 )
 
-func generateValues(str string, len int, upper bool) string {
-	if len <= 0 {
+func generateValues(str string, n int, upper bool) string {
+	if n <= 0 {
 		return ""
 	}
 
-	buffer := bytes.NewBufferString(str)
-	bigInt := big.NewInt(int64(buffer.Len()))
-	buffer.Reset()
-	for i := 0; i < len; i++ {
+	sb := strings.Builder{}
+	sb.Grow(n)
+	bigInt := big.NewInt(int64(len(str)))
+	for i := 0; i < n; i++ {
 		randomInt, _ := rand.Int(rand.Reader, bigInt)
-		buffer.WriteByte(str[randomInt.Int64()])
+		sb.WriteByte(str[randomInt.Int64()])
 	}
-	s := buffer.String()
+	s := sb.String()
 	if upper {
 		s = strings.ToUpper(s)
 	}
@@ -32,16 +31,16 @@ func generateValues(str string, len int, upper bool) string {
 }
 
 // Letter Generate letter rand string
-func Letter(len int, upper bool) string {
-	return generateValues(randLetterChars, len, upper)
+func Letter(n int, upper bool) string {
+	return generateValues(randLetterChars, n, upper)
 }
 
 // Number Generate number rand string
-func Number(len int) string {
-	return generateValues(randNumberChars, len, false)
+func Number(n int) string {
+	return generateValues(randNumberChars, n, false)
 }
 
 // Any Generate number and letter combined string
-func Any(len int) string {
-	return generateValues(randLetterChars+randNumberChars, len, false)
+func Any(n int) string {
+	return generateValues(randLetterChars+randNumberChars, n, false)
 }
