@@ -3,6 +3,7 @@ package jsonx
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"strings"
 )
 
@@ -38,6 +39,20 @@ func ToJson(i interface{}, defaultValue string) string {
 	} else {
 		return defaultValue
 	}
+}
+
+func ToPrettyJson(i interface{}, defaultValue string) string {
+	b, err := json.Marshal(i)
+	if err != nil {
+		return fmt.Sprintf("%+v", i)
+	}
+	var buf bytes.Buffer
+	err = json.Indent(&buf, b, "", "    ")
+	if err != nil {
+		return fmt.Sprintf("%+v", i)
+	}
+
+	return buf.String()
 }
 
 // EmptyObjectRawMessage 空对象

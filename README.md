@@ -38,6 +38,7 @@ Golang functions library
 - jsonx
     - ToRawMessage
     - ToJson
+    - ToPrettyJson
     - EmptyObjectRawMessage
     - EmptyArrayRawMessage
     - IsEmptyRawMessage
