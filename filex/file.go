@@ -27,3 +27,10 @@ func Exists(path string) bool {
 	}
 	return false
 }
+
+func Size(path string) int64 {
+	if fi, err := os.Stat(path); err == nil {
+		return fi.Size()
+	}
+	return 0
+}

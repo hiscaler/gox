@@ -20,6 +20,7 @@ Golang functions library
   - IsDir
   - IsFile
   - Exists
+  - Size
 - fmtx
   - SprettyPrint
   - PrettyPrint
