@@ -41,7 +41,7 @@ func ToJson(i interface{}, defaultValue string) string {
 	}
 }
 
-func ToPrettyJson(i interface{}, defaultValue string) string {
+func ToPrettyJson(i interface{}) string {
 	b, err := json.Marshal(i)
 	if err != nil {
 		return fmt.Sprintf("%+v", i)
