@@ -81,22 +81,37 @@ func TestContainsChinese(t *testing.T) {
 	}
 }
 
-func TestToHalfWidth(t *testing.T) {
+func TestToNarrow(t *testing.T) {
 	testCasts := []struct {
-		Before string
-		After  string
+		tag      string
+		string   string
+		expected string
 	}{
-		{"aｂｃ", "abc"},
-		{"a０", "a0"},
-		{"￣！＠#＄％＾＆＊（）－＋", "~!@#$%^&*()-+"},
-		{"０１２３４５６７８９", "0123456789"},
-		{"a０", "a0"},
+		{"t-letter", "aｂｃ", "abc"},
+		{"t-number", "０１２３４５６７８９", "0123456789"},
+		{"t-letter-number", "a０", "a0"},
+		{"t-other", "～！＠#＄％＾＆＊（）－＋？", "~!@#$%^&*()-+?"},
 	}
 	for _, tc := range testCasts {
-		after := ToHalfWidth(tc.Before)
-		if after != tc.After {
-			t.Errorf("%s except %v, actual：%v", tc.Before, tc.After, after)
-		}
+		value := ToNarrow(tc.string)
+		assert.Equal(t, tc.expected, value, tc.tag)
+	}
+}
+
+func TestToWiden(t *testing.T) {
+	testCasts := []struct {
+		tag      string
+		string   string
+		expected string
+	}{
+		{"t-letter", "abc", "ａｂｃ"},
+		{"t-number", "0123456789", "０１２３４５６７８９"},
+		{"t-letter-number", "a0", "ａ０"},
+		{"t-other", "~!@#$%^&*()-+?", "～！＠＃＄％＾＆＊（）－＋？"},
+	}
+	for _, tc := range testCasts {
+		value := ToWiden(tc.string)
+		assert.Equal(t, tc.expected, value, tc.tag)
 	}
 }
 

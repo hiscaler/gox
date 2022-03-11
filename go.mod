@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/stretchr/testify v1.7.0
+	golang.org/x/text v0.3.7
 	gopkg.in/guregu/null.v4 v4.0.0
 )
 

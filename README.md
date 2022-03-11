@@ -5,6 +5,7 @@ Golang functions library
 
 - bytex
   - IsEmpty
+  - IsBlank
   - ToString
   - StartsWith
   - EndsWith
@@ -79,9 +80,11 @@ Golang functions library
   - IntSliceDiff
 - stringx
   - IsEmpty
+  - IsBlank
   - ToNumber
   - ContainsChinese
-  - ToHalfWidth
+  - ToNarrow
+  - ToWiden
   - SplitWord
   - String
   - RemoveEmoji
