@@ -285,7 +285,7 @@ func TestWordMatched(t *testing.T) {
 		{"t7.1", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"blue shop"}, true, true},
 		{"t7.2", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"blue shop"}, false, false},
 		{"t8", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"Scott "}, true, true},
-		{"t9", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"Sheets "}, true, false},
+		{"t9", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"Sheets "}, true, true},
 		{"t10.1", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{`.`}, true, false},
 		{"t10.2", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{`...................`}, true, false},
 		{"t11", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"*"}, true, false},
@@ -294,14 +294,15 @@ func TestWordMatched(t *testing.T) {
 		{"t13.2", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{`B.*x`}, true, false},
 		{"t14", "Scott Blue Shop Towels in a Box - 200 Sheets.", []string{"."}, true, false},
 		{"t14.1", "Scott Blue Shop Towels in a Box - 200 Sheets.", []string{".*"}, true, false},
-		{"t14.2", "Scott Blue Shop Towels in a Box - 200 Sheets.", []string{"Sheets."}, true, false},
+		{"t14.2", "Scott Blue Shop Towels in a Box - 200 Sheets.", []string{"Sheets."}, true, true},
 		{"t15", "Scott Blue Shop Towels in a Box - 200 Sheets?", []string{"?"}, true, false},
 		{"t16", "Scott Blue Shop Towels in a Box - 200 Sheets", []string{"[Sheets]"}, true, false},
 		{"t17", "Scott Blue Shop Towels in a Box a-a 200 Sheets", []string{"a-a"}, true, true},
 		{"t18", "Scott Blue Shop Towels in a Box--200 Sheets", []string{"-"}, true, false},
 		{"t19", "Scott Blue Shop Towels in a Box--200 Sheets", []string{"--"}, true, false},
 		{"t20", "Scott Blue Shop Towels in a Box--200 Sheets", []string{"Box--200"}, true, true},
-		{"t20", "Scott Blue Shop Towels in a Box--200 Sheets 中文", []string{"中文"}, true, false},
+		{"t20.1", "Scott Blue Shop Towels in a Box~200 Sheets", []string{"Box"}, true, false},
+		{"t21", "Scott Blue Shop Towels in a Box--200 Sheets 中文", []string{"中文"}, true, true},
 	}
 	for _, test := range tests {
 		b := WordMatched(test.string, test.words, test.caseSensitive)
