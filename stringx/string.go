@@ -59,8 +59,8 @@ func ToWiden(str string) string {
 	return width.Widen.String(str)
 }
 
-// SplitWord split word by special seps, use empty string if seps is empty
-func SplitWord(str string, seps ...string) []string {
+// SplitMore split word by special seps, use empty string if seps is empty
+func SplitMore(str string, seps ...string) []string {
 	texts := make([]string, 0)
 	if str != "" {
 		n := len(seps)

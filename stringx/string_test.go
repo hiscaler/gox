@@ -115,7 +115,7 @@ func TestToWiden(t *testing.T) {
 	}
 }
 
-func TestSplit(t *testing.T) {
+func TestSplitMore(t *testing.T) {
 	type testCast struct {
 		Number int
 		String string
@@ -137,7 +137,7 @@ func TestSplit(t *testing.T) {
 		{12, "WaterWipes Original Baby Wipes, 99.9% Water, Unscented & Hypoallergenic for Sensitive Newborn Skin, 3 Packs (180 Count)", []string{",", " ", "!"}, []string{"WaterWipes", "Original", "Baby", "Wipes", "99.9%", "Water", "Unscented", "&", "Hypoallergenic", "for", "Sensitive", "Newborn", "Skin", "3", "Packs", "(180", "Count)"}},
 	}
 	for _, tc := range testCasts {
-		values := SplitWord(tc.String, tc.Seps...)
+		values := SplitMore(tc.String, tc.Seps...)
 		if !slicex.StringSliceEqual(values, tc.Values, false, false, true) {
 			t.Errorf("%d except %#v, actual：%#v", tc.Number, tc.Values, values)
 		}
