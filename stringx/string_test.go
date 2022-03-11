@@ -14,6 +14,34 @@ func TestIsEmpty(t *testing.T) {
 	}{
 		{"A", false},
 		{"", true},
+		{"   ", false},
+		{"   ", false},
+		{"　　　", false},
+		{`
+  
+
+`, false},
+		{`
+  
+a
+
+`, false},
+	}
+	for i, testCase := range testCases {
+		b := IsEmpty(testCase.String)
+		if b != testCase.IsEmpty {
+			t.Errorf("%d: %s except %v, actual %v", i, testCase.String, testCase.IsEmpty, b)
+		}
+	}
+}
+
+func TestIsBlank(t *testing.T) {
+	testCases := []struct {
+		String  string
+		IsEmpty bool
+	}{
+		{"A", false},
+		{"", true},
 		{"   ", true},
 		{"   ", true},
 		{"　　　", true},
@@ -28,7 +56,7 @@ a
 `, false},
 	}
 	for i, testCase := range testCases {
-		b := IsEmpty(testCase.String)
+		b := IsBlank(testCase.String)
 		if b != testCase.IsEmpty {
 			t.Errorf("%d: %s except %v, actual %v", i, testCase.String, testCase.IsEmpty, b)
 		}

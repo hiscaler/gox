@@ -13,13 +13,32 @@ func TestIsEmpty(t *testing.T) {
 	}{
 		{1, []byte("a"), false},
 		{2, []byte(""), true},
-		{3, []byte("   "), true},
+		{3, []byte("   "), false},
 	}
 
 	for _, testCase := range testCases {
 		isEmpty := IsEmpty(testCase.Byte)
 		if isEmpty != testCase.Except {
 			t.Errorf("%d except: %#v, actual: %#v", testCase.Number, testCase.Except, isEmpty)
+		}
+	}
+}
+
+func TestIsBlank(t *testing.T) {
+	testCases := []struct {
+		Number int
+		Byte   []byte
+		Except bool
+	}{
+		{1, []byte("a"), false},
+		{2, []byte(""), true},
+		{3, []byte("   "), true},
+	}
+
+	for _, testCase := range testCases {
+		isBlank := IsBlank(testCase.Byte)
+		if isBlank != testCase.Except {
+			t.Errorf("%d except: %#v, actual: %#v", testCase.Number, testCase.Except, isBlank)
 		}
 	}
 }

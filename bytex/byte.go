@@ -7,6 +7,10 @@ import (
 
 // IsEmpty Check byte is empty
 func IsEmpty(b []byte) bool {
+	return len(b) == 0
+}
+
+func IsBlank(b []byte) bool {
 	if len(b) == 0 || len(bytes.TrimSpace(b)) == 0 {
 		return true
 	}

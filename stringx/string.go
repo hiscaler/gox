@@ -14,6 +14,10 @@ import (
 
 // IsEmpty 判断字符串是否为空
 func IsEmpty(s string) bool {
+	return len(s) == 0
+}
+
+func IsBlank(s string) bool {
 	if s == "" || strings.TrimSpace(s) == "" {
 		return true
 	}
