@@ -85,7 +85,7 @@ Golang functions library
   - ContainsChinese
   - ToNarrow
   - ToWiden
-  - SplitWord
+  - SplitMore
   - String
   - RemoveEmoji
   - TrimSpecial
