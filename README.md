@@ -98,3 +98,4 @@ Golang functions library
 - timex
   - IsAmericaSummerTime
   - ChineseTimeLocation
+  - Between

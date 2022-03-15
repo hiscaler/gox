@@ -34,3 +34,7 @@ func ChineseTimeLocation() *time.Location {
 	}
 	return loc
 }
+
+func Between(t, begin, end time.Time) bool {
+	return (t.After(begin) && t.Before(end)) || t.Equal(begin) || t.Equal(end)
+}
