@@ -99,3 +99,5 @@ Golang functions library
   - IsAmericaSummerTime
   - ChineseTimeLocation
   - Between
+  - Min
+  - Max

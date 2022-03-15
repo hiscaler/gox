@@ -1,6 +1,8 @@
 package timex
 
-import "time"
+import (
+	"time"
+)
 
 // IsAmericaSummerTime 是否为美国夏令时间
 // 夏令时开始于每年3月的第二个周日凌晨，人们需要将时间调早 (顺时针) 1个小时；
@@ -37,4 +39,12 @@ func ChineseTimeLocation() *time.Location {
 
 func Between(t, begin, end time.Time) bool {
 	return (t.After(begin) && t.Before(end)) || t.Equal(begin) || t.Equal(end)
+}
+
+func Min(t time.Time) time.Time {
+	return t.Truncate(24 * time.Hour)
+}
+
+func Max(t time.Time) time.Time {
+	return t.Truncate(24 * time.Hour).Add(86399 * time.Second)
 }

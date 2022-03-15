@@ -41,14 +41,48 @@ func TestBetween(t *testing.T) {
 	}{
 		{"t1", "2022-01-01", "2022-01-01", "2022-01-01", true},
 		{"t2", "2022-01-02", "2022-01-01", "2022-01-01", false},
-		{"t2", "2022-01-02", "2022-01-01", "2022-01-02", true},
+		{"t3", "2022-01-02", "2022-01-01", "2022-01-02", true},
 	}
-	format := "2006-01-02"
+	layout := "2006-01-02"
 	for _, testCase := range testCases {
-		tv, _ := time.Parse(format, testCase.t)
-		begin, _ := time.Parse(format, testCase.begin)
-		end, _ := time.Parse(format, testCase.end)
+		tv, _ := time.Parse(layout, testCase.t)
+		begin, _ := time.Parse(layout, testCase.begin)
+		end, _ := time.Parse(layout, testCase.end)
 		v := Between(tv, begin, end)
+		assert.Equal(t, testCase.expected, v, testCase.tag)
+	}
+}
+
+func TestMin(t *testing.T) {
+	testCases := []struct {
+		tag      string
+		t        string
+		expected string
+	}{
+		{"t1", "2022-01-01 12:12:00", "2022-01-01 00:00:00"},
+		{"t2", "2022-01-01 00:00:00", "2022-01-01 00:00:00"},
+	}
+	layout := "2006-01-02 15:04:05"
+	for _, testCase := range testCases {
+		tv, _ := time.Parse(layout, testCase.t)
+		v := Min(tv).Format(layout)
+		assert.Equal(t, testCase.expected, v, testCase.tag)
+	}
+}
+
+func TestMax(t *testing.T) {
+	testCases := []struct {
+		tag      string
+		t        string
+		expected string
+	}{
+		{"t1", "2022-01-01 12:12:00", "2022-01-01 23:59:59"},
+		{"t2", "2022-01-01 00:00:00", "2022-01-01 23:59:59"},
+	}
+	layout := "2006-01-02 15:04:05"
+	for _, testCase := range testCases {
+		tv, _ := time.Parse(layout, testCase.t)
+		v := Max(tv).Format(layout)
 		assert.Equal(t, testCase.expected, v, testCase.tag)
 	}
 }
