@@ -62,6 +62,8 @@ Golang functions library
     - NullString
     - TimeFrom
     - NullTime
+- pathx
+    - Filename
 - randx
   - Letter
   - Number
