@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func Filename(s string) string {
+func FilenameWithoutExt(s string) string {
 	if s == "" {
 		return ""
 	}

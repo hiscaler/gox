@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestFilename(t *testing.T) {
+func TestFilenameWithoutExt(t *testing.T) {
 	testCases := []struct {
 		tag      string
 		path     string
@@ -19,7 +19,7 @@ func TestFilename(t *testing.T) {
 		{"t5", "https://www.example.com/a/b/c/中文.jpg", "中文"},
 	}
 	for _, testCase := range testCases {
-		v := Filename(testCase.path)
+		v := FilenameWithoutExt(testCase.path)
 		assert.Equal(t, testCase.expected, v, testCase.tag)
 	}
 }

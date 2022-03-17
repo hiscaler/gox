@@ -63,7 +63,7 @@ Golang functions library
     - TimeFrom
     - NullTime
 - pathx
-    - Filename
+    - FilenameWithoutExt
 - randx
   - Letter
   - Number
