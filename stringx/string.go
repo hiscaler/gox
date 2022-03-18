@@ -178,14 +178,16 @@ func ToBytes(s string) []byte {
 	return *(*[]byte)(unsafe.Pointer(&bh))
 }
 
-// WordMatched 判断 s 中是否包含 words 的单词（仅支持英文）
+// WordMatched 判断 s 中是否包含指定的 words 单词
+// 对于英文必须是单词
+// 如果是中文的话，则会使用 Index 进行判断，不等于 -1 则判断为匹配
 func WordMatched(s string, words []string, caseSensitive bool) bool {
 	if s == "" || len(words) == 0 {
 		return false
 	}
 
 	var b strings.Builder
-	if caseSensitive {
+	if !caseSensitive {
 		b.WriteString("(?i)")
 	}
 	b.WriteString(`(^|([\s\t\n]+))(`)
@@ -224,7 +226,24 @@ func WordMatched(s string, words []string, caseSensitive bool) bool {
 	}
 	b.WriteString(`)($|([\s\t\n]+))`)
 	if re, err := regexp.Compile(b.String()); err == nil {
-		return re.MatchString(s)
+		if re.MatchString(s) {
+			return true
+		}
+	}
+
+	// 正则匹配失败后还需要判断是否为中文，为中文的话则直接使用 Index 函数进行判断是否存在
+	if !caseSensitive {
+		s = strings.ToLower(s)
+	}
+	for _, word := range words {
+		if ContainsChinese(word) {
+			if !caseSensitive {
+				word = strings.ToLower(word)
+			}
+			if strings.Index(s, word) != -1 {
+				return true
+			}
+		}
 	}
 	return false
 }
