@@ -210,10 +210,11 @@ func TestExt(t *testing.T) {
 	}{
 		{"t1", "/a/b", nil, ""},
 		{"t2", "https://golang.org/doc/gopher/fiveyears.jpg", nil, ".jpg"},
-		{"t2", filepath.Join(root, "/testdata/2/2.txt"), nil, ".txt"},
-		{"t2", filepath.Join(root, "/testdata/2/1.jpg"), nil, ".jpg"},
-		{"t2", filepath.Join(root, "/testdata/2/1.pdf"), nil, ".pdf"},
-		{"t2", filepath.Join(root, "/testdata/2/1111.pdf"), nil, ".pdf"},
+		{"t3", filepath.Join(root, "/testdata/2/2.txt"), nil, ".txt"},
+		{"t4", filepath.Join(root, "/testdata/2/1.jpg"), nil, ".jpg"},
+		{"t5", filepath.Join(root, "/testdata/2/1.pdf"), nil, ".pdf"},
+		{"t6", filepath.Join(root, "/testdata/2/1111.pdf"), nil, ".pdf"},
+		{"t7", filepath.Join(root, "/testdata/1.xlsx"), nil, ".xlsx"},
 	}
 	for _, test := range tests {
 		ext := Ext(test.path, test.b)
