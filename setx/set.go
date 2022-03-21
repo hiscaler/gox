@@ -1,6 +1,9 @@
 package setx
 
-import "strings"
+import (
+	"github.com/hiscaler/gox/inx"
+	"strings"
+)
 
 func ToStringSet(values []string, ignoreCase bool) []string {
 	if len(values) <= 1 {
@@ -27,14 +30,7 @@ func ToStringSet(values []string, ignoreCase bool) []string {
 func ToIntSet(values []int) []int {
 	sets := make([]int, 0)
 	for _, value := range values {
-		exists := false
-		for _, setValue := range sets {
-			exists = value == setValue
-			if exists {
-				break
-			}
-		}
-		if !exists {
+		if !inx.IntIn(value, sets...) {
 			sets = append(sets, value)
 		}
 	}
