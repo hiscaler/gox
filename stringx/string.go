@@ -179,7 +179,7 @@ func ToBytes(s string) []byte {
 }
 
 // WordMatched 判断 s 中是否包含指定的 words 单词
-// 对于英文必须是单词
+// 对于英文必须是单词形式，比如 he 不能匹配 hello world，只能匹配 hello|world
 // 如果是中文的话，则会使用 Index 进行判断，不等于 -1 则判断为匹配
 func WordMatched(s string, words []string, caseSensitive bool) bool {
 	if s == "" || len(words) == 0 {

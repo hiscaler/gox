@@ -9,6 +9,7 @@ func ToStringSet(values []string, ignoreCase bool) []string {
 	if len(values) <= 1 {
 		return values
 	}
+
 	sets := make([]string, 0)
 	m := make(map[string]struct{}, 0)
 	for _, value := range values {
@@ -28,6 +29,10 @@ func ToStringSet(values []string, ignoreCase bool) []string {
 }
 
 func ToIntSet(values []int) []int {
+	if len(values) <= 1 {
+		return values
+	}
+
 	sets := make([]int, 0)
 	for _, value := range values {
 		if !inx.IntIn(value, sets...) {
