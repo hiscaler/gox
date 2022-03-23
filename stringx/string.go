@@ -1,6 +1,7 @@
 package stringx
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"golang.org/x/text/width"
@@ -317,4 +318,31 @@ func Contains(s string, ss []string, caseSensitive bool) bool {
 		}
 	}
 	return in
+}
+
+func QuoteMeta(s string) string {
+	var buf bytes.Buffer
+	for _, char := range s {
+		switch char {
+		case '.', '+', '\\', '(', ')', '[', ']', '$', '^', '*', '?':
+			buf.WriteRune('\\')
+		}
+		buf.WriteRune(char)
+	}
+	return buf.String()
+}
+
+// HexToByte 16进制字符串转 []byte
+// Like pack("H*", string) in PHP
+func HexToByte(hex string) []byte {
+	length := len(hex) / 2
+	bytes := make([]byte, length)
+	rs := []rune(hex)
+
+	for i := 0; i < length; i++ {
+		s := string(rs[i*2 : i*2+2])
+		value, _ := strconv.ParseInt(s, 16, 10)
+		bytes[i] = byte(value & 0xFF)
+	}
+	return bytes
 }

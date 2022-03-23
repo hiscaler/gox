@@ -385,3 +385,17 @@ func TestContains(t *testing.T) {
 		assert.Equal(t, test.except, b, test.tag)
 	}
 }
+func TestQuoteMeta(t *testing.T) {
+	tests := []struct {
+		tag      string
+		string   string
+		expected string
+	}{
+		{"t1", `.+\()[]$^*?`, `\.\+\\\(\)\[\]\$\^\*\?`},
+		{"t1", `.+\()[]$^*?{}`, `\.\+\\\(\)\[\]\$\^\*\?{}`},
+	}
+	for _, test := range tests {
+		b := QuoteMeta(test.string)
+		assert.Equal(t, test.expected, b, test.tag)
+	}
+}
