@@ -11,7 +11,7 @@ Golang functions library
   - EndsWith
   - Contains
 - cryptox
-  - Md5String
+  - Md5
 - filepathx
   - Dirs
   - Files
