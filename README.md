@@ -97,6 +97,8 @@ Golang functions library
   - StartsWith
   - EndsWith
   - Contains
+  - QuoteMeta
+  - HexToByte
 - timex
   - IsAmericaSummerTime
   - ChineseTimeLocation
