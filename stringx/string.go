@@ -42,6 +42,10 @@ func ToNumber(s string) int {
 }
 
 func ContainsChinese(str string) bool {
+	if str == "" {
+		return false
+	}
+
 	for _, v := range str {
 		if unicode.Is(unicode.Han, v) {
 			return true

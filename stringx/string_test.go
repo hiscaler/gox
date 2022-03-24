@@ -69,6 +69,7 @@ func TestContainsChinese(t *testing.T) {
 		Has    bool
 	}
 	testCasts := []testCast{
+		{"", false},
 		{"a", false},
 		{"A_B", false},
 		{"A_中B", true},
