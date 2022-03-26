@@ -14,7 +14,7 @@ Golang functions library
   - Crc32
   - Md5
   - Sha1
-- etractx
+- extractx
   - Number
   - Numbers
   - Float64

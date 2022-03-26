@@ -1,4 +1,4 @@
-package etractx
+package extractx
 
 import (
 	"github.com/stretchr/testify/assert"

@@ -1,4 +1,4 @@
-package etractx
+package extractx
 
 import (
 	"github.com/hiscaler/gox/stringx"
