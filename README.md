@@ -18,6 +18,7 @@ Golang functions library
   - Number
   - Numbers
   - Float64
+  - Float32
   - Int64
   - Int32
   - Int
