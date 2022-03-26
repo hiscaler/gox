@@ -19,12 +19,15 @@ func Number(s string) bool {
 	}
 
 	isNotDigit := func(c rune) bool { return c < '0' || c > '9' }
-	if strings.IndexFunc(s[0:1], isNotDigit) != -1 ||
+	firstChar := s[0:1]
+	if strings.IndexFunc(firstChar, isNotDigit) != -1 ||
 		(n > 1 && strings.IndexFunc(s[n-1:], isNotDigit) != -1) {
-		return false
+		if firstChar != "-" && firstChar != "+" {
+			return false
+		}
 	}
 
-	return regexp.MustCompile(`^\d+$|^\d+[.]\d+$`).MatchString(strings.ReplaceAll(s, ",", ""))
+	return regexp.MustCompile(`^[+-]?\d+$|^\d+[.]\d+$`).MatchString(strings.ReplaceAll(s, ",", ""))
 }
 
 // Empty 判断是否为空
