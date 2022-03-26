@@ -154,9 +154,9 @@ func TrimSpecial(s string, ss ...string) string {
 		return s
 	}
 
-	oldNew := make([]string, n*2)
-	for i := 0; i < n; i += 2 {
-		oldNew[i] = ss[i]
+	oldNew := make([]string, 2*n)
+	for i := 0; i < 2*n; i += 2 {
+		oldNew[i] = ss[i/2]
 		oldNew[i+1] = ""
 	}
 	return strings.TrimSpace(strings.NewReplacer(oldNew...).Replace(s))

@@ -206,6 +206,9 @@ a
 		{"  a b ", []string{"b"}, "a"},
 		{"  a b b", []string{"b"}, "a"},
 		{"  a b a", []string{"b"}, "a  a"},
+		{"5.0 out of 5 stars", []string{"5.0 out of", "stars"}, "5"},
+		{"5.0 out of 5 stars", []string{"5.0 out of", "5", "stars"}, ""},
+		{"a b a b c d e f g g f e d", []string{"a", "b", "c", "d", "f g"}, "e  g f e"},
 	}
 	for _, testCase := range testCases {
 		actual := TrimSpecial(testCase.string, testCase.replacePairs...)
