@@ -21,10 +21,17 @@ func clean(s string) string {
 }
 
 func Number(s string) string {
+	if s == "" {
+		return ""
+	}
 	return clean(rxNumber.FindString(s))
 }
 
 func Numbers(s string) []string {
+	if s == "" {
+		return []string{}
+	}
+
 	matches := rxNumber.FindAllString(s, -1)
 	if matches == nil {
 		return []string{}

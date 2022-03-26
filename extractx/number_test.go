@@ -22,6 +22,7 @@ func TestNumber(t *testing.T) {
 		{"t9", "$100 $23.", "100"},
 		{"t9", "-1", "-1"},
 		{"t10", "-1-1", "-1"}, // todo maybe is empty
+		{"t11", "1.0 out of 5 stars", "1.0"},
 	}
 	for _, testCase := range testCases {
 		n := Number(testCase.string)
