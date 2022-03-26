@@ -14,6 +14,13 @@ Golang functions library
   - Crc32
   - Md5
   - Sha1
+- etractx
+  - Number
+  - Numbers
+  - Float64
+  - Int64
+  - Int32
+  - Int
 - filepathx
   - Dirs
   - Files
