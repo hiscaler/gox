@@ -1,18 +1,19 @@
 package extractx
 
 import (
-	"github.com/hiscaler/gox/stringx"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 var rxNumber = regexp.MustCompile(`[\-]?\d+[\d.,]*\d*`)
 
 func clean(s string) string {
-	s = stringx.TrimSpecial(s, ",", " ")
+	s = strings.TrimSpace(s)
 	if s == "" {
 		return s
 	}
+	s = strings.ReplaceAll(s, ",", "")
 	n := len(s)
 	if s[n-1:] == "." {
 		s = s[n-2 : n-1]
