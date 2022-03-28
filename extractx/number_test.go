@@ -22,7 +22,9 @@ func TestNumber(t *testing.T) {
 		{"t9", "$100 $23.", "100"},
 		{"t9", "-1", "-1"},
 		{"t10", "-1-1", "-1"}, // todo maybe is empty
-		{"t11", "1.0 out of 5 stars", "1.0"},
+		{"t11", "+1", "1"},
+		{"t12", "+1+1", "1"}, // todo maybe is empty
+		{"t13", "1.0 out of 5 stars", "1.0"},
 	}
 	for _, testCase := range testCases {
 		n := Number(testCase.string)
@@ -47,7 +49,8 @@ func TestNumbers(t *testing.T) {
 		{"t8", "1,2.3,4", []string{"12.34"}},
 		{"t9", "1, 2.3, 4", []string{"1", "2.3", "4"}},
 		{"t10", "-123,4", []string{"-1234"}},
-		{"t11", "1-1", []string{"1", "-1"}}, // todo May be return empty string
+		{"t11", "1-1", []string{"1", "-1"}},  // todo May be return empty string
+		{"t12", "N1-1", []string{"1", "-1"}}, // todo May be return empty string
 	}
 	for _, testCase := range testCases {
 		n := Numbers(testCase.string)
