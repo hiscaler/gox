@@ -74,6 +74,14 @@ func Int32(s string) int32 {
 	return int32(Int64(s))
 }
 
+func Int16(s string) int16 {
+	return int16(Int64(s))
+}
+
+func Int8(s string) int8 {
+	return int8(Int64(s))
+}
+
 func Int(s string) int {
 	return int(Int64(s))
 }

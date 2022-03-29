@@ -21,6 +21,8 @@ Golang functions library
   - Float32
   - Int64
   - Int32
+  - Int16
+  - Int8
   - Int
 - filepathx
   - Dirs
