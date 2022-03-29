@@ -31,14 +31,14 @@ func IntToInterface(values []int) []interface{} {
 }
 
 // StringSliceEqual Check a, b is equal
-func StringSliceEqual(a, b []string, ignoreCase, ignoreEmpty, trim bool) bool {
+func StringSliceEqual(a, b []string, caseSensitive, ignoreEmpty, trim bool) bool {
 	if a == nil && b == nil {
 		return true
 	} else if a == nil || b == nil {
 		return false
 	}
 
-	if ignoreCase || ignoreEmpty || trim {
+	if !caseSensitive || ignoreEmpty || trim {
 		fixFunc := func(ss []string) []string {
 			if len(ss) == 0 {
 				return ss
@@ -51,7 +51,7 @@ func StringSliceEqual(a, b []string, ignoreCase, ignoreEmpty, trim bool) bool {
 				if s == "" && ignoreEmpty {
 					continue
 				}
-				if ignoreCase {
+				if !caseSensitive {
 					s = strings.ToUpper(s)
 				}
 				values = append(values, s)

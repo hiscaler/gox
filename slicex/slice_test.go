@@ -28,32 +28,32 @@ func BenchmarkStringToInterface(b *testing.B) {
 
 func TestStringSliceEqual(t *testing.T) {
 	testCases := []struct {
-		A           []string
-		B           []string
-		IgnoreCase  bool
-		IgnoreEmpty bool
-		Trim        bool
-		Except      bool
+		A             []string
+		B             []string
+		CaseSensitive bool
+		IgnoreEmpty   bool
+		Trim          bool
+		Except        bool
 	}{
-		{[]string{}, []string{}, true, true, true, true},
-		{[]string{"a", "b", "c"}, []string{"a", "b", "c"}, false, false, true, true},
-		{[]string{"a", "b", "c"}, []string{"a", "b   ", "     c"}, false, false, true, true},
-		{[]string{"a", "b", "c"}, []string{"a", "b   ", "     c"}, false, false, false, false},
-		{[]string{"a", "b", "c", ""}, []string{"a", "b   ", "     c"}, false, false, true, false},
-		{[]string{"a", "b", "c", ""}, []string{"a", "b   ", "     c"}, false, true, true, true},
-		{[]string{"a", "b", "c", ""}, []string{"a", "b   ", "     c", ""}, false, false, true, true},
-		{[]string{"A", "B", "C"}, []string{"a", "b", "c"}, false, true, true, false},
-		{[]string{"A", "B", "C"}, []string{"a", "b", "c"}, true, true, true, true},
-		{[]string{"A", "B", "C"}, []string{"b", "c", "a"}, true, true, true, true},
-		{[]string{"   ", "", " "}, []string{""}, true, true, true, true},
-		{[]string{}, []string{" ", ""}, true, true, true, true},
-		{[]string{}, []string{"a", "b"}, true, true, true, false},
-		{nil, []string{}, true, true, true, false},
-		{[]string{}, nil, true, true, true, false},
-		{nil, nil, true, true, true, true},
+		{[]string{}, []string{}, false, true, true, true},
+		{[]string{"a", "b", "c"}, []string{"a", "b", "c"}, true, false, true, true},
+		{[]string{"a", "b", "c"}, []string{"a", "b   ", "     c"}, true, false, true, true},
+		{[]string{"a", "b", "c"}, []string{"a", "b   ", "     c"}, true, false, false, false},
+		{[]string{"a", "b", "c", ""}, []string{"a", "b   ", "     c"}, true, false, true, false},
+		{[]string{"a", "b", "c", ""}, []string{"a", "b   ", "     c"}, true, true, true, true},
+		{[]string{"a", "b", "c", ""}, []string{"a", "b   ", "     c", ""}, true, false, true, true},
+		{[]string{"A", "B", "C"}, []string{"a", "b", "c"}, true, true, true, false},
+		{[]string{"A", "B", "C"}, []string{"a", "b", "c"}, false, true, true, true},
+		{[]string{"A", "B", "C"}, []string{"b", "c", "a"}, false, true, true, true},
+		{[]string{"   ", "", " "}, []string{""}, false, true, true, true},
+		{[]string{}, []string{" ", ""}, false, true, true, true},
+		{[]string{}, []string{"a", "b"}, false, true, true, false},
+		{nil, []string{}, false, true, true, false},
+		{[]string{}, nil, false, true, true, false},
+		{nil, nil, false, true, true, true},
 	}
 	for i, testCase := range testCases {
-		equal := StringSliceEqual(testCase.A, testCase.B, testCase.IgnoreCase, testCase.IgnoreEmpty, testCase.Trim)
+		equal := StringSliceEqual(testCase.A, testCase.B, testCase.CaseSensitive, testCase.IgnoreEmpty, testCase.Trim)
 		if equal != testCase.Except {
 			t.Errorf("%d except %v actual %v", i, testCase.Except, equal)
 		}
@@ -117,6 +117,7 @@ func TestStringSliceDiff(t *testing.T) {
 		DiffValue      []string
 	}{
 		{1, [][]string{{"a", "b", "c"}, {"a", "b", "d"}}, []string{"c"}},
+		{1, [][]string{{"a", "b", "c"}, {"a"}}, []string{"c"}},
 		{2, [][]string{{"a", "b", "d"}, {"a", "b", "c"}}, []string{"d"}},
 		{3, [][]string{{"a", "b", "c"}, {"a", "b", "c"}}, []string{}},
 		{4, [][]string{{"a", "b", ""}, {"a", "b", "c"}}, []string{""}},

@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func ToStringSet(values []string, ignoreCase bool) []string {
+func ToStringSet(values []string, caseSensitive bool) []string {
 	if len(values) <= 1 {
 		return values
 	}
@@ -16,7 +16,7 @@ func ToStringSet(values []string, ignoreCase bool) []string {
 		value = strings.TrimSpace(value)
 		if value != "" {
 			fixedValue := value
-			if ignoreCase {
+			if !caseSensitive {
 				fixedValue = strings.ToLower(fixedValue)
 			}
 			if _, ok := m[fixedValue]; !ok {

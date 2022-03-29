@@ -13,6 +13,7 @@ func TestToStringSet(t *testing.T) {
 		{[]string{"1", "1", "1"}, []string{"0", "1", "2"}, 3, []string{"0", "1", "2"}},
 		{[]string{"   ", "1", "1", "1"}, []string{"0", "1", "2"}, 3, []string{"0", "1", "2"}},
 		{[]string{"\tabc\t", " abc ", "1", "1", "1"}, []string{"0", "1", "2"}, 4, []string{"0", "1", "2", "abc"}},
+		{[]string{"\tabc\t", " abc ", "1", "1", "1", "ABC"}, []string{"0", "1", "2"}, 5, []string{"0", "1", "2", "abc", "ABC"}},
 	}
 
 	for _, testCase := range testCases {
