@@ -50,3 +50,9 @@ func TestTag(t *testing.T) {
 		assert.Equal(t, test.expected, equal, test.tag)
 	}
 }
+
+func BenchmarkTag(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Tag("div", "hello", map[string]string{"id": "name"}, map[string]string{"font-size": "1"})
+	}
+}
