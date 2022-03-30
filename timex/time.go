@@ -56,3 +56,13 @@ func MonthStart(t time.Time) time.Time {
 func MonthEnd(t time.Time) time.Time {
 	return DayEnd(MonthStart(t).AddDate(0, 1, -1))
 }
+
+// IsAM Check is AM
+func IsAM(t time.Time) bool {
+	return t.Hour() <= 11
+}
+
+// IsPM Check is PM
+func IsPM(t time.Time) bool {
+	return t.Hour() >= 12
+}

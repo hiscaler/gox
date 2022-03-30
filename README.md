@@ -120,3 +120,5 @@ Golang functions library
   - DayEnd
   - MonthStart
   - MonthEnd
+  - IsAM
+  - IsPM
