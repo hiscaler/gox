@@ -60,3 +60,35 @@ func Strip(html string) string {
 	}
 	return strings.TrimSpace(builder.String())
 }
+
+func Tag(tag, content string, attributes, styles map[string]string) string {
+	var sb strings.Builder
+	sb.Grow(len(tag)*2 + len(content) + 5)
+	sb.WriteString("<")
+	sb.WriteString(tag)
+	if len(attributes) > 0 {
+		for k, v := range attributes {
+			sb.WriteString(" ")
+			sb.WriteString(k)
+			sb.WriteString(`="`)
+			sb.WriteString(v)
+			sb.WriteString(`"`)
+		}
+	}
+	if len(styles) > 0 {
+		sb.WriteString(` style="`)
+		for k, v := range styles {
+			sb.WriteString(k)
+			sb.WriteString(":")
+			sb.WriteString(v)
+			sb.WriteString(`;`)
+		}
+		sb.WriteString(`"`)
+	}
+	sb.WriteString(">")
+	sb.WriteString(content)
+	sb.WriteString("</")
+	sb.WriteString(tag)
+	sb.WriteString(">")
+	return sb.String()
+}

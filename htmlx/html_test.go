@@ -29,3 +29,24 @@ func TestStrip(t *testing.T) {
 		assert.Equal(t, test.expected, equal, test.tag)
 	}
 }
+
+func TestTag(t *testing.T) {
+	tests := []struct {
+		tag        string
+		elementTag string
+		content    string
+		attributes map[string]string
+		styles     map[string]string
+		expected   string
+	}{
+		{"t0", "div", "hello", nil, nil, "<div>hello</div>"},
+		{"t1", "div", "hello", map[string]string{"id": "name"}, nil, `<div id="name">hello</div>`},
+		// {"t1.1", "div", "hello", map[string]string{"id": "name", "name": "name"}, `<div id="name" name="name">hello</div>`}, // map 是无序的
+		{"t2", "div", "hello", map[string]string{"id": "name"}, map[string]string{"font-size": "1"}, `<div id="name" style="font-size:1;">hello</div>`},
+	}
+
+	for _, test := range tests {
+		equal := Tag(test.elementTag, test.content, test.attributes, test.styles)
+		assert.Equal(t, test.expected, equal, test.tag)
+	}
+}
