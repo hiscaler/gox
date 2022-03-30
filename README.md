@@ -40,6 +40,7 @@ Golang functions library
   - PrettyPrintln
 - htmlx
   - Strip
+  - Tag
 - inx
   - StringIn
   - IntIn
