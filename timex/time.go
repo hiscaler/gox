@@ -42,9 +42,9 @@ func Between(t, begin, end time.Time) bool {
 }
 
 func Min(t time.Time) time.Time {
-	return t.Truncate(24 * time.Hour)
+	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, time.Local)
 }
 
 func Max(t time.Time) time.Time {
-	return t.Truncate(24 * time.Hour).Add(86399 * time.Second)
+	return time.Date(t.Year(), t.Month(), t.Day(), 23, 59, 59, 999999999, time.Local)
 }

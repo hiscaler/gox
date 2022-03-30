@@ -21,6 +21,7 @@ func TestIsAmericaSummerTime(t *testing.T) {
 		{"2021-10-11", true},
 		{"2021-10-12", true},
 		{"2021-12-12", false},
+		{"2022-03-15", true},
 	}
 	for _, testCase := range testCases {
 		d, _ := time.Parse("2006-01-02", testCase.Date)
@@ -56,16 +57,20 @@ func TestBetween(t *testing.T) {
 func TestMin(t *testing.T) {
 	testCases := []struct {
 		tag      string
-		t        string
+		time     string
+		layout   string
 		expected string
 	}{
-		{"t1", "2022-01-01 12:12:00", "2022-01-01 00:00:00"},
-		{"t2", "2022-01-01 00:00:00", "2022-01-01 00:00:00"},
+		{"t1", "2022-01-01T12:12:00.924Z", "2006-01-02T15:04:05Z", "2022-01-01 00:00:00"},
+		{"t2", "2022-01-01 00:00:00", "2006-01-02 15:04:05", "2022-01-01 00:00:00"},
 	}
-	layout := "2006-01-02 15:04:05"
+
 	for _, testCase := range testCases {
-		tv, _ := time.Parse(layout, testCase.t)
-		v := Min(tv).Format(layout)
+		tv, err := time.Parse(testCase.layout, testCase.time)
+		if err != nil {
+			t.Errorf(err.Error())
+		}
+		v := Min(tv).Format("2006-01-02 15:04:05")
 		assert.Equal(t, testCase.expected, v, testCase.tag)
 	}
 }
