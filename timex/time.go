@@ -41,10 +41,18 @@ func Between(t, begin, end time.Time) bool {
 	return (t.After(begin) && t.Before(end)) || t.Equal(begin) || t.Equal(end)
 }
 
-func Min(t time.Time) time.Time {
+func DayStart(t time.Time) time.Time {
 	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, time.Local)
 }
 
-func Max(t time.Time) time.Time {
+func DayEnd(t time.Time) time.Time {
 	return time.Date(t.Year(), t.Month(), t.Day(), 23, 59, 59, 999999999, time.Local)
+}
+
+func MonthStart(t time.Time) time.Time {
+	return time.Date(t.Year(), t.Month(), 1, 0, 0, 0, 0, time.Local)
+}
+
+func MonthEnd(t time.Time) time.Time {
+	return DayEnd(MonthStart(t).AddDate(0, 1, -1))
 }

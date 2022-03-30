@@ -116,5 +116,7 @@ Golang functions library
   - IsAmericaSummerTime
   - ChineseTimeLocation
   - Between
-  - Min
-  - Max
+  - DayStart
+  - DayEnd
+  - MonthStart
+  - MonthEnd

@@ -54,7 +54,7 @@ func TestBetween(t *testing.T) {
 	}
 }
 
-func TestMin(t *testing.T) {
+func TestDayStart(t *testing.T) {
 	testCases := []struct {
 		tag      string
 		time     string
@@ -70,24 +70,58 @@ func TestMin(t *testing.T) {
 		if err != nil {
 			t.Errorf(err.Error())
 		}
-		v := Min(tv).Format("2006-01-02 15:04:05")
+		v := DayStart(tv).Format("2006-01-02 15:04:05")
 		assert.Equal(t, testCase.expected, v, testCase.tag)
 	}
 }
 
-func TestMax(t *testing.T) {
+func TestDayEnd(t *testing.T) {
 	testCases := []struct {
 		tag      string
-		t        string
+		time     string
+		layout   string
 		expected string
 	}{
-		{"t1", "2022-01-01 12:12:00", "2022-01-01 23:59:59"},
-		{"t2", "2022-01-01 00:00:00", "2022-01-01 23:59:59"},
+		{"t1", "2022-01-01 12:12:00", "2006-01-02 15:04:05", "2022-01-01 23:59:59"},
+		{"t2", "2022-01-01 00:00:00", "2006-01-02 15:04:05", "2022-01-01 23:59:59"},
 	}
-	layout := "2006-01-02 15:04:05"
 	for _, testCase := range testCases {
-		tv, _ := time.Parse(layout, testCase.t)
-		v := Max(tv).Format(layout)
+		tv, _ := time.Parse(testCase.layout, testCase.time)
+		v := DayEnd(tv).Format("2006-01-02 15:04:05")
+		assert.Equal(t, testCase.expected, v, testCase.tag)
+	}
+}
+
+func TestMonthStart(t *testing.T) {
+	testCases := []struct {
+		tag      string
+		time     string
+		layout   string
+		expected string
+	}{
+		{"t1", "2022-01-12 12:12:00", "2006-01-02 15:04:05", "2022-01-01 00:00:00"},
+		{"t2", "2022-01-21 00:00:00", "2006-01-02 15:04:05", "2022-01-01 00:00:00"},
+	}
+	for _, testCase := range testCases {
+		tv, _ := time.Parse(testCase.layout, testCase.time)
+		v := MonthStart(tv).Format("2006-01-02 15:04:05")
+		assert.Equal(t, testCase.expected, v, testCase.tag)
+	}
+}
+
+func TestMonthEnd(t *testing.T) {
+	testCases := []struct {
+		tag      string
+		time     string
+		layout   string
+		expected string
+	}{
+		{"t1", "2022-01-12 12:12:00", "2006-01-02 15:04:05", "2022-01-31 23:59:59"},
+		{"t2", "2022-02-21 00:00:00", "2006-01-02 15:04:05", "2022-02-28 23:59:59"},
+	}
+	for _, testCase := range testCases {
+		tv, _ := time.Parse(testCase.layout, testCase.time)
+		v := MonthEnd(tv).Format("2006-01-02 15:04:05")
 		assert.Equal(t, testCase.expected, v, testCase.tag)
 	}
 }
