@@ -8,6 +8,8 @@ import (
 
 var rxNumber = regexp.MustCompile(`[\-]?\d+[\d.,]*\d*`)
 
+// 提取的内容默认为 1,234.56 格式的数字，未实现根据国家标准实现提取
+// https://zhuanlan.zhihu.com/p/157980325
 func clean(s string) string {
 	s = strings.TrimSpace(s)
 	if s == "" {
