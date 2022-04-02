@@ -22,7 +22,7 @@ func TestStrip(t *testing.T) {
 		{"t4", `
 <link rel='stylesheet' id='wp-block-library-css'  href='https://www.example.com/style.min.css?ver=5.9.1' type='text/css' media='all' />
 <style type="text/css">body {font-size: 12px}</style><!-- / See later. --><div style='font-size: 12px;'>hello</div>`, "hello"},
-{"t5", `
+		{"t5", `
  <body class="nodata company_blog" style="">
         <script>            var toolbarSearchExt = '{"landingWord":[],"queryWord":"","tag":["function","class","filter","search"],"title":"Yii: 设置数据翻页"}';
         </script>
@@ -44,11 +44,49 @@ func TestStrip(t *testing.T) {
     </script>
 <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/pc/css/blog_code-01256533b5.min.css">
 <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/chart-3456820cac.css" /><div style='font-size: 12px;'>hello</div></body>`, "hello"},
+		{"t6", `<!-- show up to 2 reviews by default -->
+
+
+
+
+
+
+
+
+
+
+
+
+<p>Custom flags for your garden are a great way to show your personality to your friends and neighbors. Design and turn it into an eye-catching flag all year round. This will be a beautiful addition to your yard and garden, also a simple sign to show your patriotism on Memorial Day, 4th of July or Veterans Day, Christmas holidays or any holiday of the year.
+
+</p>`, "Custom flags for your garden are a great way to show your personality to your friends and neighbors. Design and turn it into an eye-catching flag all year round. This will be a beautiful addition to your yard and garden, also a simple sign to show your patriotism on Memorial Day, 4th of July or Veterans Day, Christmas holidays or any holiday of the year."},
+{"t7", "&lt;div>hello<div>", "hello"},
 	}
 
 	for _, test := range tests {
 		equal := Strip(test.html)
 		assert.Equal(t, test.expected, equal, test.tag)
+	}
+}
+
+func BenchmarkStrip(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Strip(`<!-- show up to 2 reviews by default -->
+
+
+
+
+
+
+
+
+
+
+
+
+<p>Custom flags for your garden are a great way to show your personality to your friends and neighbors. Design and turn it into an eye-catching flag all year round. This will be a beautiful addition to your yard and garden, also a simple sign to show your patriotism on Memorial Day, 4th of July or Veterans Day, Christmas holidays or any holiday of the year.
+
+</p>`)
 	}
 }
 
