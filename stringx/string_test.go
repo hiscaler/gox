@@ -125,8 +125,8 @@ func TestSplitMore(t *testing.T) {
 	}
 	testCasts := []testCast{
 		{1, "abc", []string{}, []string{"abc"}},
-		{2, "a b c", []string{}, []string{"a", "b", "c"}},
-		{3, "a b c,d", []string{}, []string{"a", "b", "c,d"}},
+		{2, "a b c", []string{}, []string{"a b c"}},
+		{3, "a b c,d", []string{}, []string{"a b c,d"}},
 		{4, "a b c,d", []string{",", " "}, []string{"a", "b", "c", "d"}},
 		{5, "a,b,c,d", []string{",", " "}, []string{"a", "b", "c", "d"}},
 		{6, "a,b,c,d e", []string{",", " "}, []string{"a", "b", "c", "d", "e"}},

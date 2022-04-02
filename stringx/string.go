@@ -65,20 +65,20 @@ func ToWiden(str string) string {
 }
 
 // SplitMore split word by special seps, use empty string if seps is empty
-func SplitMore(str string, seps ...string) []string {
+func SplitMore(str string, separators ...string) []string {
+	if len(separators) == 0 {
+		return []string{str}
+	}
+
 	texts := make([]string, 0)
 	if str != "" {
-		n := len(seps)
-		if n == 0 {
-			seps = []string{" "}
-			n = 1
-		}
-		parts := strings.Split(str, seps[0])
+		n := len(separators)
+		parts := strings.Split(str, separators[0])
 		if n == 1 {
 			texts = parts
 		} else {
 			n -= 2
-			for i, sep := range seps[1:] {
+			for i, sep := range separators[1:] {
 				m := len(parts)
 				for _, part := range parts {
 					for _, s := range strings.Split(part, sep) {
