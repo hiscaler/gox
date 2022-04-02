@@ -10,8 +10,8 @@ import (
 // https://stackoverflow.com/questions/55036156/how-to-replace-all-html-tag-with-empty-string-in-golang
 func Strip(html string) string {
 	if html != "" {
-		if re, err := regexp.Compile(`<sty(.*)/style>|<scr(.*)/script>|<!--(.*)-->`); err == nil {
-			html = re.ReplaceAllString(html, ``)
+		if re, err := regexp.Compile(`(?s)<sty(.*)/style>|<scr(.*)/script>|<link(.*)/>|<meta(.*)/>|<!--(.*)-->`); err == nil {
+			html = re.ReplaceAllString(html, "")
 		}
 	}
 	html = strings.TrimSpace(html)
@@ -33,7 +33,7 @@ func Strip(html string) string {
 
 	for i, c := range html {
 		// If this is the last character and we are not in an HTML tag, save it.
-		if (i+1) == len(html) && end >= start {
+		if (i+1) == len(html) && end >= start && c != htmlTagStart && c != htmlTagEnd {
 			builder.WriteString(html[end:])
 		}
 

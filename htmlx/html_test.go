@@ -22,6 +22,28 @@ func TestStrip(t *testing.T) {
 		{"t4", `
 <link rel='stylesheet' id='wp-block-library-css'  href='https://www.example.com/style.min.css?ver=5.9.1' type='text/css' media='all' />
 <style type="text/css">body {font-size: 12px}</style><!-- / See later. --><div style='font-size: 12px;'>hello</div>`, "hello"},
+{"t5", `
+ <body class="nodata company_blog" style="">
+        <script>            var toolbarSearchExt = '{"landingWord":[],"queryWord":"","tag":["function","class","filter","search"],"title":"Yii: 设置数据翻页"}';
+        </script>
+    <script src="https://g.csdnimg.cn/common/csdn-toolbar/csdn-toolbar.js" type="text/javascript"></script>
+    <script src="https://g.csdnimg.cn/common/csdn-toolbar/csdn-toolbar1.js" type="text/javascript"></script>
+    <script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+    </script>
+<link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/pc/css/blog_code-01256533b5.min.css">
+<link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/chart-3456820cac.css" /><div style='font-size: 12px;'>hello</div></body>`, "hello"},
 	}
 
 	for _, test := range tests {
