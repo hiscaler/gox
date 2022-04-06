@@ -2,6 +2,7 @@ package isx
 
 import (
 	"bytes"
+	"github.com/hiscaler/gox/stringx"
 	"net/url"
 	"reflect"
 	"regexp"
