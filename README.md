@@ -46,6 +46,7 @@ Golang functions library
   - IntIn
 - ipx
   - RemoteAddr
+  - LocalAddr
   - IsPrivate
   - IsPublic
   - Number

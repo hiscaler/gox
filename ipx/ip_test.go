@@ -15,3 +15,7 @@ func TestRemoteAddr(t *testing.T) {
 	}
 	fmt.Println(RemoteAddr(request, false))
 }
+
+func TestLocalAddr(t *testing.T) {
+	fmt.Println(LocalAddr())
+}

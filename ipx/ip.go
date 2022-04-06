@@ -1,6 +1,7 @@
 package ipx
 
 import (
+	"errors"
 	"fmt"
 	"math"
 	"net"
@@ -24,6 +25,37 @@ func RemoteAddr(r *http.Request, mustPublic bool) string {
 		}
 	}
 	return r.RemoteAddr
+}
+
+func LocalAddr() (addr string, err error) {
+	addresses, err := net.InterfaceAddrs()
+	if err != nil {
+		return
+	}
+
+	for _, address := range addresses {
+		if ipNet, ok := address.(*net.IPNet); ok &&
+			!ipNet.IP.IsLoopback() &&
+			!ipNet.IP.IsPrivate() &&
+			!ipNet.IP.IsLinkLocalUnicast() {
+			if ipNet.IP.To4() != nil {
+				addr = ipNet.IP.String()
+				break
+			}
+		}
+	}
+	if addr == "" {
+		var conn net.Conn
+		conn, err = net.Dial("udp", "8.8.8.8:53")
+		if err == nil {
+			localAddr := conn.LocalAddr().(*net.UDPAddr)
+			addr = strings.Split(localAddr.String(), ":")[0]
+		}
+	}
+	if addr == "" && err == nil {
+		err = errors.New("ip: not found")
+	}
+	return
 }
 
 func IsPrivate(ip string) bool {
