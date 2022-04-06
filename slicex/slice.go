@@ -105,24 +105,32 @@ func IntSliceEqual(a, b []int) bool {
 
 func StringSliceReverse(ss []string) []string {
 	n := len(ss)
-	if n > 1 {
-		for k1 := 0; k1 < n/2; k1++ {
-			k2 := n - k1 - 1
-			ss[k1], ss[k2] = ss[k2], ss[k1]
-		}
+	if n <= 1 {
+		return ss
 	}
-	return ss
+
+	vv := make([]string, len(ss))
+	copy(vv, ss)
+	for k1 := 0; k1 < n/2; k1++ {
+		k2 := n - k1 - 1
+		vv[k1], vv[k2] = vv[k2], vv[k1]
+	}
+	return vv
 }
 
 func IntSliceReverse(ss []int) []int {
 	n := len(ss)
-	if n > 1 {
-		for k1 := 0; k1 < n/2; k1++ {
-			k2 := n - k1 - 1
-			ss[k1], ss[k2] = ss[k2], ss[k1]
-		}
+	if n <= 1 {
+		return ss
 	}
-	return ss
+
+	vv := make([]int, len(ss))
+	copy(vv, ss)
+	for k1 := 0; k1 < n/2; k1++ {
+		k2 := n - k1 - 1
+		vv[k1], vv[k2] = vv[k2], vv[k1]
+	}
+	return vv
 }
 
 func StringSliceDiff(ss ...[]string) []string {

@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/hiscaler/gox/slicex"
 	"golang.org/x/text/width"
-	"math"
 	"reflect"
 	"regexp"
 	"regexp/syntax"
@@ -156,6 +156,7 @@ func Cut(s string, sets ...string) string {
 
 	trimSpace := false
 	fixedSets := make([]string, 0)
+
 	for _, set := range sets {
 		n := 0
 		for _, r := range set {
@@ -181,11 +182,12 @@ func Cut(s string, sets ...string) string {
 		return s
 	}
 
+	// 降序
 	sort.Slice(fixedSets, func(i, j int) bool {
 		return len(fixedSets[i]) > len(fixedSets[j])
 	})
 
-	minL := math.MaxInt
+	minL := len(fixedSets[0])
 	for _, set := range fixedSets {
 		if len(set) < minL {
 			minL = len(set)
@@ -200,70 +202,38 @@ func Cut(s string, sets ...string) string {
 		}
 	}
 
-	for {
-		hitCount := 0
-		for _, set := range fixedSets[0:index] {
-			ss := []string{set}
-			start, end := false, false
-			if StartsWith(s, ss, false) {
-				start = true
-				s = s[len(set):]
-				if trimSpace {
-					s = strings.TrimSpace(s)
+	values := [][]string{fixedSets[0:index], slicex.StringSliceReverse(fixedSets)}
+	for _, value := range values {
+		for {
+			hitCount := 0
+			for _, set := range value {
+				ss := []string{set}
+				start, end := false, false
+				if StartsWith(s, ss, false) {
+					start = true
+					s = s[len(set):]
+					if trimSpace {
+						s = strings.TrimSpace(s)
+					}
+				}
+				if EndsWith(s, ss, false) {
+					end = true
+					s = s[0 : len(s)-len(set)]
+					if trimSpace {
+						s = strings.TrimSpace(s)
+					}
+				}
+				if s == "" {
+					hitCount = 0
+					break
+				}
+				if start || end {
+					hitCount++
 				}
 			}
-			if EndsWith(s, ss, false) {
-				end = true
-				s = s[0 : len(s)-len(set)]
-				if trimSpace {
-					s = strings.TrimSpace(s)
-				}
-			}
-			if s == "" {
-				hitCount = 0
+			if hitCount == 0 {
 				break
 			}
-			if start || end {
-				hitCount++
-			}
-		}
-		if hitCount == 0 {
-			break
-		}
-	}
-
-	sort.Slice(fixedSets, func(i, j int) bool {
-		return len(fixedSets[i]) < len(fixedSets[j])
-	})
-	for {
-		hitCount := 0
-		for _, set := range fixedSets {
-			ss := []string{set}
-			start, end := false, false
-			if StartsWith(s, ss, false) {
-				start = true
-				s = s[len(set):]
-				if trimSpace {
-					s = strings.TrimSpace(s)
-				}
-			}
-			if EndsWith(s, ss, false) {
-				end = true
-				s = s[0 : len(s)-len(set)]
-				if trimSpace {
-					s = strings.TrimSpace(s)
-				}
-			}
-			if s == "" {
-				hitCount = 0
-				break
-			}
-			if start || end {
-				hitCount++
-			}
-		}
-		if hitCount == 0 {
-			break
 		}
 	}
 
