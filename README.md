@@ -44,6 +44,12 @@ Golang functions library
 - inx
   - StringIn
   - IntIn
+- ipx
+  - RemoteAddr
+  - IsPrivate
+  - IsPublic
+  - ToNumber
+  - ToString
 - isx
   - Number
   - Empty
