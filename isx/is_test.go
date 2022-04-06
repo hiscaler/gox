@@ -7,6 +7,7 @@ import (
 )
 
 func TestNumber(t *testing.T) {
+	uintPtr := uintptr(12)
 	testCases := []struct {
 		Value    interface{}
 		IsNumber bool
@@ -24,6 +25,7 @@ func TestNumber(t *testing.T) {
 		{1, true},
 		{1.1, true},
 		{0, true},
+		{uintPtr, true},
 	}
 	for _, testCase := range testCases {
 		v := Number(testCase.Value)
