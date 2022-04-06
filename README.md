@@ -48,8 +48,8 @@ Golang functions library
   - RemoteAddr
   - IsPrivate
   - IsPublic
-  - ToNumber
-  - ToString
+  - Number
+  - String
 - isx
   - Number
   - Empty
