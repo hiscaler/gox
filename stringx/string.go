@@ -5,9 +5,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"golang.org/x/text/width"
+	"math"
 	"reflect"
 	"regexp"
 	"regexp/syntax"
+	"sort"
 	"strconv"
 	"strings"
 	"unicode"
@@ -146,6 +148,7 @@ func RemoveEmoji(str string, trim bool) string {
 }
 
 // Cut 移除头部和尾部指定的内容
+// todo 待优化
 func Cut(s string, sets ...string) string {
 	if s == "" || len(sets) == 0 {
 		return s
@@ -178,6 +181,60 @@ func Cut(s string, sets ...string) string {
 		return s
 	}
 
+	sort.Slice(fixedSets, func(i, j int) bool {
+		return len(fixedSets[i]) > len(fixedSets[j])
+	})
+
+	minL := math.MaxInt
+	for _, set := range fixedSets {
+		if len(set) < minL {
+			minL = len(set)
+		}
+	}
+
+	index := -1
+	for i, set := range fixedSets {
+		if len(set) == minL {
+			index = i
+			break
+		}
+	}
+
+	for {
+		hitCount := 0
+		for _, set := range fixedSets[0:index] {
+			ss := []string{set}
+			start, end := false, false
+			if StartsWith(s, ss, false) {
+				start = true
+				s = s[len(set):]
+				if trimSpace {
+					s = strings.TrimSpace(s)
+				}
+			}
+			if EndsWith(s, ss, false) {
+				end = true
+				s = s[0 : len(s)-len(set)]
+				if trimSpace {
+					s = strings.TrimSpace(s)
+				}
+			}
+			if s == "" {
+				hitCount = 0
+				break
+			}
+			if start || end {
+				hitCount++
+			}
+		}
+		if hitCount == 0 {
+			break
+		}
+	}
+
+	sort.Slice(fixedSets, func(i, j int) bool {
+		return len(fixedSets[i]) < len(fixedSets[j])
+	})
 	for {
 		hitCount := 0
 		for _, set := range fixedSets {

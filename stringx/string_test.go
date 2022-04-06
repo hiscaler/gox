@@ -201,6 +201,12 @@ func TestCut(t *testing.T) {
 		{"  Abcd中文 Efg ", []string{"", "abcd", "中", "FG"}, "文 E"},
 		{"  Abcd中文 Efg ", []string{"", "中", "abcd", "FG"}, "文 E"},
 		{"  a", []string{"b", "c"}, "  a"},
+		{" 10kg", []string{"g", "kg", ""}, "10"},
+		{" 10kgg", []string{"g", "kg", ""}, "10"},
+		{" 10kg g", []string{"g", "kg", ""}, "10"},
+		{" 10kg agbg", []string{"g", "ag", "bg", "kg", ""}, "10"},
+		{" 10kg abgcdg", []string{"bg", "abg", "cdg", "kg", ""}, "10"},
+		{" 10kg abgcdg", []string{"a", "b", "c", "d", "g", ""}, "10k"},
 		{"  a", []string{"a", "c"}, "  "},
 		{" a       ", []string{}, " a       "},
 		{`
