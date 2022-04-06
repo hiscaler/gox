@@ -145,20 +145,71 @@ func RemoveEmoji(str string, trim bool) string {
 	return str
 }
 
-// Trim 移除指定的内容
-func Trim(s string, cutsets ...string) string {
-	n := len(cutsets)
-	if s == "" || n == 0 {
+// Cut 移除头部和尾部指定的内容
+func Cut(s string, sets ...string) string {
+	if s == "" || len(sets) == 0 {
 		return s
 	}
 
-	size := 2 * n
-	oldNew := make([]string, size)
-	for i := 0; i < size; i += 2 {
-		oldNew[i] = cutsets[i/2]
-		oldNew[i+1] = ""
+	trimSpace := false
+	fixedSets := make([]string, 0)
+	for _, set := range sets {
+		n := 0
+		for _, r := range set {
+			if unicode.IsSpace(r) {
+				n++
+			}
+		}
+		if n == len(set) {
+			trimSpace = true
+		} else {
+			fixedSets = append(fixedSets, set)
+		}
 	}
-	return strings.NewReplacer(oldNew...).Replace(s)
+
+	if trimSpace {
+		s = strings.TrimSpace(s)
+		if s == "" {
+			return s
+		}
+	}
+
+	if len(fixedSets) == 0 {
+		return s
+	}
+
+	for {
+		hitCount := 0
+		for _, set := range fixedSets {
+			ss := []string{set}
+			start, end := false, false
+			if StartsWith(s, ss, false) {
+				start = true
+				s = s[len(set):]
+				if trimSpace {
+					s = strings.TrimSpace(s)
+				}
+			}
+			if EndsWith(s, ss, false) {
+				end = true
+				s = s[0 : len(s)-len(set)]
+				if trimSpace {
+					s = strings.TrimSpace(s)
+				}
+			}
+			if s == "" {
+				break
+			}
+			if start || end {
+				hitCount++
+			}
+		}
+		if hitCount == 0 {
+			break
+		}
+	}
+
+	return s
 }
 
 // RemoveExtraSpace 移除多余的空格
