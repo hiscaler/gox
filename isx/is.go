@@ -14,17 +14,15 @@ import (
 func Number(i interface{}) bool {
 	switch i.(type) {
 	case string:
-		s := strings.TrimSpace(i.(string))
+		s := stringx.Trim(strings.TrimSpace(i.(string)), "+", "-")
 		n := len(s)
 		if n == 0 {
 			return false
 		}
 
-		isNotDigit := func(c rune) bool { return c < '0' || c > '9' }
-		firstChar := s[0:1]
-		if (strings.IndexFunc(firstChar, isNotDigit) != -1 ||
-			(n > 1 && strings.IndexFunc(s[n-1:], isNotDigit) != -1)) &&
-			(firstChar != "-" && firstChar != "+") {
+		if strings.IndexFunc(s[n-1:], func(c rune) bool {
+			return c < '0' || c > '9'
+		}) != -1 {
 			return false
 		}
 

@@ -64,8 +64,8 @@ func ToWiden(str string) string {
 	return width.Widen.String(str)
 }
 
-// SplitMore split word by special seps, use empty string if seps is empty
-func SplitMore(str string, separators ...string) []string {
+// Split split word by special seps, use empty string if seps is empty
+func Split(str string, separators ...string) []string {
 	if len(separators) == 0 {
 		return []string{str}
 	}
@@ -145,20 +145,20 @@ func RemoveEmoji(str string, trim bool) string {
 	return str
 }
 
-// TrimSpecial 移除指定的内容
-func TrimSpecial(s string, ss ...string) string {
-	s = strings.TrimSpace(s)
-	n := len(ss)
+// Trim 移除指定的内容
+func Trim(s string, cutsets ...string) string {
+	n := len(cutsets)
 	if s == "" || n == 0 {
 		return s
 	}
 
-	oldNew := make([]string, 2*n)
-	for i := 0; i < 2*n; i += 2 {
-		oldNew[i] = ss[i/2]
+	size := 2 * n
+	oldNew := make([]string, size)
+	for i := 0; i < size; i += 2 {
+		oldNew[i] = cutsets[i/2]
 		oldNew[i+1] = ""
 	}
-	return strings.TrimSpace(strings.NewReplacer(oldNew...).Replace(s))
+	return strings.NewReplacer(oldNew...).Replace(s)
 }
 
 // RemoveExtraSpace 移除多余的空格

@@ -116,7 +116,7 @@ func TestToWiden(t *testing.T) {
 	}
 }
 
-func TestSplitMore(t *testing.T) {
+func TestSplit(t *testing.T) {
 	type testCast struct {
 		Number int
 		String string
@@ -138,7 +138,7 @@ func TestSplitMore(t *testing.T) {
 		{12, "WaterWipes Original Baby Wipes, 99.9% Water, Unscented & Hypoallergenic for Sensitive Newborn Skin, 3 Packs (180 Count)", []string{",", " ", "!"}, []string{"WaterWipes", "Original", "Baby", "Wipes", "99.9%", "Water", "Unscented", "&", "Hypoallergenic", "for", "Sensitive", "Newborn", "Skin", "3", "Packs", "(180", "Count)"}},
 	}
 	for _, tc := range testCasts {
-		values := SplitMore(tc.String, tc.Seps...)
+		values := Split(tc.String, tc.Seps...)
 		if !slicex.StringSliceEqual(values, tc.Values, false, false, true) {
 			t.Errorf("%d except %#v, actual：%#v", tc.Number, tc.Values, values)
 		}
@@ -187,33 +187,37 @@ func TestRemoveEmoji(t *testing.T) {
 	}
 }
 
-func TestTrimSpecial(t *testing.T) {
+func TestTrim(t *testing.T) {
 	var testCases = []struct {
 		string       string
 		replacePairs []string
 		expected     string
 	}{
-		{"  a", []string{}, "a"},
-		{"  a", []string{"b", "c"}, "a"},
-		{"  a", []string{"a", "c"}, ""},
-		{" a       ", []string{}, "a"},
+		{"  a", []string{}, "  a"},
+		{"  a", []string{"b", "c"}, "  a"},
+		{"  a", []string{"a", "c"}, "  "},
+		{" a       ", []string{}, " a       "},
 		{`
 						
 a
 
-`, []string{}, "a"},
-		{"  ab", []string{"b"}, "a"},
-		{"  a b ", []string{"b"}, "a"},
-		{"  a b b", []string{"b"}, "a"},
-		{"  a b a", []string{"b"}, "a  a"},
-		{"5.0 out of 5 stars", []string{"5.0 out of", "stars"}, "5"},
-		{"5.0 out of 5 stars", []string{"5.0 out of", "5", "stars"}, ""},
-		{"a b a b c d e f g g f e d", []string{"a", "b", "c", "d", "f g"}, "e  g f e"},
+`, []string{}, `
+						
+a
+
+`},
+		{"  ab", []string{"b"}, "  a"},
+		{"  a b ", []string{"b"}, "  a  "},
+		{"  a b b", []string{"b"}, "  a  "},
+		{"  a b a", []string{"b"}, "  a  a"},
+		{"5.0 out of 5 stars", []string{"5.0 out of", "stars"}, " 5 "},
+		{"5.0 out of 5 stars", []string{"5.0 out of", "5", "stars", " "}, ""},
+		{"a b a b c d e f g g f e d", []string{"a", "b", "c", "d", "f g", " "}, "egfe"},
 	}
 	for _, testCase := range testCases {
-		actual := TrimSpecial(testCase.string, testCase.replacePairs...)
+		actual := Trim(testCase.string, testCase.replacePairs...)
 		if actual != testCase.expected {
-			t.Errorf("TrimSpecial(%s, %s) = %s; expected %s", testCase.string, testCase.replacePairs, actual, testCase.expected)
+			t.Errorf("Trim(%s, %s) = %s; expected %s", testCase.string, testCase.replacePairs, actual, testCase.expected)
 		}
 	}
 }
