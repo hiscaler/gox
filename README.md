@@ -100,10 +100,10 @@ Golang functions library
   - ContainsChinese
   - ToNarrow
   - ToWiden
-  - SplitMore
+  - Split
   - String
   - RemoveEmoji
-  - TrimSpecial
+  - Cut
   - RemoveExtraSpace
   - ToBytes
   - WordMatched
