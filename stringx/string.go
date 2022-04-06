@@ -198,6 +198,7 @@ func Cut(s string, sets ...string) string {
 				}
 			}
 			if s == "" {
+				hitCount = 0
 				break
 			}
 			if start || end {
