@@ -8,7 +8,7 @@ import (
 
 func TestNumber(t *testing.T) {
 	testCases := []struct {
-		Value    string
+		Value    interface{}
 		IsNumber bool
 	}{
 		{"a", false},
@@ -21,6 +21,9 @@ func TestNumber(t *testing.T) {
 		{" 12345. 6   ", false},
 		{"-1", true},
 		{"+1", true},
+		{1, true},
+		{1.1, true},
+		{0, true},
 	}
 	for _, testCase := range testCases {
 		v := Number(testCase.Value)

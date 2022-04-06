@@ -10,23 +10,29 @@ import (
 	"unicode/utf8"
 )
 
-// Number Check string is a number
-func Number(s string) bool {
-	s = strings.TrimSpace(s)
-	n := len(s)
-	if n == 0 {
-		return false
-	}
+// Number Check any value is a number
+func Number(i interface{}) bool {
+	switch i.(type) {
+	case string:
+		s := strings.TrimSpace(i.(string))
+		n := len(s)
+		if n == 0 {
+			return false
+		}
 
-	isNotDigit := func(c rune) bool { return c < '0' || c > '9' }
-	firstChar := s[0:1]
-	if (strings.IndexFunc(firstChar, isNotDigit) != -1 ||
-		(n > 1 && strings.IndexFunc(s[n-1:], isNotDigit) != -1)) &&
-		(firstChar != "-" && firstChar != "+") {
-		return false
-	}
+		isNotDigit := func(c rune) bool { return c < '0' || c > '9' }
+		firstChar := s[0:1]
+		if (strings.IndexFunc(firstChar, isNotDigit) != -1 ||
+			(n > 1 && strings.IndexFunc(s[n-1:], isNotDigit) != -1)) &&
+			(firstChar != "-" && firstChar != "+") {
+			return false
+		}
 
-	return regexp.MustCompile(`^[+-]?\d+$|^\d+[.]\d+$`).MatchString(strings.ReplaceAll(s, ",", ""))
+		return regexp.MustCompile(`^[+-]?\d+$|^\d+[.]\d+$`).MatchString(strings.ReplaceAll(s, ",", ""))
+	case int, int8, int16, int32, int64, float32, float64:
+		return true
+	}
+	return false
 }
 
 // Empty 判断是否为空
