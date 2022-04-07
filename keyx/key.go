@@ -34,17 +34,18 @@ func Generate(values ...interface{}) string {
 		case reflect.Float32, reflect.Float64:
 			sb.WriteString(strconv.FormatFloat(v.Float(), 'f', 2, 64))
 		case reflect.Map:
-			mapValue := value.(map[string]interface{})
-			keys := make([]string, len(mapValue))
+			keys := make([]string, len(v.MapKeys()))
 			i := 0
-			for k := range mapValue {
-				keys[i] = k
+			for _, mv := range v.MapKeys() {
+				keys[i] = mv.String()
 				i++
 			}
 			sort.Strings(keys)
-			for _, k := range keys {
-				sb.WriteString(Generate(k, mapValue[k]))
+			interfaces := make([]interface{}, 0)
+			for k := range keys {
+				interfaces = append(interfaces, keys[k], v.MapIndex(reflect.ValueOf(keys[k])).Interface())
 			}
+			sb.WriteString(Generate(interfaces...))
 		case reflect.Slice, reflect.Array:
 			interfaces := make([]interface{}, 0)
 			for i := 0; i < v.Len(); i++ {

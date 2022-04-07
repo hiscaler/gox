@@ -1,6 +1,8 @@
 package keyx
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestGenerate(t *testing.T) {
 	type User struct {
@@ -9,7 +11,7 @@ func TestGenerate(t *testing.T) {
 	}
 	type testCase struct {
 		Number int
-		Values []interface{}
+		Values interface{}
 		Key    string
 	}
 
@@ -41,9 +43,10 @@ func TestGenerate(t *testing.T) {
 		{13, []interface{}{b1, b2}, "abc"},
 		// rune
 		{14, []interface{}{'a', 'b', 'c'}, "abc"},
+		{15, []map[string]string{{"k1": "v1", "k2": "v2"}}, "k1v1k2v2"},
 	}
 	for _, tc := range testCases {
-		key := Generate(tc.Values...)
+		key := Generate(tc.Values)
 		if key != tc.Key {
 			t.Errorf("%d: except：%s actual：%s", tc.Number, tc.Key, key)
 		}
