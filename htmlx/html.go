@@ -6,14 +6,14 @@ import (
 	"unicode/utf8"
 )
 
-var reHTML = regexp.MustCompile(`(?s)<sty(.*)/style>|<scr(.*)/script>|<link(.*)/>|<meta(.*)/>|<!--(.*)-->`)
+var rxHTML = regexp.MustCompile(`(?s)<sty(.*)/style>|<scr(.*)/script>|<link(.*)/>|<meta(.*)/>|<!--(.*)-->`)
 
 // Strip Clean html tags
 // https://stackoverflow.com/questions/55036156/how-to-replace-all-html-tag-with-empty-string-in-golang
 func Strip(html string) string {
 	html = strings.TrimSpace(html)
 	if html != "" {
-		html = reHTML.ReplaceAllString(html, "")
+		html = rxHTML.ReplaceAllString(html, "")
 	}
 	if html == "" {
 		return ""

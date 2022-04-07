@@ -207,6 +207,7 @@ func TestCut(t *testing.T) {
 		{" 10kg agbg", []string{"g", "ag", "bg", "kg", ""}, "10"},
 		{" 10kg abgcdg", []string{"bg", "abg", "cdg", "kg", ""}, "10"},
 		{" 10kg abgcdg", []string{"a", "b", "c", "d", "g", ""}, "10k"},
+		{" 10kg ggkgg", []string{"kg", "g", ""}, "10"},
 		{"  a", []string{"a", "c"}, "  "},
 		{" a       ", []string{}, " a       "},
 		{`
@@ -362,10 +363,17 @@ func TestStartsWith(t *testing.T) {
 		{"t5", "", nil, true, true},
 		{"t6", "", []string{}, true, true},
 		{"t7", "Hello world!", []string{""}, true, true},
+		{"t8", "Hello!", []string{"Hello world"}, true, false},
 	}
 	for _, test := range tests {
 		b := StartsWith(test.string, test.words, test.caseSensitive)
 		assert.Equal(t, test.except, b, test.tag)
+	}
+}
+
+func BenchmarkStartsWith(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		StartsWith("Hello world!", []string{"a", "b", "c", "d", "e", "f", "g", "h"}, false)
 	}
 }
 
@@ -385,6 +393,7 @@ func TestEndsWith(t *testing.T) {
 		{"t6", "", nil, true, true},
 		{"t7", "", []string{}, true, true},
 		{"t8", "Hello world!", []string{""}, true, true},
+		{"t9", "world!", []string{"hello world!", "world!", "!"}, true, true},
 	}
 	for _, test := range tests {
 		b := EndsWith(test.string, test.words, test.caseSensitive)

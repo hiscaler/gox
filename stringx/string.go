@@ -25,10 +25,7 @@ func IsEmpty(s string) bool {
 }
 
 func IsBlank(s string) bool {
-	if s == "" || strings.TrimSpace(s) == "" {
-		return true
-	}
-	return false
+	return s == "" || strings.TrimSpace(s) == ""
 }
 
 // ToNumber 字符串转换为唯一数字
@@ -151,7 +148,6 @@ func RemoveEmoji(str string, trim bool) string {
 }
 
 // Cut 移除头部和尾部指定的内容
-// todo 待优化
 func Cut(s string, sets ...string) string {
 	if s == "" || len(sets) == 0 {
 		return s
@@ -159,7 +155,6 @@ func Cut(s string, sets ...string) string {
 
 	trimSpace := false
 	fixedSets := make([]string, 0)
-
 	for _, set := range sets {
 		n := 0
 		for _, r := range set {
@@ -170,7 +165,7 @@ func Cut(s string, sets ...string) string {
 		if n == len(set) {
 			trimSpace = true
 		} else {
-			fixedSets = append(fixedSets, set)
+			fixedSets = append(fixedSets, set) // 不包括空白字符
 		}
 	}
 
@@ -191,9 +186,10 @@ func Cut(s string, sets ...string) string {
 	})
 
 	minL := len(fixedSets[0])
-	for _, set := range fixedSets {
-		if len(set) < minL {
-			minL = len(set)
+	for i := range fixedSets {
+		n := len(fixedSets[i])
+		if n < minL {
+			minL = n
 		}
 	}
 
@@ -208,33 +204,31 @@ func Cut(s string, sets ...string) string {
 	values := [][]string{fixedSets[0:index], slicex.StringSliceReverse(fixedSets)}
 	for _, value := range values {
 		for {
-			hitCount := 0
+			hitCounts := 0
 			for _, set := range value {
 				ss := []string{set}
-				start, end := false, false
-				if StartsWith(s, ss, false) {
-					start = true
+				start := StartsWith(s, ss, false)
+				if start {
 					s = s[len(set):]
 					if trimSpace {
 						s = strings.TrimSpace(s)
 					}
 				}
-				if EndsWith(s, ss, false) {
-					end = true
+				end := EndsWith(s, ss, false)
+				if end {
 					s = s[0 : len(s)-len(set)]
 					if trimSpace {
 						s = strings.TrimSpace(s)
 					}
 				}
 				if s == "" {
-					hitCount = 0
+					hitCounts = 0
 					break
-				}
-				if start || end {
-					hitCount++
+				} else if start || end {
+					hitCounts++
 				}
 			}
-			if hitCount == 0 {
+			if hitCounts == 0 {
 				break
 			}
 		}
@@ -335,22 +329,28 @@ func WordMatched(s string, words []string, caseSensitive bool) bool {
 }
 
 func StartsWith(s string, ss []string, caseSensitive bool) bool {
-	if ss == nil || len(ss) == 0 {
+	n := len(s)
+	if ss == nil || n == 0 {
 		return true
 	}
 
 	has := false
-	if !caseSensitive {
-		s = strings.ToLower(s)
-	}
 	for _, prefix := range ss {
-		if prefix == "" {
+		m := len(prefix)
+		if m == 0 {
 			has = true
 		} else {
-			if !caseSensitive {
-				prefix = strings.ToLower(prefix)
+			if m <= n {
+				if caseSensitive {
+					has = strings.HasPrefix(s, prefix)
+				} else {
+					ns := s
+					if n-m > 0 {
+						ns = s[0:m]
+					}
+					has = strings.EqualFold(ns, prefix)
+				}
 			}
-			has = strings.HasPrefix(s, prefix)
 		}
 		if has {
 			break
@@ -360,22 +360,28 @@ func StartsWith(s string, ss []string, caseSensitive bool) bool {
 }
 
 func EndsWith(s string, ss []string, caseSensitive bool) bool {
-	if ss == nil || len(ss) == 0 {
+	n := len(s)
+	if ss == nil || n == 0 {
 		return true
 	}
 
 	has := false
-	if !caseSensitive {
-		s = strings.ToLower(s)
-	}
 	for _, suffix := range ss {
-		if suffix == "" {
+		m := len(suffix)
+		if m == 0 {
 			has = true
 		} else {
-			if !caseSensitive {
-				suffix = strings.ToLower(suffix)
+			if m <= n {
+				if caseSensitive {
+					has = strings.HasSuffix(s, suffix)
+				} else {
+					ns := s
+					if n-m > 0 {
+						ns = s[n-m:]
+					}
+					has = strings.EqualFold(ns, suffix)
+				}
 			}
-			has = strings.HasSuffix(s, suffix)
 		}
 		if has {
 			break

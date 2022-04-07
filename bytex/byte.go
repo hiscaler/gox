@@ -11,10 +11,7 @@ func IsEmpty(b []byte) bool {
 }
 
 func IsBlank(b []byte) bool {
-	if len(b) == 0 || len(bytes.TrimSpace(b)) == 0 {
-		return true
-	}
-	return false
+	return len(b) == 0 || len(bytes.TrimSpace(b)) == 0
 }
 
 func ToString(b []byte) string {
