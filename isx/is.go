@@ -11,8 +11,10 @@ import (
 	"unicode/utf8"
 )
 
-var rxSafeCharacters = regexp.MustCompile("^[a-zA-Z0-9\\.\\-_][a-zA-Z0-9\\.\\-_]*$")
-var rxNumber = regexp.MustCompile("^[+-]?\\d+$|^\\d+[.]\\d+$")
+var (
+	rxSafeCharacters = regexp.MustCompile("^[a-zA-Z0-9\\.\\-_][a-zA-Z0-9\\.\\-_]*$")
+	rxNumber         = regexp.MustCompile("^[+-]?\\d+$|^\\d+[.]\\d+$")
+)
 
 // Number Check any value is a number
 func Number(i interface{}) bool {
