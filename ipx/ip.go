@@ -1,7 +1,6 @@
 package ipx
 
 import (
-	"errors"
 	"fmt"
 	"math"
 	"net"
@@ -42,12 +41,13 @@ func RemoteAddr(r *http.Request, mustPublic bool) string {
 	return r.RemoteAddr
 }
 
-func LocalAddr() (addr string, err error) {
+func LocalAddr() string {
 	addresses, err := net.InterfaceAddrs()
 	if err != nil {
-		return
+		return ""
 	}
 
+	addr := ""
 	for _, address := range addresses {
 		if ipNet, ok := address.(*net.IPNet); ok &&
 			!ipNet.IP.IsLoopback() &&
@@ -72,10 +72,7 @@ func LocalAddr() (addr string, err error) {
 		}
 
 	}
-	if addr == "" && err == nil {
-		err = errors.New("ipx: local address not found")
-	}
-	return
+	return addr
 }
 
 func IsPrivate(ip string) (v bool, err error) {
@@ -97,14 +94,14 @@ func IsPublic(ip string) (v bool, err error) {
 func Number(ip string) (uint, error) {
 	addr := net.ParseIP(ip)
 	if addr == nil {
-		return 0, fmt.Errorf("%s is invalid ip", ip)
+		return 0, fmt.Errorf("ipx: %s is invalid ip", ip)
 	}
 	return uint(addr[3]) | uint(addr[2])<<8 | uint(addr[1])<<16 | uint(addr[0])<<24, nil
 }
 
 func String(ip uint) (string, error) {
 	if ip > math.MaxUint32 {
-		return "", fmt.Errorf("%d is not valid ipv4", ip)
+		return "", fmt.Errorf("ipx: %d is not valid ipv4", ip)
 	}
 
 	addr := make(net.IP, net.IPv4len)

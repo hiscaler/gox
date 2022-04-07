@@ -49,9 +49,9 @@ func TestRemoteAddr(t *testing.T) {
 }
 
 func TestLocalAddr(t *testing.T) {
-	_, err := LocalAddr()
-	if err != nil {
-		t.Errorf("LocalAddr() error: %s", err.Error())
+	ip := LocalAddr()
+	if ip == "" {
+		t.Error("LocalAddr() return empty value")
 	}
 }
 
