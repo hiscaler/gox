@@ -40,6 +40,12 @@ func TestRemoteAddr(t *testing.T) {
 				"X-Forwarded-For": {"127.0.0.1:8080"},
 			}, true, "",
 		},
+		{
+			"t5", map[string][]string{
+				"X-Real-IP":       {"::1"},
+				"X-Forwarded-For": {"::1"},
+			}, true, "",
+		},
 	}
 	for _, testCase := range testCases {
 		request.Header = testCase.headers
