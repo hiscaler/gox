@@ -14,16 +14,27 @@ func RemoteAddr(r *http.Request, mustPublic bool) string {
 		return ""
 	}
 
-	for _, key := range []string{"X-Forwarded-For", "X-Real-IP"} {
-		ip := r.Header.Get(key)
-		if ip != "" {
-			for _, singleIP := range strings.Split(ip, ", ") {
-				if index := strings.Index(singleIP, ":"); index != -1 {
-					// Remove port
-					singleIP = singleIP[0:index]
+	for _, key := range []string{"X-Forwarded-For", "X-Real-IP", "X-Appengine-Remote-Addr"} {
+		value := r.Header.Get(key)
+		if value != "" {
+			for _, item := range strings.Split(value, ",") {
+				var ip string
+				if strings.ContainsRune(item, ':') {
+					if host, _, err := net.SplitHostPort(strings.TrimSpace(item)); err != nil {
+						continue
+					} else {
+						ip = host
+					}
+				} else {
+					ip = strings.TrimSpace(item)
 				}
-				if !mustPublic || IsPublic(singleIP) {
-					return singleIP
+
+				if mustPublic {
+					if v, e := IsPublic(ip); e != nil && v {
+						return ip
+					}
+				} else {
+					return ip
 				}
 			}
 		}
@@ -53,6 +64,7 @@ func LocalAddr() (addr string, err error) {
 			var conn net.Conn
 			conn, err = net.Dial("udp", address)
 			if err == nil {
+				conn.Close()
 				localAddr := conn.LocalAddr().(*net.UDPAddr)
 				addr = strings.Split(localAddr.String(), ":")[0]
 				break
@@ -66,13 +78,20 @@ func LocalAddr() (addr string, err error) {
 	return
 }
 
-func IsPrivate(ip string) bool {
+func IsPrivate(ip string) (v bool, err error) {
 	addr := net.ParseIP(ip)
-	return addr.IsLoopback() || addr.IsPrivate()
+	if addr == nil {
+		err = fmt.Errorf("ipx: %s address is invalid", ip)
+	} else {
+		v = addr.IsLoopback() || addr.IsPrivate() || addr.IsLinkLocalUnicast()
+	}
+	return
 }
 
-func IsPublic(ip string) bool {
-	return !IsPrivate(ip)
+func IsPublic(ip string) (v bool, err error) {
+	v, err = IsPrivate(ip)
+	v = err == nil && !v
+	return
 }
 
 func Number(ip string) (uint, error) {

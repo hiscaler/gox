@@ -54,3 +54,40 @@ func TestLocalAddr(t *testing.T) {
 		t.Errorf("LocalAddr() error: %s", err.Error())
 	}
 }
+
+func TestIsPrivate(t *testing.T) {
+	testCases := []struct {
+		tag      string
+		ip       string
+		expected bool
+		hasError bool
+	}{
+		{"t1", "127.0.0.1", true, false},
+		{"t2", "::1", true, false},
+		{"t3", "xxx", false, true},
+	}
+	for _, testCase := range testCases {
+		v, err := IsPrivate(testCase.ip)
+		assert.Equal(t, testCase.expected, v, testCase.tag)
+		assert.Equal(t, testCase.hasError, err != nil, testCase.tag+" error")
+	}
+}
+
+func TestIsPublic(t *testing.T) {
+	testCases := []struct {
+		tag      string
+		ip       string
+		expected bool
+		hasError bool
+	}{
+		{"t1", "127.0.0.1", false, false},
+		{"t2", "::1", false, false},
+		{"t3", "xxx", false, true},
+		{"t4", "120.228.142.126", true, false},
+	}
+	for _, testCase := range testCases {
+		v, err := IsPublic(testCase.ip)
+		assert.Equal(t, testCase.expected, v, testCase.tag)
+		assert.Equal(t, testCase.hasError, err != nil, testCase.tag+" error")
+	}
+}
