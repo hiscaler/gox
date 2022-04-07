@@ -176,6 +176,12 @@ func TestSafeCharacters(t *testing.T) {
 	}
 }
 
+func BenchmarkSafeCharacters(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		SafeCharacters("_.a.b-c_")
+	}
+}
+
 func TestHttpURL(t *testing.T) {
 	tests := []struct {
 		tag    string

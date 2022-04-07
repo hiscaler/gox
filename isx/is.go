@@ -11,6 +11,9 @@ import (
 	"unicode/utf8"
 )
 
+var rxSafeCharacters = regexp.MustCompile("^[a-zA-Z0-9\\.\\-_][a-zA-Z0-9\\.\\-_]*$")
+var rxNumber = regexp.MustCompile("^[+-]?\\d+$|^\\d+[.]\\d+$")
+
 // Number Check any value is a number
 func Number(i interface{}) bool {
 	switch i.(type) {
@@ -26,7 +29,7 @@ func Number(i interface{}) bool {
 		}) != -1 {
 			return false
 		}
-		return regexp.MustCompile(`^[+-]?\d+$|^\d+[.]\d+$`).MatchString(strings.ReplaceAll(s, ",", ""))
+		return rxNumber.MatchString(strings.ReplaceAll(s, ",", ""))
 	case int, int8, int16, int32, int64,
 		uint, uint8, uint16, uint32, uint64, uintptr,
 		float32, float64,
@@ -97,8 +100,7 @@ func SafeCharacters(str string) bool {
 	if str == "" {
 		return false
 	}
-	re, _ := regexp.Compile(`^[a-zA-Z0-9\.\-_][a-zA-Z0-9\.\-_]*$`)
-	return re.MatchString(str)
+	return rxSafeCharacters.MatchString(str)
 }
 
 // HttpURL checks if the string is a HTTP URL.
