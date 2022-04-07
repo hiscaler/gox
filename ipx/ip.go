@@ -18,6 +18,10 @@ func RemoteAddr(r *http.Request, mustPublic bool) string {
 		ip := r.Header.Get(key)
 		if ip != "" {
 			for _, singleIP := range strings.Split(ip, ", ") {
+				if index := strings.Index(singleIP, ":"); index != -1 {
+					// Remove port
+					singleIP = singleIP[0:index]
+				}
 				if !mustPublic || IsPublic(singleIP) {
 					return singleIP
 				}
@@ -45,15 +49,19 @@ func LocalAddr() (addr string, err error) {
 		}
 	}
 	if addr == "" {
-		var conn net.Conn
-		conn, err = net.Dial("udp", "8.8.8.8:53")
-		if err == nil {
-			localAddr := conn.LocalAddr().(*net.UDPAddr)
-			addr = strings.Split(localAddr.String(), ":")[0]
+		for _, address := range []string{"114.114.114.114:53", "8.8.8.8:53"} {
+			var conn net.Conn
+			conn, err = net.Dial("udp", address)
+			if err == nil {
+				localAddr := conn.LocalAddr().(*net.UDPAddr)
+				addr = strings.Split(localAddr.String(), ":")[0]
+				break
+			}
 		}
+
 	}
 	if addr == "" && err == nil {
-		err = errors.New("ip: not found")
+		err = errors.New("ipx: local address not found")
 	}
 	return
 }
