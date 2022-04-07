@@ -22,3 +22,9 @@ func TestStringKeys(t *testing.T) {
 		assert.Equal(t, test.keys, keys, test.tag)
 	}
 }
+
+func BenchmarkStringKeys(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		StringKeys(map[string]interface{}{"a": 1, "b": 2, "c": "cValue", "d": "dValue"})
+	}
+}
