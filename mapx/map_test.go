@@ -1,6 +1,7 @@
 package mapx
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -19,7 +20,12 @@ func TestStringKeys(t *testing.T) {
 
 	for _, test := range tests {
 		keys := StringKeys(test.value)
-		assert.Equal(t, test.keys, keys, test.tag)
+		v := assert.Equal(t, test.keys, keys, test.tag)
+		if v {
+			for k, value := range test.keys {
+				assert.Equal(t, value, keys[k], fmt.Sprintf("keys[%d]", k))
+			}
+		}
 	}
 }
 
