@@ -2,6 +2,7 @@ package htmlx
 
 import (
 	"regexp"
+	"sort"
 	"strings"
 	"unicode/utf8"
 )
@@ -66,21 +67,38 @@ func Tag(tag, content string, attributes, styles map[string]string) string {
 	sb.Grow(len(tag)*2 + len(content) + 5)
 	sb.WriteString("<")
 	sb.WriteString(tag)
-	if len(attributes) > 0 {
-		for k, v := range attributes {
-			sb.WriteString(" ")
-			sb.WriteString(k)
-			sb.WriteString(`="`)
-			sb.WriteString(v)
-			sb.WriteString(`"`)
+	fnSortedKeys := func(d map[string]string) []string {
+		n := len(d)
+		if n == 0 {
+			return []string{}
 		}
+		keys := make([]string, n)
+		i := 0
+		for k := range d {
+			keys[i] = k
+			i++
+		}
+		if i > 1 {
+			sort.Strings(keys)
+		}
+		return keys
 	}
-	if len(styles) > 0 {
+
+	for _, k := range fnSortedKeys(attributes) {
+		sb.WriteString(" ")
+		sb.WriteString(k)
+		sb.WriteString(`="`)
+		sb.WriteString(attributes[k])
+		sb.WriteString(`"`)
+	}
+
+	keys := fnSortedKeys(styles)
+	if len(keys) > 0 {
 		sb.WriteString(` style="`)
-		for k, v := range styles {
+		for _, k := range keys {
 			sb.WriteString(k)
 			sb.WriteString(":")
-			sb.WriteString(v)
+			sb.WriteString(styles[k])
 			sb.WriteString(`;`)
 		}
 		sb.WriteString(`"`)

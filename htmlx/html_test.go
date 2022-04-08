@@ -60,7 +60,7 @@ func TestStrip(t *testing.T) {
 <p>Custom flags for your garden are a great way to show your personality to your friends and neighbors. Design and turn it into an eye-catching flag all year round. This will be a beautiful addition to your yard and garden, also a simple sign to show your patriotism on Memorial Day, 4th of July or Veterans Day, Christmas holidays or any holiday of the year.
 
 </p>`, "Custom flags for your garden are a great way to show your personality to your friends and neighbors. Design and turn it into an eye-catching flag all year round. This will be a beautiful addition to your yard and garden, also a simple sign to show your patriotism on Memorial Day, 4th of July or Veterans Day, Christmas holidays or any holiday of the year."},
-{"t7", "&lt;div>hello<div>", "hello"},
+		{"t7", "&lt;div>hello<div>", "hello"},
 	}
 
 	for _, test := range tests {
@@ -101,8 +101,8 @@ func TestTag(t *testing.T) {
 	}{
 		{"t0", "div", "hello", nil, nil, "<div>hello</div>"},
 		{"t1", "div", "hello", map[string]string{"id": "name"}, nil, `<div id="name">hello</div>`},
-		// {"t1.1", "div", "hello", map[string]string{"id": "name", "name": "name"}, `<div id="name" name="name">hello</div>`}, // map 是无序的
-		{"t2", "div", "hello", map[string]string{"id": "name"}, map[string]string{"font-size": "1"}, `<div id="name" style="font-size:1;">hello</div>`},
+		{"t1.1", "div", "hello", map[string]string{"id": "name", "name": "name"}, nil, `<div id="name" name="name">hello</div>`},
+		{"t2", "div", "hello", map[string]string{"id": "name", "data-tag": "123"}, map[string]string{"font-size": "1", "font-weight": "bold"}, `<div data-tag="123" id="name" style="font-size:1;font-weight:bold;">hello</div>`},
 	}
 
 	for _, test := range tests {
