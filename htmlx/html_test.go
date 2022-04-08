@@ -90,6 +90,33 @@ func BenchmarkStrip(b *testing.B) {
 	}
 }
 
+func TestSpaceless(t *testing.T) {
+	tests := []struct {
+		tag      string
+		html     string
+		expected string
+	}{
+		{"t0", "<div>hello</div>", "<div>hello</div>"},
+		{"t1", `
+
+<div>hello</div>
+
+`, "<div>hello</div>"},
+		{"t3", "<div style='font-size: 12px;'>hello</div>", "<div style='font-size: 12px;'>hello</div>"},
+		{"t4", "<style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>", "<style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>"},
+		{"t4", `
+<link rel='stylesheet' id='wp-block-library-css'  href='https://www.example.com/style.min.css?ver=5.9.1' type='text/css' media='all' />
+<style type="text/css">body {font-size: 12px}</style><!-- / See later. --><div style='font-size: 12px;'>hello</div>`, `<link rel='stylesheet' id='wp-block-library-css' href='https://www.example.com/style.min.css?ver=5.9.1' type='text/css' media='all' />
+<style type="text/css">body {font-size: 12px}</style><!-- / See later. --><div style='font-size: 12px;'>hello</div>`},
+		{"t7", "<div> hello     </div>  <span></span>", "<div> hello </div> <span></span>"},
+	}
+
+	for _, test := range tests {
+		html := Spaceless(test.html)
+		assert.Equal(t, test.expected, html, test.tag)
+	}
+}
+
 func TestTag(t *testing.T) {
 	tests := []struct {
 		tag        string

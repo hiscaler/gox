@@ -1,20 +1,24 @@
 package htmlx
 
 import (
+	"github.com/hiscaler/gox/stringx"
 	"regexp"
 	"sort"
 	"strings"
 	"unicode/utf8"
 )
 
-var rxHTML = regexp.MustCompile(`(?s)<sty(.*)/style>|<scr(.*)/script>|<link(.*)/>|<meta(.*)/>|<!--(.*)-->`)
+var (
+	rxStrip     = regexp.MustCompile(`(?s)<sty(.*)/style>|<scr(.*)/script>|<link(.*)/>|<meta(.*)/>|<!--(.*)-->`)
+	rxSpaceless = regexp.MustCompile(`/>\s+</`)
+)
 
 // Strip Clean html tags
 // https://stackoverflow.com/questions/55036156/how-to-replace-all-html-tag-with-empty-string-in-golang
 func Strip(html string) string {
 	html = strings.TrimSpace(html)
 	if html != "" {
-		html = rxHTML.ReplaceAllString(html, "")
+		html = rxStrip.ReplaceAllString(html, "")
 	}
 	if html == "" {
 		return ""
@@ -60,6 +64,16 @@ func Strip(html string) string {
 		end = i + 1
 	}
 	return strings.TrimSpace(builder.String())
+}
+
+// Spaceless 移除多余的空格
+func Spaceless(html string) string {
+	html = stringx.RemoveExtraSpace(html)
+	if html == "" {
+		return ""
+	}
+
+	return rxSpaceless.ReplaceAllString(html, "><")
 }
 
 func Tag(tag, content string, attributes, styles map[string]string) string {
