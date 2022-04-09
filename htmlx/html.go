@@ -101,17 +101,17 @@ func Clean(html string, cleanMode CleanMode) string {
 		return html
 	}
 	const n = 5
-	actions := [n]bool{} // css, javascript, comment, meta, space, all
+	modes := [n]bool{} // css, javascript, comment, meta, space, all
 	for i := 0; i < n; i++ {
 		if cleanMode&(1<<uint(10-i)) != 0 {
-			actions[i] = true
+			modes[i] = true
 		}
 	}
-	if actions[n-1] {
+	if modes[n-1] {
 		html = rxStrip.ReplaceAllString(html, "")
 	} else {
 		for i := 0; i < n-2; i++ {
-			if actions[i] {
+			if modes[i] {
 				switch i {
 				case 0:
 					html = rxCleanCSS.ReplaceAllString(html, "")
