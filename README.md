@@ -59,6 +59,7 @@ Golang functions library
   - Equal
   - SafeCharacters
   - HttpURL
+  - OS
 - jsonx
     - ToRawMessage
     - ToJson
