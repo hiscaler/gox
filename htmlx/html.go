@@ -9,8 +9,28 @@ import (
 )
 
 var (
-	rxStrip     = regexp.MustCompile(`(?s)<sty(.*)/style>|<scr(.*)/script>|<link(.*)/>|<meta(.*)/>|<!--(.*)-->`)
+	// Strip regexp
+	rxStrip = regexp.MustCompile(`(?s)<sty(.*)/style>|<scr(.*)/script>|<link(.*)/>|<meta(.*)/>|<!--(.*)-->`)
+
+	// Spaceless regexp
 	rxSpaceless = regexp.MustCompile(`/>\s+</`)
+
+	// Clean regexp
+	rxCleanCSS        = regexp.MustCompile(`(?s)<sty(.*)/style>|<link(.*)/>`)
+	rxCleanJavascript = regexp.MustCompile(`(?s)<script(.*)/script>`)
+	rxCleanComment    = regexp.MustCompile(`(?s)<!--(.*)-->`)
+	rxCleanMeta       = regexp.MustCompile(`(?s)<meta(.*)/>`)
+)
+
+type CleanMode uint32
+
+const (
+	CleanCSS CleanMode = 1 << (10 - iota)
+	CleanJavascript
+	CleanComment
+	CleanMeta
+	CleanSpace
+	CleanAll = CleanCSS | CleanJavascript | CleanComment | CleanMeta | CleanSpace
 )
 
 // Strip Clean html tags
@@ -74,6 +94,40 @@ func Spaceless(html string) string {
 	}
 
 	return rxSpaceless.ReplaceAllString(html, "><")
+}
+
+func Clean(html string, cleanMode CleanMode) string {
+	if html == "" {
+		return html
+	}
+	const n = 5
+	actions := [n]bool{} // css, javascript, comment, meta, space, all
+	for i := 0; i < n; i++ {
+		if cleanMode&(1<<uint(10-i)) != 0 {
+			actions[i] = true
+		}
+	}
+	if actions[n-1] {
+		html = rxStrip.ReplaceAllString(html, "")
+	} else {
+		for i := 0; i < n-2; i++ {
+			if actions[i] {
+				switch i {
+				case 0:
+					html = rxCleanCSS.ReplaceAllString(html, "")
+				case 1:
+					html = rxCleanJavascript.ReplaceAllString(html, "")
+				case 2:
+					html = rxCleanComment.ReplaceAllString(html, "")
+				case 3:
+					html = rxCleanMeta.ReplaceAllString(html, "")
+				case 4:
+					html = Spaceless(html)
+				}
+			}
+		}
+	}
+	return html
 }
 
 func Tag(tag, content string, attributes, styles map[string]string) string {

@@ -109,11 +109,48 @@ func TestSpaceless(t *testing.T) {
 <style type="text/css">body {font-size: 12px}</style><!-- / See later. --><div style='font-size: 12px;'>hello</div>`, `<link rel='stylesheet' id='wp-block-library-css' href='https://www.example.com/style.min.css?ver=5.9.1' type='text/css' media='all' />
 <style type="text/css">body {font-size: 12px}</style><!-- / See later. --><div style='font-size: 12px;'>hello</div>`},
 		{"t7", "<div> hello     </div>  <span></span>", "<div> hello </div> <span></span>"},
+		{"t8", `<!-- show up to 2 reviews by default -->
+
+
+
+
+
+
+
+
+
+
+
+
+<p>Custom flags for your garden are a great way to show your personality to your friends and neighbors. Design and turn it into an eye-catching flag all year round. This will be a beautiful addition to your yard and garden, also a simple sign to show your patriotism on Memorial Day, 4th of July or Veterans Day, Christmas holidays or any holiday of the year.
+
+</p>`, `<!-- show up to 2 reviews by default --> <p>Custom flags for your garden are a great way to show your personality to your friends and neighbors. Design and turn it into an eye-catching flag all year round. This will be a beautiful addition to your yard and garden, also a simple sign to show your patriotism on Memorial Day, 4th of July or Veterans Day, Christmas holidays or any holiday of the year. </p>`},
 	}
 
 	for _, test := range tests {
 		html := Spaceless(test.html)
 		assert.Equal(t, test.expected, html, test.tag)
+	}
+}
+
+func TestClean(t *testing.T) {
+	tests := []struct {
+		tag       string
+		html      string
+		cleanMode CleanMode
+		expected  string
+	}{
+		{"tcss1", "<div>hello</div>", CleanCSS, "<div>hello</div>"},
+		{"tcss2", "<style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>", CleanCSS, "<div style='font-size: 12px;'>hello</div>"},
+		{"tjavascript1", `<script src="//www.a.com/1.8.5/blog.js" type='text/javascript'></script><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>`, CleanJavascript, "<style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>"},
+		{"tcomment1", `<script src="//www.a.com/1.8.5/blog.js" type='text/javascript'></script><!--comment--><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>`, CleanComment, "<script src=\"//www.a.com/1.8.5/blog.js\" type='text/javascript'></script><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>"},
+		{"tcss,javascript,comment", `<script src="//www.a.com/1.8.5/blog.js" type='text/javascript'></script><!--comment--><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>`, CleanCSS | CleanJavascript | CleanComment, "<div style='font-size: 12px;'>hello</div>"},
+		{"tall1", `<script>alert("ddd")</script><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>`, CleanAll, "<div style='font-size: 12px;'>hello</div>"},
+	}
+
+	for _, testCase := range tests {
+		html := Clean(testCase.html, testCase.cleanMode)
+		assert.Equal(t, testCase.expected, html, testCase.tag)
 	}
 }
 

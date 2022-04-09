@@ -41,6 +41,7 @@ Golang functions library
 - htmlx
   - Strip
   - Spaceless
+  - Clean
   - Tag
 - inx
   - StringIn
