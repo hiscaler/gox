@@ -25,12 +25,12 @@ var (
 type CleanMode uint32
 
 const (
-	CleanCSS CleanMode = 1 << (10 - iota)
-	CleanJavascript
-	CleanComment
-	CleanMeta
-	CleanSpace
-	CleanAll = CleanCSS | CleanJavascript | CleanComment | CleanMeta | CleanSpace
+	CleanModeCSS CleanMode = 1 << (10 - iota)
+	CleanModeJavascript
+	CleanModeComment
+	CleanModeMeta
+	CleanModeSpace
+	CleanModeAll = CleanModeCSS | CleanModeJavascript | CleanModeComment | CleanModeMeta | CleanModeSpace
 )
 
 // Strip Clean html tags

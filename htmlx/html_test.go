@@ -140,12 +140,12 @@ func TestClean(t *testing.T) {
 		cleanMode CleanMode
 		expected  string
 	}{
-		{"tcss1", "<div>hello</div>", CleanCSS, "<div>hello</div>"},
-		{"tcss2", "<style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>", CleanCSS, "<div style='font-size: 12px;'>hello</div>"},
-		{"tjavascript1", `<script src="//www.a.com/1.8.5/blog.js" type='text/javascript'></script><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>`, CleanJavascript, "<style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>"},
-		{"tcomment1", `<script src="//www.a.com/1.8.5/blog.js" type='text/javascript'></script><!--comment--><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>`, CleanComment, "<script src=\"//www.a.com/1.8.5/blog.js\" type='text/javascript'></script><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>"},
-		{"tcss,javascript,comment", `<script src="//www.a.com/1.8.5/blog.js" type='text/javascript'></script><!--comment--><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>`, CleanCSS | CleanJavascript | CleanComment, "<div style='font-size: 12px;'>hello</div>"},
-		{"tall1", `<script>alert("ddd")</script><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>`, CleanAll, "<div style='font-size: 12px;'>hello</div>"},
+		{"tcss1", "<div>hello</div>", CleanModeCSS, "<div>hello</div>"},
+		{"tcss2", "<style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>", CleanModeCSS, "<div style='font-size: 12px;'>hello</div>"},
+		{"tjavascript1", `<script src="//www.a.com/1.8.5/blog.js" type='text/javascript'></script><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>`, CleanModeJavascript, "<style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>"},
+		{"tcomment1", `<script src="//www.a.com/1.8.5/blog.js" type='text/javascript'></script><!--comment--><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>`, CleanModeComment, "<script src=\"//www.a.com/1.8.5/blog.js\" type='text/javascript'></script><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>"},
+		{"tcss,javascript,comment", `<script src="//www.a.com/1.8.5/blog.js" type='text/javascript'></script><!--comment--><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>`, CleanModeCSS | CleanModeJavascript | CleanModeComment, "<div style='font-size: 12px;'>hello</div>"},
+		{"tall1", `<script>alert("ddd")</script><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>`, CleanModeAll, "<div style='font-size: 12px;'>hello</div>"},
 	}
 
 	for _, testCase := range tests {
