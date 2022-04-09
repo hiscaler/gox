@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"reflect"
 	"regexp"
+	"runtime"
 	"strings"
 	"time"
 	"unicode/utf8"
@@ -14,6 +15,27 @@ import (
 var (
 	rxSafeCharacters = regexp.MustCompile("^[a-zA-Z0-9\\.\\-_][a-zA-Z0-9\\.\\-_]*$")
 	rxNumber         = regexp.MustCompile("^[+-]?\\d+$|^\\d+[.]\\d+$")
+)
+
+// OS type
+const (
+	IsAix       = "aix"
+	IsAndroid   = "android"
+	IsDarwin    = "darwin"
+	IsDragonfly = "dragonfly"
+	IsFreebsd   = "freebsd"
+	IsHurd      = "hurd"
+	IsIllumos   = "illumos"
+	IsIos       = "ios"
+	IsJs        = "js"
+	IsLinux     = "linux"
+	IsNacl      = "nacl"
+	IsNetbsd    = "netbsd"
+	IsOpenbsd   = "openbsd"
+	IsPlan9     = "plan9"
+	IsSolaris   = "solaris"
+	IsWindows   = "windows"
+	IsZos       = "zos"
 )
 
 // Number Check any value is a number
@@ -137,4 +159,10 @@ func HttpURL(str string) bool {
 		return false
 	}
 	return regexp.MustCompile(URL).MatchString(str)
+}
+
+// OS check typ is a valid OS type
+// Usage: isx.OS(isx.IsLinux)
+func OS(typ string) bool {
+	return runtime.GOOS == typ
 }
