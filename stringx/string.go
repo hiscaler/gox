@@ -414,7 +414,12 @@ func Contains(s string, ss []string, caseSensitive bool) bool {
 }
 
 func QuoteMeta(s string) string {
+	if s == "" {
+		return s
+	}
+
 	var buf bytes.Buffer
+	buf.Grow(len(s))
 	for _, char := range s {
 		switch char {
 		case '.', '+', '\\', '(', ')', '[', ']', '$', '^', '*', '?':
