@@ -269,6 +269,19 @@ a
 
 					world!
 `, "hello, world!"},
+		{11, `
+
+<div a="1"           b="2">
+
+<span>
+
+hello world
+
+</span>
+
+
+    </div>
+`, "hello, world!"},
 	}
 	for _, testCase := range testCases {
 		actual := RemoveExtraSpace(testCase.string)
@@ -421,6 +434,13 @@ func TestContains(t *testing.T) {
 		assert.Equal(t, test.except, b, test.tag)
 	}
 }
+
+func BenchmarkContains(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Contains("Customer satisfaction is important to us. We are confident with our fuzzy blanket, but if you are not satisfied with our blanket feel free to contact us. we will provide you with the most satisfactory solution", []string{"free"}, false)
+	}
+}
+
 func TestQuoteMeta(t *testing.T) {
 	tests := []struct {
 		tag      string

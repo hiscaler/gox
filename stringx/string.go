@@ -393,24 +393,26 @@ func EndsWith(s string, ss []string, caseSensitive bool) bool {
 }
 
 func Contains(s string, ss []string, caseSensitive bool) bool {
-	in := false
+	if len(ss) == 0 {
+		return false
+	}
+
 	if !caseSensitive {
 		s = strings.ToLower(s)
 	}
 	for _, substr := range ss {
 		if substr == "" {
-			in = true
+			return true
 		} else {
 			if !caseSensitive {
 				substr = strings.ToLower(substr)
 			}
-			in = strings.Contains(s, substr)
-		}
-		if in {
-			break
+			if strings.Contains(s, substr) {
+				return true
+			}
 		}
 	}
-	return in
+	return false
 }
 
 func QuoteMeta(s string) string {
