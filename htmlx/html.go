@@ -108,7 +108,7 @@ func Clean(html string, cleanMode CleanMode) string {
 		}
 	}
 	if modes[n-1] {
-		html = rxStrip.ReplaceAllString(html, "")
+		html = Spaceless(rxStrip.ReplaceAllString(html, ""))
 	} else {
 		for i := 0; i < n-2; i++ {
 			if modes[i] {
