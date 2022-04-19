@@ -25,7 +25,7 @@ var (
 type CleanMode uint32
 
 const (
-	CleanModeCSS CleanMode = 1 << (10 - iota)
+	CleanModeCSS CleanMode = 1 << (10 - iota) // 包括元素内嵌样式
 	CleanModeJavascript
 	CleanModeComment
 	CleanModeMeta
