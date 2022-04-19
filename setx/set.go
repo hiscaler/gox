@@ -10,8 +10,7 @@ func ToStringSet(values []string, caseSensitive bool) []string {
 		return values
 	}
 
-	sets := make([]string, 0)
-	m := make(map[string]struct{}, 0)
+	m := make(map[string]string, 0)
 	for _, value := range values {
 		value = strings.TrimSpace(value)
 		if value != "" {
@@ -20,10 +19,19 @@ func ToStringSet(values []string, caseSensitive bool) []string {
 				fixedValue = strings.ToLower(fixedValue)
 			}
 			if _, ok := m[fixedValue]; !ok {
-				m[fixedValue] = struct{}{}
-				sets = append(sets, value)
+				m[fixedValue] = value
 			}
 		}
+	}
+	if len(m) == 0 {
+		return nil
+	}
+
+	sets := make([]string, len(m))
+	i := 0
+	for _, v := range m {
+		sets[i] = v
+		i++
 	}
 	return sets
 }

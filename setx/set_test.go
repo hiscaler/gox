@@ -36,6 +36,12 @@ func TestToStringSet(t *testing.T) {
 	}
 }
 
+func BenchmarkToStringSet(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		ToStringSet([]string{"A", "B", "c", "C", "a", "d", "d", "e", "fgh", "FGH", "fGH", "fgH"}, false)
+	}
+}
+
 func TestIntSliceToSet(t *testing.T) {
 	testCases := []struct {
 		A      []int
@@ -64,5 +70,11 @@ func TestIntSliceToSet(t *testing.T) {
 				t.Errorf("%d not in %#v", value, testCase.Values)
 			}
 		}
+	}
+}
+
+func BenchmarkToIntSet(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		ToIntSet([]int{1, 2, 3, 3, 45, 5, 6, 56, 56, 56, 77, 6, 7, 67, 678, 78, 78, 8, 78})
 	}
 }
