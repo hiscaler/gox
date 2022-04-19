@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/hiscaler/gox/setx"
 	"github.com/hiscaler/gox/slicex"
 	"golang.org/x/text/width"
 	"reflect"
@@ -454,15 +453,23 @@ func HexToByte(hex string) []byte {
 //
 // stringx.SequentialWordFields("this is a string, are you sure?", 1, ",") => ["this", "is", "a", "string", "are", "you", "sure"]
 // stringx.SequentialWordFields("this is a string, are you sure?", 2, ",") => ["this", "is", "a", "string", "are", "you", "sure", "this is", "is a", "a string", "are you", "you sure"]
-// todo 关注一下性能
 func SequentialWordFields(s string, n int, separators ...string) []string {
 	s = strings.TrimSpace(s)
 	if s == "" {
 		return nil
 	}
 
-	var rawItems []string
+	fields := make(map[string]string, 0)
 	sections := Split(s, separators...)
+	fnCleanWord := func(word string) string {
+		if word == "" {
+			return ""
+		}
+		return strings.TrimFunc(word, func(r rune) bool {
+			return !unicode.IsLetter(r) && !unicode.IsNumber(r)
+		})
+	}
+	sb := strings.Builder{}
 	for _, section := range sections {
 		words := strings.Fields(section)
 		maxN := len(words)
@@ -471,41 +478,48 @@ func SequentialWordFields(s string, n int, separators ...string) []string {
 			validN = maxN
 		}
 		for i, word := range words {
-			rawItems = append(rawItems, word)
+			word = fnCleanWord(word)
+			if word == "" {
+				continue
+			}
+			fieldKey := strings.ToLower(word)
+			if _, ok := fields[fieldKey]; !ok {
+				fields[fieldKey] = word
+			}
 			if n > 1 {
 				validN = i + n
 				if validN > maxN {
 					validN = maxN
 				}
 				for jj := validN; jj > i; jj-- {
-					sb := strings.Builder{}
+					sb.Reset()
 					for ii := i; ii < jj; ii++ {
-						sb.WriteString(words[ii])
-						if ii < jj-1 {
-							sb.WriteString(" ")
+						w := fnCleanWord(words[ii])
+						if w != "" {
+							sb.WriteString(w)
+							if ii < jj-1 {
+								sb.WriteRune(' ')
+							}
 						}
 					}
-					rawItems = append(rawItems, sb.String())
+					if sb.Len() > 0 {
+						fieldKey = strings.ToLower(sb.String())
+						if _, ok := fields[fieldKey]; !ok {
+							fields[fieldKey] = sb.String()
+						}
+					}
 				}
 			}
 		}
 	}
-
-	var items []string
-	for _, item := range rawItems {
-		var fields []string
-		for _, field := range strings.Fields(item) {
-			field = strings.TrimFunc(field, func(r rune) bool {
-				return !unicode.IsLetter(r) && !unicode.IsNumber(r)
-			})
-			if field != "" {
-				fields = append(fields, field)
-			}
-		}
-
-		if len(fields) > 0 {
-			items = append(items, strings.Join(fields, " "))
-		}
+	if len(fields) == 0 {
+		return nil
 	}
-	return setx.ToStringSet(items, true)
+	items := make([]string, len(fields))
+	i := 0
+	for _, v := range fields {
+		items[i] = v
+		i++
+	}
+	return items
 }
