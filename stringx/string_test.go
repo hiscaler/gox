@@ -455,3 +455,33 @@ func TestQuoteMeta(t *testing.T) {
 		assert.Equal(t, test.expected, b, test.tag)
 	}
 }
+
+func TestSequentialWordFields(t *testing.T) {
+	tests := []struct {
+		tag        string
+		string     string
+		n          int
+		separators []string
+		expected   []string
+	}{
+		{"t1", "hello world", 1, []string{}, []string{"hello", "world"}},
+		{"t2", "hello world", 2, []string{}, []string{"hello", "world", "hello world"}},
+		{"t3", "hello                 world", 2, []string{}, []string{"hello", "world", "hello world"}},
+		{"t4", "this is a string", 1, []string{}, []string{"this", "is", "a", "string"}},
+		{"t5", "this is a string", 2, []string{}, []string{"this", "is", "a", "string", "this is", "is a", "a string"}},
+		{"t6", "this is a string", 3, []string{}, []string{"this", "is", "a", "string", "this is", "this is a", "is a", "is a string", "a string"}},
+		{"t7", "What's you name? My name is XiaoMing.", 3, []string{"?"}, []string{"What's", "you", "name", "My", "is", "XiaoMing", "What's you", "What's you name", "you name", "My name", "My name is", "name is", "name is XiaoMing", "is XiaoMing"}},
+		{"t8", "a1, a2? b1 2b?", 3, []string{","}, []string{"a1", "a2", "b1", "2b", "a2 b1", "a2 b1 2b", "b1 2b"}},
+		{"t9", "a1, a?2? b1 2b?~", 3, []string{","}, []string{"a1", "a?2", "b1", "2b", "a?2 b1", "a?2 b1 2b", "b1 2b"}},
+	}
+	for _, test := range tests {
+		v := SequentialWordFields(test.string, test.n, test.separators...)
+		assert.ElementsMatch(t, test.expected, v, test.tag)
+	}
+}
+
+func BenchmarkSequentialWordFields(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		SequentialWordFields("What's you name? My name is XiaoMing.", 3, []string{"?"}...)
+	}
+}

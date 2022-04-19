@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/hiscaler/gox/setx"
 	"github.com/hiscaler/gox/slicex"
 	"golang.org/x/text/width"
 	"reflect"
@@ -445,4 +446,66 @@ func HexToByte(hex string) []byte {
 		bytes[i] = byte(value & 0xFF)
 	}
 	return bytes
+}
+
+// SequentialWordFields
+// 将 s 字符串根据指定的分隔符分隔为 1 - n 个连续单词组合的词组
+// 单词前后的非字母和数字将会移除掉（比如 help? 将会变成 help），单词中间的则不会处理（a?b 包含在单词中间的 ? 不会处理）
+//
+// stringx.SequentialWordFields("this is a string, are you sure?", 1, ",") => ["this", "is", "a", "string", "are", "you", "sure"]
+// stringx.SequentialWordFields("this is a string, are you sure?", 2, ",") => ["this", "is", "a", "string", "are", "you", "sure", "this is", "is a", "a string", "are you", "you sure"]
+// todo 关注一下性能
+func SequentialWordFields(s string, n int, separators ...string) []string {
+	s = strings.TrimSpace(s)
+	if s == "" {
+		return nil
+	}
+
+	var rawItems []string
+	sections := Split(s, separators...)
+	for _, section := range sections {
+		words := strings.Fields(section)
+		maxN := len(words)
+		validN := n
+		if n > maxN {
+			validN = maxN
+		}
+		for i, word := range words {
+			rawItems = append(rawItems, word)
+			if n > 1 {
+				validN = i + n
+				if validN > maxN {
+					validN = maxN
+				}
+				for jj := validN; jj > i; jj-- {
+					sb := strings.Builder{}
+					for ii := i; ii < jj; ii++ {
+						sb.WriteString(words[ii])
+						if ii < jj-1 {
+							sb.WriteString(" ")
+						}
+					}
+					rawItems = append(rawItems, sb.String())
+				}
+			}
+		}
+	}
+
+	var items []string
+	for _, item := range rawItems {
+		var fields []string
+		for _, field := range strings.Fields(item) {
+			field = strings.TrimFunc(field, func(r rune) bool {
+				return !unicode.IsLetter(r) && !unicode.IsNumber(r)
+			})
+			if field != "" {
+				fields = append(fields, field)
+			}
+		}
+
+		if len(fields) > 0 {
+			items = append(items, strings.Join(fields, " "))
+		}
+	}
+	return setx.ToStringSet(items, true)
 }

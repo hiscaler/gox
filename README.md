@@ -115,6 +115,7 @@ Golang functions library
   - RemoveEmoji
   - Cut
   - RemoveExtraSpace
+  - SequentialWordFields
   - ToBytes
   - WordMatched
   - StartsWith
