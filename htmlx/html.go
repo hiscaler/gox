@@ -142,8 +142,9 @@ func Tag(tag, content string, attributes, styles map[string]string) string {
 	fnSortedKeys := func(d map[string]string) []string {
 		n := len(d)
 		if n == 0 {
-			return []string{}
+			return nil
 		}
+
 		keys := make([]string, n)
 		i := 0
 		for k := range d {
