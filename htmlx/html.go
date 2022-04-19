@@ -10,13 +10,13 @@ import (
 
 var (
 	// Strip regexp
-	rxStrip = regexp.MustCompile(`(?s)<sty(.*)/style>|<scr(.*)/script>|<link(.*)/>|<meta(.*)/>|<!--(.*)-->`)
+	rxStrip = regexp.MustCompile(`(?s)<sty(.*)/style>|<scr(.*)/script>|<link(.*)/>|<meta(.*)/>|<!--(.*)-->| style=['"]+(.*)['"]+`)
 
 	// Spaceless regexp
 	rxSpaceless = regexp.MustCompile(`/>\s+</`)
 
 	// Clean regexp
-	rxCleanCSS        = regexp.MustCompile(`(?s)<sty(.*)/style>|<link(.*)/>`)
+	rxCleanCSS        = regexp.MustCompile(`(?s)<sty(.*)/style>|<link(.*)/>| style=['"]+(.*)['"]+`)
 	rxCleanJavascript = regexp.MustCompile(`(?s)<script(.*)/script>`)
 	rxCleanComment    = regexp.MustCompile(`(?s)<!--(.*)-->`)
 	rxCleanMeta       = regexp.MustCompile(`(?s)<meta(.*)/>`)
@@ -83,7 +83,11 @@ func Strip(html string) string {
 		in = false
 		end = i + 1
 	}
-	return strings.TrimSpace(builder.String())
+	s := builder.String()
+	if s != "" {
+		s = strings.TrimSpace(Spaceless(s))
+	}
+	return s
 }
 
 // Spaceless 移除多余的空格

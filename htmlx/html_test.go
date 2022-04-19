@@ -61,6 +61,7 @@ func TestStrip(t *testing.T) {
 
 </p>`, "Custom flags for your garden are a great way to show your personality to your friends and neighbors. Design and turn it into an eye-catching flag all year round. This will be a beautiful addition to your yard and garden, also a simple sign to show your patriotism on Memorial Day, 4th of July or Veterans Day, Christmas holidays or any holiday of the year."},
 		{"t7", "&lt;div>hello<div>", "hello"},
+		{"t8", "   <div>                  hello          world             <div>", "hello world"},
 	}
 
 	for _, test := range tests {
@@ -141,11 +142,11 @@ func TestClean(t *testing.T) {
 		expected  string
 	}{
 		{"tcss1", "<div>hello</div>", CleanModeCSS, "<div>hello</div>"},
-		{"tcss2", "<style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>", CleanModeCSS, "<div style='font-size: 12px;'>hello</div>"},
+		{"tcss2", "<style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>", CleanModeCSS, "<div>hello</div>"},
 		{"tjavascript1", `<script src="//www.a.com/1.8.5/blog.js" type='text/javascript'></script><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>`, CleanModeJavascript, "<style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>"},
 		{"tcomment1", `<script src="//www.a.com/1.8.5/blog.js" type='text/javascript'></script><!--comment--><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>`, CleanModeComment, "<script src=\"//www.a.com/1.8.5/blog.js\" type='text/javascript'></script><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>"},
-		{"tcss,javascript,comment", `<script src="//www.a.com/1.8.5/blog.js" type='text/javascript'></script><!--comment--><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>`, CleanModeCSS | CleanModeJavascript | CleanModeComment, "<div style='font-size: 12px;'>hello</div>"},
-		{"tall1", `<script>alert("ddd")</script><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>`, CleanModeAll, "<div style='font-size: 12px;'>hello</div>"},
+		{"tcss,javascript,comment", `<script src="//www.a.com/1.8.5/blog.js" type='text/javascript'></script><!--comment--><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>`, CleanModeCSS | CleanModeJavascript | CleanModeComment, "<div>hello</div>"},
+		{"tall1", `<script>alert("ddd")</script><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>`, CleanModeAll, "<div>hello</div>"},
 		{"tall2", `<!-- show up to 2 reviews by default -->
 		
 		
