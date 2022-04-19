@@ -146,6 +146,23 @@ func TestClean(t *testing.T) {
 		{"tcomment1", `<script src="//www.a.com/1.8.5/blog.js" type='text/javascript'></script><!--comment--><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>`, CleanModeComment, "<script src=\"//www.a.com/1.8.5/blog.js\" type='text/javascript'></script><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>"},
 		{"tcss,javascript,comment", `<script src="//www.a.com/1.8.5/blog.js" type='text/javascript'></script><!--comment--><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>`, CleanModeCSS | CleanModeJavascript | CleanModeComment, "<div style='font-size: 12px;'>hello</div>"},
 		{"tall1", `<script>alert("ddd")</script><style>body {font-size: 12px}</style><div style='font-size: 12px;'>hello</div>`, CleanModeAll, "<div style='font-size: 12px;'>hello</div>"},
+		{"tall2", `<!-- show up to 2 reviews by default -->
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<p>Product details: +++ Material: 100% Ceramic +++ Size: 11oz or 15oz +++ Dye Sublimation graphics for exceptional prints. +++ Dishwasher and microwave safe. +++ Image is printed on both sides of mug. +++ Printed in the U.S.A. +++ Shipping info: Shipping time is approximately 5-7 business days.
+		
+		</p>`, CleanModeAll, "<p>Product details: +++ Material: 100% Ceramic +++ Size: 11oz or 15oz +++ Dye Sublimation graphics for exceptional prints. +++ Dishwasher and microwave safe. +++ Image is printed on both sides of mug. +++ Printed in the U.S.A. +++ Shipping info: Shipping time is approximately 5-7 business days. </p>"},
+		{"tall3", `<div>   1  2 </div> <div>2</div>`, CleanModeAll, `<div> 1 2 </div> <div>2</div>`},
 	}
 
 	for _, testCase := range tests {
