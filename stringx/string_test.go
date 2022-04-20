@@ -159,6 +159,10 @@ func TestString(t *testing.T) {
 		{6, [2]int{1, 2}, "[1,2]"},
 		{7, []int{1, 2}, "[1,2]"},
 		{8, []string{"a", "b"}, `["a","b"]`},
+		{9, struct {
+			ID   int
+			Name string
+		}{ID: 1, Name: "John"}, `{"ID":1,"Name":"John"}`},
 	}
 	for _, testCase := range testCases {
 		s := String(testCase.Value)
