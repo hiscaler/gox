@@ -199,6 +199,8 @@ func TestHttpURL(t *testing.T) {
 		{"t8", "", false},
 		{"t9", "aaa", false},
 		{"t10", "https://www.example.com:8080", true},
+		{"t11", "//www.example.com:8080", true},
+		{"t12", "//a.b", true},
 	}
 
 	for _, test := range tests {

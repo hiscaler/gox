@@ -142,6 +142,9 @@ func HttpURL(str string) bool {
 	if str == "" || utf8.RuneCountInString(str) >= 2083 || len(str) <= 3 || strings.HasPrefix(str, ".") {
 		return false
 	}
+	if strings.HasPrefix(str, "//") {
+		str = "http:" + str
+	}
 	strTemp := str
 	if strings.Contains(str, ":") && !strings.Contains(str, "://") {
 		// support no indicated urlscheme but with colon for port number
