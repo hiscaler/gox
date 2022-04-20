@@ -1,6 +1,7 @@
 package urlx
 
 import (
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -56,5 +57,28 @@ func TestURL_DeleteValue(t *testing.T) {
 		if s != tc.Except {
 			t.Errorf("%d except: %s, actual: %s", tc.Number, tc.Except, s)
 		}
+	}
+}
+
+func TestIsAbsolute(t *testing.T) {
+	testCases := []struct {
+		tag   string
+		url   string
+		isAbs bool
+	}{
+		{"t0.1", "https://www.a.com", true},
+		{"t0.2", "http://www.a.com", true},
+		{"t0.3", "//www.a.com", true},
+		{"t0.4", "//a.b", true},
+
+		{"t1.1", "httpa.com", false},
+		{"t1.2", "httpa.com//", false},
+		{"t1.3", "//", false},
+		{"t1.4", "//a", false},
+		{"t1.5", "//....a", false},
+	}
+	for _, testCase := range testCases {
+		isAbs := IsAbsolute(testCase.url)
+		assert.Equal(t, testCase.isAbs, isAbs, testCase.tag)
 	}
 }

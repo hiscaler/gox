@@ -1,6 +1,7 @@
 package urlx
 
 import (
+	"github.com/hiscaler/gox/isx"
 	"net/url"
 	"strings"
 )
@@ -66,4 +67,23 @@ func (u URL) String() string {
 		s = strings.Replace(s, rawQuery, u.values.Encode(), 1)
 	}
 	return s
+}
+
+// IsAbsolute 是否为绝对地址
+func IsAbsolute(s string) bool {
+	if strings.HasPrefix(s, "//") {
+		s = "http:" + s
+	}
+	if isx.HttpURL(s) {
+		if u, err := url.Parse(s); err == nil {
+			return u.IsAbs() && len(u.Host) > 3
+		}
+	}
+
+	return false
+}
+
+// IsRelative 是否为相对地址
+func IsRelative(url string) bool {
+	return !IsAbsolute(url)
 }

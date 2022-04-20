@@ -80,6 +80,8 @@ Golang functions library
       - DelKey
       - HasKey
       - String
+      - IsAbsolute
+      - IsRelative
 - nullx
     - StringFrom
     - NullString
