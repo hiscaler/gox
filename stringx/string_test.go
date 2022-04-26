@@ -236,7 +236,7 @@ func TestTrimAny(t *testing.T) {
 	for _, testCase := range testCases {
 		actual := TrimAny(testCase.string, testCase.replacePairs...)
 		if actual != testCase.expected {
-			t.Errorf("Cut(`%s`, %#v) = `%s`; expected `%s`", testCase.string, testCase.replacePairs, actual, testCase.expected)
+			t.Errorf("TrimAny(`%s`, %#v) = `%s`; expected `%s`", testCase.string, testCase.replacePairs, actual, testCase.expected)
 		}
 	}
 }

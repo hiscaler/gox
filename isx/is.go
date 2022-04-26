@@ -42,7 +42,7 @@ const (
 func Number(i interface{}) bool {
 	switch i.(type) {
 	case string:
-		s := stringx.Cut(strings.TrimSpace(i.(string)), "+", "-")
+		s := stringx.TrimAny(strings.TrimSpace(i.(string)), "+", "-")
 		n := len(s)
 		if n == 0 {
 			return false
