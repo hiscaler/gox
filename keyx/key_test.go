@@ -20,8 +20,8 @@ func TestGenerate(t *testing.T) {
 	testCases := []testCase{
 		{1, []interface{}{1, 2, 3}, "123"},
 		{2, []interface{}{0, -1, 2, 3}, "0-123"},
-		{3, []interface{}{1.1, 2.12, 3.123}, "1.102.123.12"},
-		{4, []interface{}{1.1, 2.12, 3.123}, "1.102.123.12"},
+		{3, []interface{}{1.1, 2.12, 3.123}, "1.12.123.123"},
+		{4, []interface{}{1.1, 2.12, 3.123}, "1.12.123.123"},
 		{5, []interface{}{"a", "b", "c"}, "abc"},
 		{6, []interface{}{"a", "b", "c", 1, 2, 3}, "abc123"},
 		{7, []interface{}{true, true, false, false}, "truetruefalsefalse"},

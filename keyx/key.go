@@ -32,7 +32,7 @@ func Generate(values ...interface{}) string {
 				sb.WriteString(strconv.FormatUint(v.Uint(), 10))
 			}
 		case reflect.Float32, reflect.Float64:
-			sb.WriteString(strconv.FormatFloat(v.Float(), 'f', 2, 64))
+			sb.WriteString(strconv.FormatFloat(v.Float(), 'f', -1, 64))
 		case reflect.Map:
 			keys := make([]string, len(v.MapKeys()))
 			i := 0
