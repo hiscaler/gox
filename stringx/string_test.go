@@ -191,13 +191,14 @@ func TestRemoveEmoji(t *testing.T) {
 	}
 }
 
-func TestCut(t *testing.T) {
+func TestTrimAny(t *testing.T) {
 	var testCases = []struct {
 		string       string
 		replacePairs []string
 		expected     string
 	}{
 		{"  a", []string{}, "  a"},
+		{"  10GGGGgggggg", []string{"", "G"}, "10"},
 		{"  A", []string{}, "  A"},
 		{"  Abc", []string{""}, "Abc"},
 		{"  Abc", []string{"", "", " "}, "Abc"},
@@ -233,16 +234,16 @@ func TestCut(t *testing.T) {
 		{"a b a b c d e f g g f e d", []string{"a", "b", "c", "d", "f g", " "}, "e f g g f e"},
 	}
 	for _, testCase := range testCases {
-		actual := Cut(testCase.string, testCase.replacePairs...)
+		actual := TrimAny(testCase.string, testCase.replacePairs...)
 		if actual != testCase.expected {
 			t.Errorf("Cut(`%s`, %#v) = `%s`; expected `%s`", testCase.string, testCase.replacePairs, actual, testCase.expected)
 		}
 	}
 }
 
-func BenchmarkCut(b *testing.B) {
+func BenchmarkTrimAny(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		Cut("a b a b c d e f g g f e d", "a", "b", "c", "d", "f g", " ")
+		TrimAny("a b a b c d e f g g f e d", "a", "b", "c", "d", "f g", " ")
 	}
 }
 

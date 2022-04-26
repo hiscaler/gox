@@ -115,7 +115,7 @@ Golang functions library
   - Split
   - String
   - RemoveEmoji
-  - Cut
+  - TrimAny
   - RemoveExtraSpace
   - SequentialWordFields
   - ToBytes

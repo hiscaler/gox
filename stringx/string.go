@@ -149,8 +149,8 @@ func RemoveEmoji(str string, trim bool) string {
 	return str
 }
 
-// Cut 移除头部和尾部指定的内容
-func Cut(s string, sets ...string) string {
+// TrimAny 移除头部和尾部指定的内容
+func TrimAny(s string, sets ...string) string {
 	if s == "" || len(sets) == 0 {
 		return s
 	}
@@ -208,17 +208,20 @@ func Cut(s string, sets ...string) string {
 		for {
 			hitCounts := 0
 			for _, set := range value {
+				setLen := len(set)
 				ss := []string{set}
 				start := StartsWith(s, ss, false)
 				if start {
-					s = s[len(set):]
+					s = s[setLen:]
 					if trimSpace {
 						s = strings.TrimSpace(s)
 					}
 				}
 				end := EndsWith(s, ss, false)
 				if end {
-					s = s[0 : len(s)-len(set)]
+					if len(s) > setLen {
+						s = s[0 : len(s)-setLen]
+					}
 					if trimSpace {
 						s = strings.TrimSpace(s)
 					}
