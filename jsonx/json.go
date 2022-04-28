@@ -25,6 +25,10 @@ func ToRawMessage(i interface{}, defaultValue string) (json.RawMessage, error) {
 
 // ToJson Change interface to json string
 func ToJson(i interface{}, defaultValue string) string {
+	if i == nil {
+		return defaultValue
+	}
+
 	b, err := json.Marshal(i)
 	if err != nil {
 		return defaultValue
@@ -42,6 +46,10 @@ func ToJson(i interface{}, defaultValue string) string {
 }
 
 func ToPrettyJson(i interface{}) string {
+	if i == nil {
+		return "null"
+	}
+
 	b, err := json.Marshal(i)
 	if err != nil {
 		return fmt.Sprintf("%+v", i)
@@ -51,7 +59,6 @@ func ToPrettyJson(i interface{}) string {
 	if err != nil {
 		return fmt.Sprintf("%+v", i)
 	}
-
 	return buf.String()
 }
 

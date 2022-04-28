@@ -23,11 +23,12 @@ func TestToJson(t *testing.T) {
 			Name string `json:"a"`
 			Age  int    `json:"b"`
 		}{"Hello", 12}, "", `{"a":"hello","b":12}`},
-		{5, nil, "abc", "null"},
+		{5, nil, "abc", "abc"},
 		{6, []int{1, 2}, "null", "[1,2]"},
 		{7, []string{"a", "b"}, "null", `["a","b"]`},
 		{8, 1, "[]", "1"},
 		{9, "abc", "[]", `"abc"`},
+		{10, nil, "[]", `[]`},
 	}
 	for _, testCase := range testCases {
 		s := ToJson(testCase.Value, testCase.DefaultValue)
