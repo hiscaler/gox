@@ -117,7 +117,7 @@ func TestStringSliceDiff(t *testing.T) {
 		DiffValue      []string
 	}{
 		{1, [][]string{{"a", "b", "c"}, {"a", "b", "d"}}, []string{"c"}},
-		{1, [][]string{{"a", "b", "c"}, {"a"}}, []string{"c"}},
+		{1, [][]string{{"a", "b", "c"}, {"a"}}, []string{"b", "c"}},
 		{2, [][]string{{"a", "b", "d"}, {"a", "b", "c"}}, []string{"d"}},
 		{3, [][]string{{"a", "b", "c"}, {"a", "b", "c"}}, []string{}},
 		{4, [][]string{{"a", "b", ""}, {"a", "b", "c"}}, []string{""}},
