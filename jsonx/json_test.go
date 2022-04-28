@@ -7,6 +7,7 @@ import (
 )
 
 func TestToJson(t *testing.T) {
+	var names []string
 	testCases := []struct {
 		Number       int
 		Value        interface{}
@@ -29,6 +30,7 @@ func TestToJson(t *testing.T) {
 		{8, 1, "[]", "1"},
 		{9, "abc", "[]", `"abc"`},
 		{10, nil, "[]", `[]`},
+		{11, names, "[]", `[]`},
 	}
 	for _, testCase := range testCases {
 		s := ToJson(testCase.Value, testCase.DefaultValue)

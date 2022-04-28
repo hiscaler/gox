@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"strings"
 )
 
@@ -28,6 +29,13 @@ func ToJson(i interface{}, defaultValue string) string {
 	if i == nil {
 		return defaultValue
 	}
+	vo := reflect.ValueOf(i)
+	switch vo.Kind() {
+	case reflect.Chan, reflect.Func, reflect.Map, reflect.Ptr, reflect.UnsafePointer, reflect.Interface, reflect.Slice:
+		if vo.IsNil() {
+			return defaultValue
+		}
+	}
 
 	b, err := json.Marshal(i)
 	if err != nil {
@@ -48,6 +56,13 @@ func ToJson(i interface{}, defaultValue string) string {
 func ToPrettyJson(i interface{}) string {
 	if i == nil {
 		return "null"
+	}
+	vo := reflect.ValueOf(i)
+	switch vo.Kind() {
+	case reflect.Chan, reflect.Func, reflect.Map, reflect.Ptr, reflect.UnsafePointer, reflect.Interface, reflect.Slice:
+		if vo.IsNil() {
+			return "null"
+		}
 	}
 
 	b, err := json.Marshal(i)
