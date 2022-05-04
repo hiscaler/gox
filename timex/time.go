@@ -66,3 +66,38 @@ func IsAM(t time.Time) bool {
 func IsPM(t time.Time) bool {
 	return t.Hour() >= 12
 }
+
+func WeekStart(yearWeek int) time.Time {
+	year := yearWeek / 100
+	week := yearWeek % year
+	// Start from the middle of the year:
+	t := time.Date(year, 7, 1, 0, 0, 0, 0, time.UTC)
+
+	// Roll back to Monday:
+	if wd := t.Weekday(); wd == time.Sunday {
+		t = t.AddDate(0, 0, -6)
+	} else {
+		t = t.AddDate(0, 0, -int(wd)+1)
+	}
+
+	// Difference in weeks:
+	_, w := t.ISOWeek()
+	t = t.AddDate(0, 0, (week-w)*7)
+
+	return t
+}
+
+func YearWeeksByWeek(startYearWeek, endYearWeek int) []int {
+	weeks := make([]int, 0)
+	weekStart := WeekStart(startYearWeek)
+	weekEnd := WeekStart(endYearWeek)
+	for {
+		if weekStart.After(weekEnd) {
+			break
+		}
+		y, w := weekStart.ISOWeek()
+		weeks = append(weeks, y*100+w)
+		weekStart = weekStart.AddDate(0, 0, 7)
+	}
+	return weeks
+}

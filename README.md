@@ -135,3 +135,5 @@ Golang functions library
   - MonthEnd
   - IsAM
   - IsPM
+  - WeekStart
+  - YearWeeksByWeek

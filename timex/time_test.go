@@ -125,3 +125,34 @@ func TestMonthEnd(t *testing.T) {
 		assert.Equal(t, testCase.expected, v, testCase.tag)
 	}
 }
+
+func TestWeekStart(t *testing.T) {
+	testCases := []struct {
+		tag      string
+		yearWeek int
+		expected string
+	}{
+		{"t1", 202201, "2022-01-03 00:00:00"},
+		{"t2", 202202, "2022-01-10 00:00:00"},
+	}
+	for _, testCase := range testCases {
+		v := WeekStart(testCase.yearWeek).Format("2006-01-02 15:04:05")
+		assert.Equal(t, testCase.expected, v, testCase.tag)
+	}
+}
+
+func TestYearWeeksByWeek(t *testing.T) {
+	testCases := []struct {
+		tag           string
+		beginYearWeek int
+		endYearWeek   int
+		expected      []int
+	}{
+		{"t1", 202201, 202202, []int{202201, 202202}},
+		{"t1", 202201, 202204, []int{202201, 202202, 202203, 202204}},
+	}
+	for _, testCase := range testCases {
+		v := YearWeeksByWeek(testCase.beginYearWeek, testCase.endYearWeek)
+		assert.Equal(t, testCase.expected, v, testCase.tag)
+	}
+}
