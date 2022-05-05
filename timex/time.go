@@ -101,3 +101,9 @@ func YearWeeksByWeek(startYearWeek, endYearWeek int) []int {
 	}
 	return weeks
 }
+
+func YearWeeksByTime(startDate, endDate time.Time) []int {
+	y1, w1 := startDate.ISOWeek()
+	y2, w2 := endDate.ISOWeek()
+	return YearWeeksByWeek(y1*100+w1, y2*100+w2)
+}

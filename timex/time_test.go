@@ -149,10 +149,28 @@ func TestYearWeeksByWeek(t *testing.T) {
 		expected      []int
 	}{
 		{"t1", 202201, 202202, []int{202201, 202202}},
-		{"t1", 202201, 202204, []int{202201, 202202, 202203, 202204}},
+		{"t2", 202201, 202204, []int{202201, 202202, 202203, 202204}},
 	}
 	for _, testCase := range testCases {
 		v := YearWeeksByWeek(testCase.beginYearWeek, testCase.endYearWeek)
+		assert.Equal(t, testCase.expected, v, testCase.tag)
+	}
+}
+
+func TestYearWeeksByTime(t *testing.T) {
+	testCases := []struct {
+		tag       string
+		beginDate string
+		endDate   string
+		expected  []int
+	}{
+		{"t1", "2022-01-01", "2022-01-02", []int{202152}},
+		{"t2", "2022-01-01", "2022-02-02", []int{202152, 202201, 202202, 202203, 202204, 202205}},
+	}
+	for _, testCase := range testCases {
+		beginDate, _ := time.Parse("2006-01-02", testCase.beginDate)
+		endDate, _ := time.Parse("2006-01-02", testCase.endDate)
+		v := YearWeeksByTime(beginDate, endDate)
 		assert.Equal(t, testCase.expected, v, testCase.tag)
 	}
 }

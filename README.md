@@ -137,3 +137,4 @@ Golang functions library
   - IsPM
   - WeekStart
   - YearWeeksByWeek
+  - YearWeeksByTime
