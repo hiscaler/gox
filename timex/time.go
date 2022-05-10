@@ -87,6 +87,11 @@ func WeekStart(yearWeek int) time.Time {
 	return t
 }
 
+func WeekEnd(yearWeek int) time.Time {
+	t := WeekStart(yearWeek).AddDate(0, 0, 6)
+	return time.Date(t.Year(), t.Month(), t.Day(), 23, 59, 59, 0, time.UTC)
+}
+
 func YearWeeksByWeek(startYearWeek, endYearWeek int) []int {
 	weeks := make([]int, 0)
 	weekStart := WeekStart(startYearWeek)
