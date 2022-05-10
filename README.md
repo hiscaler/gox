@@ -125,6 +125,9 @@ Golang functions library
   - Contains
   - QuoteMeta
   - HexToByte
+  - Len
+  - UpperFirst
+  - LowerFirst
 - timex
   - IsAmericaSummerTime
   - ChineseTimeLocation

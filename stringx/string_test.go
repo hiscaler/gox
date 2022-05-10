@@ -490,3 +490,57 @@ func BenchmarkSequentialWordFields(b *testing.B) {
 		SequentialWordFields("What's you name? My name is XiaoMing.", 3, []string{"?"}...)
 	}
 }
+
+func TestLen(t *testing.T) {
+	testCases := []struct {
+		tag      string
+		string   string
+		expected int
+	}{
+		{"t1", "hello", 5},
+		{"t1", "hello world", 11},
+		{"t1", "hello中国", 7},
+		{"t1", "hello 中国", 8},
+		{"t1", "你好中国", 4},
+	}
+	for _, testCase := range testCases {
+		n := Len(testCase.string)
+		assert.Equal(t, testCase.expected, n, testCase.tag)
+	}
+}
+
+func TestUpperFirst(t *testing.T) {
+	testCases := []struct {
+		tag      string
+		string   string
+		expected string
+	}{
+		{"t1", "hello", "Hello"},
+		{"t1", "hello world", "Hello world"},
+		{"t1", "hello中国", "Hello中国"},
+		{"t1", "hello 中国", "Hello 中国"},
+		{"t1", "你好中国", "你好中国"},
+	}
+	for _, testCase := range testCases {
+		s := UpperFirst(testCase.string)
+		assert.Equal(t, testCase.expected, s, testCase.tag)
+	}
+}
+
+func TestLowerFirst(t *testing.T) {
+	testCases := []struct {
+		tag      string
+		string   string
+		expected string
+	}{
+		{"t1", "Hello", "hello"},
+		{"t1", "Hello world", "hello world"},
+		{"t1", "Hello中国", "hello中国"},
+		{"t1", "Hello 中国", "hello 中国"},
+		{"t1", "你好中国", "你好中国"},
+	}
+	for _, testCase := range testCases {
+		s := LowerFirst(testCase.string)
+		assert.Equal(t, testCase.expected, s, testCase.tag)
+	}
+}

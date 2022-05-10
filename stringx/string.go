@@ -526,3 +526,28 @@ func SequentialWordFields(s string, n int, separators ...string) []string {
 	}
 	return items
 }
+
+// Len 获取字符串长度（一个中文算 1）
+func Len(s string) int {
+	return len([]rune(s))
+}
+
+// UpperFirst 首字母大写
+func UpperFirst(s string) string {
+	r := []rune(s)
+	if len(s) > 0 && unicode.IsLetter(r[0]) && unicode.IsLower(r[0]) {
+		r[0] -= 32
+		return string(r)
+	}
+	return s
+}
+
+// LowerFirst 首字母小写
+func LowerFirst(s string) string {
+	r := []rune(s)
+	if len(s) > 0 && unicode.IsLetter(r[0]) && unicode.IsUpper(r[0]) {
+		r[0] += 32
+		return string(r)
+	}
+	return s
+}
