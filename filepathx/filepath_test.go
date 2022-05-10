@@ -52,7 +52,7 @@ func TestDirs(t *testing.T) {
 				Except:        []string{"2"},
 				Recursive:     true,
 			},
-			[]string{"testdata", "1", "1.1"},
+			[]string{"testdata", "1", "1.1", "1.1", "1.1.1"},
 		},
 		{
 			5,
@@ -61,7 +61,7 @@ func TestDirs(t *testing.T) {
 				CaseSensitive: false,
 				Recursive:     true,
 			},
-			[]string{"testdata", "1", "1.1", "2"},
+			[]string{"testdata", "1", "1.1", "1.1", "2", "1.1.1"},
 		},
 		{
 			6,
@@ -69,7 +69,7 @@ func TestDirs(t *testing.T) {
 			WalkOption{
 				Recursive: true,
 			},
-			[]string{"1", "1.1", "2"},
+			[]string{"1", "1.1", "1.1", "2", "1.1.1"},
 		},
 		{
 			7,
@@ -135,7 +135,7 @@ func TestFiles(t *testing.T) {
 				Except:        []string{"2.txt"},
 				Recursive:     true,
 			},
-			[]string{"filepath.go", "filepath_test.go", "1.1.txt"},
+			[]string{"filepath.go", "filepath_test.go", "1.1.txt", "中文_ZH (1).txt", "中文_ZH (1).txt", "中文_ZH (9).txt"},
 		},
 		{
 			5,
@@ -144,7 +144,7 @@ func TestFiles(t *testing.T) {
 				CaseSensitive: false,
 				Recursive:     true,
 			},
-			[]string{"filepath.go", "filepath_test.go", "1.1.txt", "2.txt"},
+			[]string{"filepath.go", "filepath_test.go", "1.1.txt", "2.txt", "中文_ZH (1).txt", "中文_ZH (1).txt", "中文_ZH (9).txt"},
 		},
 		{
 			6,
@@ -152,7 +152,7 @@ func TestFiles(t *testing.T) {
 			WalkOption{
 				Recursive: true,
 			},
-			[]string{"1.1.txt", "2.txt"},
+			[]string{"1.1.txt", "2.txt", "中文_ZH (1).txt", "中文_ZH (1).txt", "中文_ZH (9).txt"},
 		},
 		{
 			7,
