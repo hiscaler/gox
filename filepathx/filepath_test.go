@@ -135,7 +135,7 @@ func TestFiles(t *testing.T) {
 				Except:        []string{"2.txt"},
 				Recursive:     true,
 			},
-			[]string{"filepath.go", "filepath_test.go", "1.1.txt", "中文_ZH (1).txt", "中文_ZH (1).txt", "中文_ZH (9).txt"},
+			[]string{"filepath.go", "filepath_test.go", "1.1.txt", "中文_ZH (1).txt", "中文_ZH (1).txt", "中文_ZH (9).txt", "0.txt"},
 		},
 		{
 			5,
@@ -144,7 +144,7 @@ func TestFiles(t *testing.T) {
 				CaseSensitive: false,
 				Recursive:     true,
 			},
-			[]string{"filepath.go", "filepath_test.go", "1.1.txt", "2.txt", "中文_ZH (1).txt", "中文_ZH (1).txt", "中文_ZH (9).txt"},
+			[]string{"filepath.go", "filepath_test.go", "1.1.txt", "2.txt", "中文_ZH (1).txt", "中文_ZH (1).txt", "中文_ZH (9).txt", "0.txt"},
 		},
 		{
 			6,
@@ -152,7 +152,7 @@ func TestFiles(t *testing.T) {
 			WalkOption{
 				Recursive: true,
 			},
-			[]string{"1.1.txt", "2.txt", "中文_ZH (1).txt", "中文_ZH (1).txt", "中文_ZH (9).txt"},
+			[]string{"1.1.txt", "2.txt", "中文_ZH (1).txt", "中文_ZH (1).txt", "中文_ZH (9).txt", "0.txt"},
 		},
 		{
 			7,
@@ -160,7 +160,15 @@ func TestFiles(t *testing.T) {
 			WalkOption{
 				Recursive: false,
 			},
-			[]string{},
+			[]string{"0.txt"},
+		},
+		{
+			8,
+			root + "/testdata/1/1.1/1.1",
+			WalkOption{
+				Recursive: false,
+			},
+			[]string{"中文_ZH (1).txt"},
 		},
 	}
 	for _, testCase := range testCases {
