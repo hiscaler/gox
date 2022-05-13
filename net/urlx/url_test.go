@@ -70,6 +70,10 @@ func TestIsAbsolute(t *testing.T) {
 		{"t0.2", "http://www.a.com", true},
 		{"t0.3", "//www.a.com", true},
 		{"t0.4", "//a.b", true},
+		{"t0.5", "//abc", false},
+		{"t0.6", "//abc...", false},
+		{"t0.7", "//.a.b", false},
+		{"t0.8", "//a.b..", false},
 
 		{"t1.1", "httpa.com", false},
 		{"t1.2", "httpa.com//", false},

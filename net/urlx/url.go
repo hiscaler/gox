@@ -76,10 +76,11 @@ func IsAbsolute(s string) bool {
 	}
 	if isx.HttpURL(s) {
 		if u, err := url.Parse(s); err == nil {
-			return u.IsAbs() && len(u.Host) > 3
+			if u.IsAbs() && len(u.Host) > 2 && strings.Index(u.Host, ".") > 0 {
+				return true
+			}
 		}
 	}
-
 	return false
 }
 
