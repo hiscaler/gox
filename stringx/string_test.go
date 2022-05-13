@@ -286,7 +286,7 @@ hello world
 
 
     </div>
-`, "hello, world!"},
+`, `<div a="1" b="2"> <span> hello world </span> </div>`},
 	}
 	for _, testCase := range testCases {
 		actual := RemoveExtraSpace(testCase.string)
