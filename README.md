@@ -70,7 +70,8 @@ Golang functions library
 - keyx
     - Generate
 - map
-    - StringKeys
+    - Keys
+    - StringMapStringEncode
 - net
     - urlx
       - NewURL
