@@ -106,6 +106,8 @@ Golang functions library
   - IntSliceReverse
   - StringSliceDiff
   - IntSliceDiff
+- spreedsheetx
+  - ColumnName
 - stringx
   - IsEmpty
   - IsBlank
