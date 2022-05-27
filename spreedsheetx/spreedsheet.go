@@ -3,17 +3,22 @@ package spreedsheetx
 import (
 	"errors"
 	"fmt"
+	"regexp"
 	"strings"
-	"unicode"
+)
+
+var (
+	rxEnglishLetter = regexp.MustCompile("^[A-Za-z]+$")
 )
 
 // ColumnName get cell name with name and offset
-// A + 1 = B
+// Examples:
+// A  + 1 = B
 // AA + 1 = AB
 // ZZ + 1 = AAA
 func ColumnName(name string, offset int) (string, error) {
-	if name == "" {
-		return "", errors.New("name is invalid")
+	if name == "" || !rxEnglishLetter.MatchString(name) {
+		return "", errors.New("invalid name")
 	}
 	if offset < 0 {
 		return "", fmt.Errorf("offset must greater than 0")
@@ -25,9 +30,6 @@ func ColumnName(name string, offset int) (string, error) {
 	numbers := make([]int, n+offset/26+1)
 	name = strings.ToUpper(name)
 	for i := range name {
-		if !unicode.IsLetter(rune(name[i])) {
-			return "", fmt.Errorf("%v is invalid cell name", name)
-		}
 		numbers[i] = int(name[n-i-1]) // reversed string ascii value
 	}
 

@@ -26,6 +26,7 @@ func TestColumnName(t *testing.T) {
 		{"tag3.3", "ZZX", 2, "ZZZ", false},
 		{"tag3.4", "ZZX", 3, "AAAA", false},
 		{"tag3.5", "AAA", 1, "AAB", false},
+		{"tag4", "AAA中文", 1, "", true},
 	}
 	for _, testCase := range testCases {
 		index, err := ColumnName(testCase.name, testCase.offset)
