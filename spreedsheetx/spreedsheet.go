@@ -18,19 +18,19 @@ func ColumnName(name string, offset int) (string, error) {
 	if offset < 0 {
 		return "", fmt.Errorf("offset must greater than 0")
 	}
-	name = strings.ToUpper(name)
-	for _, v := range name {
-		if !unicode.IsLetter(v) {
-			return "", fmt.Errorf("%v is invalid cell name", name)
-		}
-	}
+
 	a := 65
 	z := 90
 	n := len(name)
-	numbers := make([]int, len(name)+offset/26+1)
+	numbers := make([]int, n+offset/26+1)
+	name = strings.ToUpper(name)
 	for i := range name {
+		if !unicode.IsLetter(rune(name[i])) {
+			return "", fmt.Errorf("%v is invalid cell name", name)
+		}
 		numbers[i] = int(name[n-i-1]) // reversed string ascii value
 	}
+
 	for i, number := range numbers {
 		if i == 0 {
 			number += offset
