@@ -64,4 +64,8 @@ func TestNewColumn5(t *testing.T) {
 	column.Next()
 	column.RightShift(26)
 	assert.Equal(t, "AB", column.Name())
+	column.Reset()
+	assert.Equal(t, "A", column.Name())
+	assert.Equal(t, "A", column.StartName())
+	assert.Equal(t, "A", column.EndName())
 }

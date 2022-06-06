@@ -118,6 +118,7 @@ func (c Column) NameWithRow(row int) string {
 // Reset 重置到最开始的列（NewColumn 创建时的列）
 func (c *Column) Reset() *Column {
 	c.current = c.startName
+	c.endName = c.startName
 	return c
 }
 
