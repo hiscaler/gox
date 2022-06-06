@@ -1,8 +1,23 @@
 package spreedsheetx
 
 import (
+	"errors"
 	"fmt"
+	"math"
+	"regexp"
 	"strings"
+)
+
+// https://support.microsoft.com/en-us/office/excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3?ui=en-us&rs=en-us&ad=us
+// Max index is 16384 XFD
+
+var (
+	rxEnglishLetter = regexp.MustCompile("^[A-Za-z]+$")
+)
+
+const (
+	maxNumber = 16384
+	a         = 64
 )
 
 type Column struct {
@@ -12,10 +27,45 @@ type Column struct {
 }
 
 func isValidName(name string) bool {
-	return name != "" && rxEnglishLetter.MatchString(name)
+	n := len(name)
+	valid := n >= 1 && n <= 3 && rxEnglishLetter.MatchString(name) && toNumber(name) <= maxNumber
+	if valid && n == 3 {
+		valid = name[0] <= 'X' && name[1] <= 'F' && name[2] <= 'D'
+	}
+	return valid
+}
+
+func reverse(name string) []rune {
+	d := []rune(name)
+	for i, j := 0, len(d)-1; i < j; i, j = i+1, j-1 {
+		d[i], d[j] = d[j], d[i]
+	}
+	return d
+}
+
+func toNumber(name string) int {
+	name = strings.ToUpper(name)
+	n := len(name)
+	switch n {
+	case 0:
+		return 0
+	case 1:
+		return int(rune(name[0])) - a
+	default:
+		number := 0
+		for i, r := range reverse(name) {
+			if i == 0 {
+				number += int(r) - a
+			} else {
+				number += (int(r) - a) * int(math.Pow(26, float64(i)))
+			}
+		}
+		return number
+	}
 }
 
 func NewColumn(name string) *Column {
+	name = strings.ToUpper(name)
 	if !isValidName(name) {
 		panic("invalid column name")
 	}
@@ -34,9 +84,8 @@ func (c *Column) ToFirst() *Column {
 }
 
 // Next 当前列的下一列
-func (c *Column) Next() *Column {
-	c.RightShift(1)
-	return c
+func (c *Column) Next() (*Column, error) {
+	return c.RightShift(1)
 }
 
 // StartName 返回最开始的列名
@@ -73,58 +122,52 @@ func (c *Column) Reset() *Column {
 }
 
 // To 跳转到指定的列
-func (c *Column) To(name string) *Column {
+func (c *Column) To(name string) (*Column, error) {
+	name = strings.ToUpper(name)
 	if !isValidName(name) {
-		panic("invalid column name")
+		return c, fmt.Errorf("invalid column name %s", name)
 	}
 	c.current = name
 	c.setEndName(name)
-	return c
+	return c, nil
 }
 
 // RightShift 基于当前位置右移多少列
-func (c *Column) RightShift(steps int) *Column {
+func (c *Column) RightShift(steps int) (*Column, error) {
 	if steps <= 0 {
-		return c
+		return c, nil
 	}
 
-	a := 65
-	z := 90
-	name := strings.ToUpper(c.current)
-	n := len(c.current)
-	numbers := make([]int, n+11)
-	for i := range name {
-		numbers[i] = int(name[n-i-1]) // reversed string ascii value
+	number := toNumber(c.current)
+	number += steps
+	if number > maxNumber {
+		return c, errors.New("out of max columns")
 	}
 
-	for i, number := range numbers {
-		if i == 0 {
-			number += steps/26*z + steps%26
-		}
-		if number <= z {
-			numbers[i] = number
-		} else {
-			numbers[i] = number % z
-			if i+1 >= len(numbers) {
-				numbers = append(numbers, 0)
-			}
-			numbers[i+1] += number / z
-		}
-	}
-	n = len(numbers)
 	sb := strings.Builder{}
-	sb.Grow(n)
-	for i := n - 1; i >= 0; i-- {
-		number := numbers[i]
-		if number == 0 {
-			continue
+	sb.Grow(3) // Max 3 letters
+	times := 0
+	for {
+		times++
+		quotient := number / 26
+		remainder := number % 26
+		if remainder == 0 {
+			sb.WriteRune('Z')
+		} else {
+			sb.WriteRune(rune(a + remainder))
 		}
-		if number < a {
-			number += 64
+		if quotient == 0 {
+			break
+		} else if quotient <= 26 {
+			if quotient != 1 || (times >= 1 && remainder != 0) {
+				sb.WriteRune(rune(a + quotient))
+			}
+			break
 		}
-		sb.WriteRune(rune(number))
+		number = quotient
 	}
-	c.current = sb.String()
+
+	c.current = string(reverse(sb.String()))
 	c.setEndName(c.current)
-	return c
+	return c, nil
 }
