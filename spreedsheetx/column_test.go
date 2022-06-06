@@ -62,6 +62,6 @@ func TestNewColumn4(t *testing.T) {
 func TestNewColumn5(t *testing.T) {
 	column := NewColumn("A")
 	column.Next()
-	// column.RightShift(26)
-	assert.Equal(t, "B", column.Name())
+	column.RightShift(26)
+	assert.Equal(t, "AB", column.Name())
 }

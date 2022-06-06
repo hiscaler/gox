@@ -107,7 +107,14 @@ Golang functions library
   - StringSliceDiff
   - IntSliceDiff
 - spreedsheetx
-  - ColumnName
+  - NewColumn()
+```go
+  column := NewColumn("A")
+  column.Next() // Return `B` if successful
+  column.RightShift(26) // Return `AB` if successful
+``` 
+
+
 - stringx
   - IsEmpty
   - IsBlank
