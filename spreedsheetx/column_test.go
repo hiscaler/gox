@@ -69,3 +69,19 @@ func TestNewColumn5(t *testing.T) {
 	assert.Equal(t, "A", column.StartName())
 	assert.Equal(t, "A", column.EndName())
 }
+
+func TestNewLeftShift(t *testing.T) {
+	column := NewColumn("Z")
+	column.Prev()
+	assert.Equal(t, "Y", column.Name())
+	column.LeftShift(23)
+	assert.Equal(t, "B", column.Name())
+	column.LeftShift(1)
+	assert.Equal(t, "A", column.Name())
+	_, err := column.LeftShift(1)
+	assert.Equal(t, err != nil, true, "err")
+	column.Reset()
+	assert.Equal(t, "Z", column.Name())
+	assert.Equal(t, "Z", column.StartName())
+	assert.Equal(t, "Z", column.EndName())
+}

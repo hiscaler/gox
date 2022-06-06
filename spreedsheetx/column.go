@@ -16,6 +16,7 @@ var (
 )
 
 const (
+	minNumber = 1
 	maxNumber = 16384
 	a         = 64
 )
@@ -88,6 +89,10 @@ func (c *Column) Next() (*Column, error) {
 	return c.RightShift(1)
 }
 
+func (c *Column) Prev() (*Column, error) {
+	return c.LeftShift(1)
+}
+
 // StartName 返回最开始的列名
 func (c Column) StartName() string {
 	return c.startName
@@ -133,9 +138,23 @@ func (c *Column) To(name string) (*Column, error) {
 	return c, nil
 }
 
-// RightShift 基于当前位置右移多少列
 func (c *Column) RightShift(steps int) (*Column, error) {
 	if steps <= 0 {
+		return c, nil
+	}
+	return c.shift(steps)
+}
+
+func (c *Column) LeftShift(steps int) (*Column, error) {
+	if steps <= 0 {
+		return c, nil
+	}
+	return c.shift(-steps)
+}
+
+// RightShift 基于当前位置右移多少列
+func (c *Column) shift(steps int) (*Column, error) {
+	if steps == 0 {
 		return c, nil
 	}
 
@@ -143,6 +162,8 @@ func (c *Column) RightShift(steps int) (*Column, error) {
 	number += steps
 	if number > maxNumber {
 		return c, errors.New("out of max columns")
+	} else if number < minNumber {
+		return c, errors.New("out of min columns")
 	}
 
 	sb := strings.Builder{}

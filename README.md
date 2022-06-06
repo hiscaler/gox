@@ -112,6 +112,7 @@ Golang functions library
   column := NewColumn("A")
   column.Next() // Return `B` if successful
   column.RightShift(26) // Return `AB` if successful
+  column.LeftShift(1) // Return `AA` if successful
 ``` 
 
 
