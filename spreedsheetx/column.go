@@ -185,6 +185,9 @@ func (c *Column) shift(steps int) (*Column, error) {
 	}
 
 	c.current = string(reverse(sb.String()))
-	c.setEndName(c.current)
+	if steps > 0 {
+		// Is right shift
+		c.setEndName(c.current)
+	}
 	return c, nil
 }

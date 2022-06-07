@@ -83,5 +83,6 @@ func TestNewLeftShift(t *testing.T) {
 	column.Reset()
 	assert.Equal(t, "Z", column.Name())
 	assert.Equal(t, "Z", column.StartName())
-	assert.Equal(t, "Z", column.EndName())
+	column.To("AA")
+	assert.Equal(t, "AA", column.EndName())
 }
