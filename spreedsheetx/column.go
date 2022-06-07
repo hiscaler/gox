@@ -12,7 +12,7 @@ import (
 // Max index is 16384 XFD
 
 var (
-	rxEnglishLetter = regexp.MustCompile("^[A-Za-z]+$")
+	rxColumnName = regexp.MustCompile("^[A-Za-z]{1,3}$")
 )
 
 const (
@@ -28,12 +28,7 @@ type Column struct {
 }
 
 func isValidName(name string) bool {
-	n := len(name)
-	valid := n >= 1 && n <= 3 && rxEnglishLetter.MatchString(name) && toNumber(name) <= maxNumber
-	if valid && n == 3 {
-		valid = name[0] <= 'X' && name[1] <= 'F' && name[2] <= 'D'
-	}
-	return valid
+	return rxColumnName.MatchString(name) && toNumber(name) <= maxNumber
 }
 
 func reverse(name string) []rune {
