@@ -47,43 +47,64 @@ func Numbers(s string) []string {
 }
 
 func Float64(s string) float64 {
-	var v float64
-	s = Number(s)
-	if s != "" {
-		if d, err := strconv.ParseFloat(s, 64); err == nil {
-			v = d
+	if s = Number(s); s != "" {
+		if v, err := strconv.ParseFloat(s, 64); err == nil {
+			return v
 		}
 	}
-	return v
+	return 0
 }
 
 func Float32(s string) float32 {
-	return float32(Float64(s))
+	if s = Number(s); s != "" {
+		if v, err := strconv.ParseFloat(s, 64); err == nil {
+			return float32(v)
+		}
+	}
+	return 0
 }
 
 func Int64(s string) int64 {
-	var v int64
-	s = Number(s)
-	if s != "" {
-		if d, err := strconv.ParseInt(s, 10, 64); err == nil {
-			v = d
+	if s = Number(s); s != "" {
+		if v, err := strconv.ParseInt(s, 10, 64); err == nil {
+			return v
 		}
 	}
-	return v
+	return 0
 }
 
 func Int32(s string) int32 {
-	return int32(Int64(s))
+	if s = Number(s); s != "" {
+		if v, err := strconv.ParseInt(s, 10, 32); err == nil {
+			return int32(v)
+		}
+	}
+	return 0
 }
 
 func Int16(s string) int16 {
-	return int16(Int64(s))
+	if s = Number(s); s != "" {
+		if v, err := strconv.ParseInt(s, 10, 16); err == nil {
+			return int16(v)
+		}
+	}
+	return 0
 }
 
 func Int8(s string) int8 {
-	return int8(Int64(s))
+	if s = Number(s); s != "" {
+		if v, err := strconv.ParseInt(s, 10, 16); err == nil {
+			return int8(v)
+		}
+	}
+	return 0
 }
 
 func Int(s string) int {
-	return int(Int64(s))
+	if s = Number(s); s != "" {
+		if v, err := strconv.ParseInt(s, 10, 16); err == nil {
+			return int(v)
+		}
+	}
+	return 0
 }
