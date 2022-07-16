@@ -3,6 +3,10 @@ gox
 
 Golang functions library
 
+- archivex
+  - zipx
+    - Compress
+    - UnCompress
 - bytex
   - IsEmpty
   - IsBlank
