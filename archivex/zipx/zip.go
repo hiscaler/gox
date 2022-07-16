@@ -56,3 +56,43 @@ func addFile(zipWriter *zip.Writer, filename string, method uint16, compactDirec
 	_, err = io.Copy(writer, fileToZip)
 	return err
 }
+
+func UnCompress(src, dst string) error {
+	r, err := zip.OpenReader(src)
+	if err != nil {
+		return err
+	}
+	defer r.Close()
+
+	for _, file := range r.File {
+		path := filepath.Join(dst, file.Name)
+		if file.FileInfo().IsDir() {
+			if err = os.MkdirAll(path, file.Mode()); err != nil {
+				return err
+			}
+			continue
+		}
+
+		if err = writeFile(file, path); err != nil {
+			break
+		}
+	}
+	return err
+}
+
+func writeFile(file *zip.File, path string) error {
+	fr, err := file.Open()
+	if err != nil {
+		return err
+	}
+	defer fr.Close()
+
+	fw, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR|os.O_TRUNC, file.Mode())
+	if err != nil {
+		return err
+	}
+	defer fw.Close()
+
+	_, err = io.Copy(fw, fr)
+	return err
+}
