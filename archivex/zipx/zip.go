@@ -2,45 +2,88 @@ package zipx
 
 import (
 	"archive/zip"
+	"context"
+	"golang.org/x/sync/errgroup"
 	"io"
 	"os"
 	"path/filepath"
 )
 
-// Compress compresses files and saved, if compactDirectory is true, then will remove all directory path
-func Compress(filename string, files []string, method uint16, compactDirectory bool) error {
-	zipFile, err := os.Create(filename)
-	if err != nil {
-		return err
-	}
-
-	defer zipFile.Close()
-	zipWriter := zip.NewWriter(zipFile)
-	defer zipWriter.Close()
-
-	for _, file := range files {
-		if err = addFile(zipWriter, file, method, compactDirectory); err != nil {
-			return err
-		}
-	}
-	return nil
+type zipFile struct {
+	header *zip.FileHeader
+	data   *os.File
 }
 
-func addFile(zipWriter *zip.Writer, filename string, method uint16, compactDirectory bool) error {
-	fileToZip, err := os.Open(filename)
+// Compress compresses files and saved, if compactDirectory is true, then will remove all directory path
+func Compress(filename string, files []string, method uint16, compactDirectory bool) error {
+	zFile, err := os.Create(filename)
 	if err != nil {
 		return err
 	}
 
-	defer fileToZip.Close()
-	info, err := fileToZip.Stat()
+	defer zFile.Close()
+	zipWriter := zip.NewWriter(zFile)
+	defer zipWriter.Close()
+
+	zipFiles := make([]zipFile, len(files))
+	errGrp, errCtx := errgroup.WithContext(context.Background())
+	for i, file := range files {
+		f := file
+		j := i
+		errGrp.Go(func() error {
+			select {
+			case <-errCtx.Done():
+				return nil
+			default:
+				zf, e := addFile(f, method, compactDirectory)
+				if e != nil {
+					return e
+				}
+				zipFiles[j] = zf
+				return nil
+			}
+		})
+	}
+	err = errGrp.Wait()
 	if err != nil {
 		return err
+	}
+
+	for _, file := range zipFiles {
+		if file.data == nil {
+			continue
+		}
+		err = func() error {
+			defer file.data.Close()
+			if err != nil {
+				return err // For closed all opened files
+			}
+			writer, e := zipWriter.CreateHeader(file.header)
+			if e != nil {
+				return e
+			}
+
+			_, e = io.Copy(writer, file.data)
+			return e
+		}()
+	}
+	return err
+}
+
+func addFile(filename string, method uint16, compactDirectory bool) (zipFile zipFile, err error) {
+	pendingAddFile, err := os.Open(filename)
+	if err != nil {
+		return
+	}
+
+	info, err := pendingAddFile.Stat()
+	if err != nil {
+		return
 	}
 
 	header, err := zip.FileInfoHeader(info)
 	if err != nil {
-		return err
+		return
 	}
 
 	if compactDirectory {
@@ -49,12 +92,10 @@ func addFile(zipWriter *zip.Writer, filename string, method uint16, compactDirec
 		header.Name = filename
 	}
 	header.Method = method
-	writer, err := zipWriter.CreateHeader(header)
-	if err != nil {
-		return err
-	}
-	_, err = io.Copy(writer, fileToZip)
-	return err
+
+	zipFile.header = header
+	zipFile.data = pendingAddFile
+	return
 }
 
 func UnCompress(src, dst string) error {
