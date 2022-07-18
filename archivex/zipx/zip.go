@@ -56,7 +56,7 @@ func Compress(filename string, files []string, method uint16, compactDirectory b
 		err = func() error {
 			defer file.data.Close()
 			if err != nil {
-				return err // For closed all opened files
+				return err // For close all opened files
 			}
 			writer, e := zipWriter.CreateHeader(file.header)
 			if e != nil {
