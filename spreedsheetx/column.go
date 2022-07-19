@@ -41,8 +41,7 @@ func reverse(name string) []rune {
 
 func toNumber(name string) int {
 	name = strings.ToUpper(name)
-	n := len(name)
-	switch n {
+	switch len(name) {
 	case 0:
 		return 0
 	case 1:
