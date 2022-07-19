@@ -3,8 +3,10 @@ package zipx
 import (
 	"archive/zip"
 	"context"
+	"github.com/hiscaler/gox/filex"
 	"golang.org/x/sync/errgroup"
 	"io"
+	"io/fs"
 	"os"
 	"path/filepath"
 )
@@ -105,6 +107,15 @@ func UnCompress(src, dst string) error {
 	}
 
 	defer r.Close()
+
+	// Create destination directory if not exists
+	if !filex.Exists(dst) {
+		err = os.MkdirAll(dst, fs.ModePerm)
+		if err != nil {
+			return err
+		}
+	}
+
 	for _, file := range r.File {
 		path := filepath.Join(dst, file.Name)
 		if file.FileInfo().IsDir() {
@@ -112,6 +123,14 @@ func UnCompress(src, dst string) error {
 				return err
 			}
 			continue
+		}
+
+		dir := filepath.Dir(path)
+		if !filex.Exists(dir) {
+			err = os.MkdirAll(dir, fs.ModePerm)
+			if err != nil {
+				return err
+			}
 		}
 
 		if err = writeFile(file, path); err != nil {
@@ -124,11 +143,12 @@ func UnCompress(src, dst string) error {
 func writeFile(file *zip.File, path string) error {
 	fr, err := file.Open()
 	if err != nil {
+
 		return err
 	}
 
 	defer fr.Close()
-	fw, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR|os.O_TRUNC, file.Mode())
+	fw, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, file.Mode())
 	if err != nil {
 		return err
 	}
