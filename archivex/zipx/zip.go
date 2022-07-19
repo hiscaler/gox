@@ -76,6 +76,7 @@ func addFile(filename string, method uint16, compactDirectory bool) (zipFile zip
 		return
 	}
 
+	zipFile.data = pendingAddFile
 	info, err := pendingAddFile.Stat()
 	if err != nil {
 		return
@@ -92,19 +93,18 @@ func addFile(filename string, method uint16, compactDirectory bool) (zipFile zip
 		header.Name = filename
 	}
 	header.Method = method
-
 	zipFile.header = header
-	zipFile.data = pendingAddFile
 	return
 }
 
+// UnCompress unzip source file to destination directory
 func UnCompress(src, dst string) error {
 	r, err := zip.OpenReader(src)
 	if err != nil {
 		return err
 	}
-	defer r.Close()
 
+	defer r.Close()
 	for _, file := range r.File {
 		path := filepath.Join(dst, file.Name)
 		if file.FileInfo().IsDir() {
@@ -126,8 +126,8 @@ func writeFile(file *zip.File, path string) error {
 	if err != nil {
 		return err
 	}
-	defer fr.Close()
 
+	defer fr.Close()
 	fw, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR|os.O_TRUNC, file.Mode())
 	if err != nil {
 		return err
