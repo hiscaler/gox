@@ -71,6 +71,9 @@ Golang functions library
     - EmptyObjectRawMessage
     - EmptyArrayRawMessage
     - IsEmptyRawMessage
+    - Find
+      - ToString
+      - ToInt
 - keyx
     - Generate
 - map
