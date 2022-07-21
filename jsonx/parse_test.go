@@ -21,6 +21,8 @@ func TestFind(t *testing.T) {
 		{"string4", `{"a":true}`, "a.b", false, reflect.String, "false"},
 		{"string5", `{"a":{"b": {"c": 123}}}`, "a.b", "{}", reflect.String, `{"c":123}`},
 		{"string5", `{"a":{"b": {"c": 123}}}`, "a.b.c", "", reflect.String, "123"},
+		{"string6", `{"a":{"b": {"c": [1,2,3]}}}`, "a.b.c.0", "", reflect.String, "1"},
+		{"string6", `{"a":{"b": {"c": [1,2,3]}}}`, "a.b.c.2", "", reflect.String, "3"},
 		{"int1", `{"a":1}`, "a", 2, reflect.Int, 1},
 		{"int2", `{"a":1}`, "aa", 2, reflect.Int, 2},
 		{"int641", `{"a":1}`, "a", 2, reflect.Int64, int64(1)},
