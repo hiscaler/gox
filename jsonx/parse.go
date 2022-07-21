@@ -140,18 +140,14 @@ func (p Parse) ToBool() bool {
 	}
 }
 
-func mapIndex(mp reflect.Value, index reflect.Value) reflect.Value {
-	v := mp.MapIndex(index)
-	if v.Kind() == reflect.Interface {
-		v = v.Elem()
-	}
-	return v
-}
-
 func getElement(v reflect.Value, p string) reflect.Value {
 	switch v.Kind() {
 	case reflect.Map:
-		return mapIndex(v, reflect.ValueOf(p))
+		vv := v.MapIndex(reflect.ValueOf(p))
+		if vv.Kind() == reflect.Interface {
+			vv = vv.Elem()
+		}
+		return vv
 	case reflect.Array, reflect.Slice:
 		if i, err := strconv.Atoi(p); err == nil {
 			if i >= 0 && i < v.Len() {
@@ -185,15 +181,14 @@ func Find(s string, path string, defaultValue ...interface{}) Parse {
 	// if any part of path cannot be located, return the default value
 	parts := strings.Split(path, ".")
 	n := len(parts)
-	for i := 0; i < n-1; i++ {
+	for i := 0; i < n; i++ {
 		if data = getElement(data, parts[i]); !data.IsValid() {
 			return p
 		}
+		if i == n-1 {
+			// is last path
+			p.value = data
+		}
 	}
-	v := getElement(data, parts[n-1])
-	if !v.IsValid() {
-		return p
-	}
-	p.value = v
 	return p
 }
