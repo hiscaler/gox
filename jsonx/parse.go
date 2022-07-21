@@ -9,37 +9,51 @@ import (
 	"strings"
 )
 
+// Parser is a json string parse helper and not required define struct.
+// You can use Find() method get the path value, and convert to string, int, int64, float32, float64, bool value.
+// And you can use Exists() method check path is exists
+// Usage:
+// parser := jsonx.NewParser("[0,1,2]")
+// parser.Find("1").Int() // Return 1, founded
+// parser.Find("10", 0).Int() // Return 0 because not found, you give a default value 0
+
 type Parser struct {
 	data  reflect.Value
 	value reflect.Value
 }
 
-func (p Parser) ToString() string {
-	switch p.value.Kind() {
+type ParseFinder Parser
+
+func (pf ParseFinder) Interface() interface{} {
+	return pf.value.Interface()
+}
+
+func (pf ParseFinder) String() string {
+	switch pf.value.Kind() {
 	case reflect.Invalid:
 		return ""
 	default:
-		return stringx.String(p.value.Interface())
+		return stringx.String(pf.value.Interface())
 	}
 }
 
-func (p Parser) ToFloat32() float32 {
-	switch p.value.Kind() {
+func (pf ParseFinder) Float32() float32 {
+	switch pf.value.Kind() {
 	case reflect.Invalid:
 		return 0
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		return float32(p.value.Int())
+		return float32(pf.value.Int())
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
-		return float32(p.value.Uint())
+		return float32(pf.value.Uint())
 	case reflect.Float32, reflect.Float64:
-		return float32(p.value.Float())
+		return float32(pf.value.Float())
 	case reflect.Bool:
-		if p.value.Bool() {
+		if pf.value.Bool() {
 			return 1
 		}
 		return 0
 	case reflect.String:
-		d, err := strconv.ParseFloat(p.value.String(), 32)
+		d, err := strconv.ParseFloat(pf.value.String(), 32)
 		if err != nil {
 			return 0
 		}
@@ -49,69 +63,69 @@ func (p Parser) ToFloat32() float32 {
 	}
 }
 
-func (p Parser) ToFloat64() float64 {
-	switch p.value.Kind() {
+func (pf ParseFinder) Float64() float64 {
+	switch pf.value.Kind() {
 	case reflect.Invalid:
 		return 0
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		return float64(p.value.Int())
+		return float64(pf.value.Int())
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
-		return float64(p.value.Uint())
+		return float64(pf.value.Uint())
 	case reflect.Float32, reflect.Float64:
-		return p.value.Float()
+		return pf.value.Float()
 	case reflect.Bool:
-		if p.value.Bool() {
+		if pf.value.Bool() {
 			return 1
 		}
 		return 0
 	case reflect.String:
-		d, _ := strconv.ParseFloat(p.value.String(), 64)
+		d, _ := strconv.ParseFloat(pf.value.String(), 64)
 		return d
 	default:
 		return 0
 	}
 }
 
-func (p Parser) ToInt() int {
-	switch p.value.Kind() {
+func (pf ParseFinder) Int() int {
+	switch pf.value.Kind() {
 	case reflect.Invalid:
 		return 0
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		return int(p.value.Int())
+		return int(pf.value.Int())
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
-		return int(p.value.Uint())
+		return int(pf.value.Uint())
 	case reflect.Float32, reflect.Float64:
-		return int(p.value.Float())
+		return int(pf.value.Float())
 	case reflect.Bool:
-		if p.value.Bool() {
+		if pf.value.Bool() {
 			return 1
 		}
 		return 0
 	case reflect.String:
-		d, _ := strconv.Atoi(p.value.String())
+		d, _ := strconv.Atoi(pf.value.String())
 		return d
 	default:
 		return 0
 	}
 }
 
-func (p Parser) ToInt64() int64 {
-	switch p.value.Kind() {
+func (pf ParseFinder) Int64() int64 {
+	switch pf.value.Kind() {
 	case reflect.Invalid:
 		return 0
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		return p.value.Int()
+		return pf.value.Int()
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
-		return int64(p.value.Uint())
+		return int64(pf.value.Uint())
 	case reflect.Float32, reflect.Float64:
-		return int64(p.value.Float())
+		return int64(pf.value.Float())
 	case reflect.Bool:
-		if p.value.Bool() {
+		if pf.value.Bool() {
 			return 1
 		}
 		return 0
 	case reflect.String:
-		d, err := strconv.Atoi(p.value.String())
+		d, err := strconv.Atoi(pf.value.String())
 		if err != nil {
 			return 0
 		}
@@ -121,20 +135,20 @@ func (p Parser) ToInt64() int64 {
 	}
 }
 
-func (p Parser) ToBool() bool {
-	switch p.value.Kind() {
+func (pf ParseFinder) Bool() bool {
+	switch pf.value.Kind() {
 	case reflect.Invalid:
 		return false
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		return p.value.Int() > 0
+		return pf.value.Int() > 0
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
-		return p.value.Uint() > 0
+		return pf.value.Uint() > 0
 	case reflect.Float32, reflect.Float64:
-		return p.value.Float() > 0
+		return pf.value.Float() > 0
 	case reflect.Bool:
-		return p.value.Bool()
+		return pf.value.Bool()
 	case reflect.String:
-		v, _ := strconv.ParseBool(p.value.String())
+		v, _ := strconv.ParseBool(pf.value.String())
 		return v
 	default:
 		return false
@@ -169,9 +183,6 @@ func NewParser(s string) *Parser {
 }
 
 func (p *Parser) LoadString(s string) *Parser {
-	if s == "" {
-		return p
-	}
 	return p.LoadBytes(stringx.ToBytes(s))
 }
 
@@ -208,12 +219,12 @@ func (p Parser) Exists(path string) bool {
 	return false
 }
 
-func (p *Parser) Find(path string, defaultValue ...interface{}) *Parser {
+func (p *Parser) Find(path string, defaultValue ...interface{}) *ParseFinder {
 	if len(defaultValue) > 0 {
 		p.value = reflect.ValueOf(defaultValue[0])
 	}
 	if !p.data.IsValid() {
-		return p
+		return (*ParseFinder)(p)
 	}
 
 	data := p.data
@@ -223,12 +234,12 @@ func (p *Parser) Find(path string, defaultValue ...interface{}) *Parser {
 	n := len(parts)
 	for i := 0; i < n; i++ {
 		if data = getElement(data, parts[i]); !data.IsValid() {
-			return p
+			return (*ParseFinder)(p)
 		}
 		if i == n-1 {
 			// is last path
 			p.value = data
 		}
 	}
-	return p
+	return (*ParseFinder)(p)
 }

@@ -33,22 +33,26 @@ func TestParser_Find(t *testing.T) {
 		{"float322", `{"a":1.23}`, "b", 0, reflect.Float32, float32(0)},
 		{"float641", `{"a":1.23}`, "a", 0, reflect.Float64, 1.23},
 		{"float642", `{"a":1.23}`, "b", 0, reflect.Float64, 0.0},
+		{"interface1", `{"a":1.23}`, "b", 0, reflect.Interface, 0},
+		{"interface2", `null`, "b", 0, reflect.Interface, 0},
 	}
 	for _, testCase := range testCases {
 		var v interface{}
 		switch testCase.valueKind {
 		case reflect.String:
-			v = NewParser(testCase.json).Find(testCase.path, testCase.defaultValue).ToString()
+			v = NewParser(testCase.json).Find(testCase.path, testCase.defaultValue).String()
 		case reflect.Int:
-			v = NewParser(testCase.json).Find(testCase.path, testCase.defaultValue).ToInt()
+			v = NewParser(testCase.json).Find(testCase.path, testCase.defaultValue).Int()
 		case reflect.Int64:
-			v = NewParser(testCase.json).Find(testCase.path, testCase.defaultValue).ToInt64()
+			v = NewParser(testCase.json).Find(testCase.path, testCase.defaultValue).Int64()
 		case reflect.Float32:
-			v = NewParser(testCase.json).Find(testCase.path, testCase.defaultValue).ToFloat32()
+			v = NewParser(testCase.json).Find(testCase.path, testCase.defaultValue).Float32()
 		case reflect.Float64:
-			v = NewParser(testCase.json).Find(testCase.path, testCase.defaultValue).ToFloat64()
+			v = NewParser(testCase.json).Find(testCase.path, testCase.defaultValue).Float64()
 		case reflect.Bool:
-			v = NewParser(testCase.json).Find(testCase.path, testCase.defaultValue).ToBool()
+			v = NewParser(testCase.json).Find(testCase.path, testCase.defaultValue).Bool()
+		case reflect.Interface:
+			v = NewParser(testCase.json).Find(testCase.path, testCase.defaultValue).Interface()
 		}
 		assert.Equal(t, testCase.Except, v, testCase.tag)
 	}
