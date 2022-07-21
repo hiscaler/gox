@@ -71,13 +71,15 @@ Golang functions library
     - EmptyObjectRawMessage
     - EmptyArrayRawMessage
     - IsEmptyRawMessage
-    - Find
-      - ToString
-      - ToInt
-      - ToInt64
-      - ToFloat32
-      - ToFloat64
-      - ToBool
+    - NewParser
+      - Exists 
+      - Find 
+        - ToString
+        - ToInt
+        - ToInt64
+        - ToFloat32
+        - ToFloat64
+        - ToBool
 - keyx
     - Generate
 - map

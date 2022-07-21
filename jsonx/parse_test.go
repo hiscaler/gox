@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestFind(t *testing.T) {
+func TestParser_Find(t *testing.T) {
 	testCases := []struct {
 		tag          string
 		json         string
@@ -38,19 +38,36 @@ func TestFind(t *testing.T) {
 		var v interface{}
 		switch testCase.valueKind {
 		case reflect.String:
-			v = Find(testCase.json, testCase.path, testCase.defaultValue).ToString()
+			v = NewParser(testCase.json).Find(testCase.path, testCase.defaultValue).ToString()
 		case reflect.Int:
-			v = Find(testCase.json, testCase.path, testCase.defaultValue).ToInt()
+			v = NewParser(testCase.json).Find(testCase.path, testCase.defaultValue).ToInt()
 		case reflect.Int64:
-			v = Find(testCase.json, testCase.path, testCase.defaultValue).ToInt64()
+			v = NewParser(testCase.json).Find(testCase.path, testCase.defaultValue).ToInt64()
 		case reflect.Float32:
-			v = Find(testCase.json, testCase.path, testCase.defaultValue).ToFloat32()
+			v = NewParser(testCase.json).Find(testCase.path, testCase.defaultValue).ToFloat32()
 		case reflect.Float64:
-			v = Find(testCase.json, testCase.path, testCase.defaultValue).ToFloat64()
+			v = NewParser(testCase.json).Find(testCase.path, testCase.defaultValue).ToFloat64()
 		case reflect.Bool:
-			v = Find(testCase.json, testCase.path, testCase.defaultValue).ToBool()
+			v = NewParser(testCase.json).Find(testCase.path, testCase.defaultValue).ToBool()
 		}
 		assert.Equal(t, testCase.Except, v, testCase.tag)
+	}
+}
 
+func TestParser_Exists(t *testing.T) {
+	testCases := []struct {
+		tag    string
+		json   string
+		path   string
+		Except bool
+	}{
+		{"string1", "", "a", false},
+		{"string1", `{"a"}`, "a", false},
+		{"string1", `{"a":1}`, "a", true},
+		{"string1", `{"a":[0,1,2]}`, "a.1", true},
+	}
+	for _, testCase := range testCases {
+		v := NewParser(testCase.json).Exists(testCase.path)
+		assert.Equal(t, testCase.Except, v, testCase.tag)
 	}
 }
