@@ -74,6 +74,10 @@ Golang functions library
     - Find
       - ToString
       - ToInt
+      - ToInt64
+      - ToFloat32
+      - ToFloat64
+      - ToBool
 - keyx
     - Generate
 - map
