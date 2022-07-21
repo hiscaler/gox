@@ -74,12 +74,13 @@ Golang functions library
     - NewParser
       - Exists 
       - Find 
-        - ToString
-        - ToInt
-        - ToInt64
-        - ToFloat32
-        - ToFloat64
-        - ToBool
+        - Interface
+        - String
+        - Int
+        - Int64
+        - Float32
+        - Float64
+        - Bool
 - keyx
     - Generate
 - map
