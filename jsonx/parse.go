@@ -200,7 +200,7 @@ func (p *Parser) LoadBytes(bytes []byte) *Parser {
 }
 
 func (p Parser) Exists(path string) bool {
-	if !p.data.IsValid() {
+	if !p.data.IsValid() || path == "" {
 		return false
 	}
 
@@ -223,7 +223,7 @@ func (p *Parser) Find(path string, defaultValue ...interface{}) *ParseFinder {
 	if len(defaultValue) > 0 {
 		p.value = reflect.ValueOf(defaultValue[0])
 	}
-	if !p.data.IsValid() {
+	if !p.data.IsValid() || path == "" {
 		return (*ParseFinder)(p)
 	}
 
