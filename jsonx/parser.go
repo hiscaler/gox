@@ -125,11 +125,11 @@ func (pf ParseFinder) Int64() int64 {
 		}
 		return 0
 	case reflect.String:
-		d, err := strconv.Atoi(pf.value.String())
+		d, err := strconv.ParseInt(pf.value.String(), 10, 64)
 		if err != nil {
 			return 0
 		}
-		return int64(d)
+		return d
 	default:
 		return 0
 	}
