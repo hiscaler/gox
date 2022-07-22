@@ -66,10 +66,10 @@ func TestParser_Exists(t *testing.T) {
 		path   string
 		Except bool
 	}{
-		{"string1", "", "a", false},
-		{"string1", `{"a"}`, "a", false},
-		{"string1", `{"a":1}`, "a", true},
-		{"string1", `{"a":[0,1,2]}`, "a.1", true},
+		{"exists1", "", "a", false},
+		{"exists2", `{"a"}`, "a", false},
+		{"exists3", `{"a":1}`, "a", true},
+		{"exists4", `{"a":[0,1,2]}`, "a.1", true},
 	}
 	for _, testCase := range testCases {
 		v := NewParser(testCase.json).Exists(testCase.path)
