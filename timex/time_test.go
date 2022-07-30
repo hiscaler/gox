@@ -191,7 +191,7 @@ func TestYearWeeksByTime(t *testing.T) {
 	}
 }
 
-// https://www.timeanddate.com/calendar/?year=2022&country=1&wno=1
+// https://savvytime.com/week-number
 func TestXISOWeek(t *testing.T) {
 	testCases := []struct {
 		tag      string
@@ -204,8 +204,10 @@ func TestXISOWeek(t *testing.T) {
 		{"t4", "2022-01-10", "202202"},
 		{"t5", "2022-01-15", "202202"},
 		{"t6", "2022-01-16", "202203"},
-		{"t6", "2022-01-17", "202203"},
-		{"t6", "2022-01-29", "202204"},
+		{"t7", "2022-01-17", "202203"},
+		{"t8", "2022-01-29", "202204"},
+		{"t9", "2022-12-25", "202252"},
+		{"t10", "2023-01-01", "202301"},
 	}
 	for _, testCase := range testCases {
 		d, _ := time.Parse("2006-01-02", testCase.date)
