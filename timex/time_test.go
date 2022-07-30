@@ -1,6 +1,7 @@
 package timex
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
@@ -187,5 +188,28 @@ func TestYearWeeksByTime(t *testing.T) {
 		endDate, _ := time.Parse("2006-01-02", testCase.endDate)
 		v := YearWeeksByTime(beginDate, endDate)
 		assert.Equal(t, testCase.expected, v, testCase.tag)
+	}
+}
+
+// https://www.timeanddate.com/calendar/?year=2022&country=1&wno=1
+func TestXISOWeek(t *testing.T) {
+	testCases := []struct {
+		tag      string
+		date     string
+		expected string
+	}{
+		{"t1", "2022-01-01", "202152"},
+		{"t2", "2022-01-02", "202201"},
+		{"t3", "2022-01-09", "202202"},
+		{"t4", "2022-01-10", "202202"},
+		{"t5", "2022-01-15", "202202"},
+		{"t6", "2022-01-16", "202203"},
+		{"t6", "2022-01-17", "202203"},
+		{"t6", "2022-01-29", "202204"},
+	}
+	for _, testCase := range testCases {
+		d, _ := time.Parse("2006-01-02", testCase.date)
+		year, week := XISOWeek(d)
+		assert.Equal(t, testCase.expected, fmt.Sprintf("%d%02d", year, week), testCase.tag)
 	}
 }

@@ -1,6 +1,7 @@
 package timex
 
 import (
+	"math"
 	"time"
 )
 
@@ -111,4 +112,12 @@ func YearWeeksByTime(startDate, endDate time.Time) []int {
 	y1, w1 := startDate.ISOWeek()
 	y2, w2 := endDate.ISOWeek()
 	return YearWeeksByWeek(y1*100+w1, y2*100+w2)
+}
+
+// XISOWeek 非 ISO 周，从周日开始算起作为一周的第一天
+func XISOWeek(t time.Time) (year, week int) {
+	t1 := time.Date(t.Year(), t.Month(), t.Day()+4-int(t.Weekday()), 0, 0, 0, 0, time.UTC)
+	startTime := time.Date(t1.Year(), 1, 1, 0, 0, 0, 0, time.UTC)
+	week = int(math.Ceil((float64((t1.Unix()-startTime.Unix())/86400) + 1) / 7))
+	return startTime.Year(), week
 }

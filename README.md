@@ -167,3 +167,4 @@ Golang functions library
   - WeekEnd
   - YearWeeksByWeek
   - YearWeeksByTime
+  - XISOWeek
