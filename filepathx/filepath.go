@@ -24,14 +24,14 @@ type WalkOption struct {
 	Recursive     bool                   // 是否递归查询下级目录
 }
 
-func readDir(root string, recursive bool, searchType int) []string {
+func read(root string, recursive bool, searchType int) []string {
 	dfs := os.DirFS(root)
 	paths := make([]string, 0)
 	if recursive {
 		fs.WalkDir(dfs, ".", func(path string, d fs.DirEntry, err error) error {
 			if err == nil && path != "." && path != ".." &&
 				((searchType == searchDir && d.IsDir()) || (searchType == searchFile && !d.IsDir())) {
-				paths = append(paths, path)
+				paths = append(paths, filepath.Join(root, path))
 			}
 			return nil
 		})
@@ -89,7 +89,7 @@ func filterPath(path string, opt WalkOption) (ok bool) {
 // Dirs 获取指定目录下的所有目录
 func Dirs(root string, opt WalkOption) []string {
 	dirs := make([]string, 0)
-	paths := readDir(root, opt.Recursive, searchDir)
+	paths := read(root, opt.Recursive, searchDir)
 	if len(paths) > 0 {
 		for _, path := range paths {
 			if filterPath(path, opt) && !strings.EqualFold(path, root) {
@@ -103,7 +103,7 @@ func Dirs(root string, opt WalkOption) []string {
 // Files 获取指定目录下的所有文件
 func Files(root string, opt WalkOption) []string {
 	files := make([]string, 0)
-	paths := readDir(root, opt.Recursive, searchFile)
+	paths := read(root, opt.Recursive, searchFile)
 	if len(paths) > 0 {
 		for _, path := range paths {
 			if filterPath(path, opt) {
