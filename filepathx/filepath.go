@@ -46,6 +46,19 @@ func read(root string, recursive bool, searchType int) []string {
 			}
 		}
 	}
+
+	pathPrefix := ""
+	if strings.HasPrefix(root, "..") {
+		pathPrefix = ".."
+	} else if strings.HasPrefix(root, ".") {
+		pathPrefix = "."
+	}
+	if pathPrefix != "" {
+		pathPrefix += string(filepath.Separator)
+		for i, path := range paths {
+			paths[i] = pathPrefix + path
+		}
+	}
 	return paths
 }
 

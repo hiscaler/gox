@@ -170,6 +170,14 @@ func TestFiles(t *testing.T) {
 			},
 			[]string{"中文_ZH (1).txt"},
 		},
+		{
+			9,
+			"./testdata/1/1.1/1.1",
+			WalkOption{
+				Recursive: false,
+			},
+			[]string{"中文_ZH (1).txt"},
+		},
 	}
 	for _, testCase := range testCases {
 		files := Files(testCase.Path, testCase.Option)
