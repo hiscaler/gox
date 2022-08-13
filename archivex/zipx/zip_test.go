@@ -15,6 +15,7 @@ func init() {
 		"./zip.go",
 		"./testdata/a/a.txt",
 		"./testdata/b/b.txt",
+		"./testdata/中国/你好！.txt",
 	}
 }
 
