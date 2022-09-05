@@ -1,6 +1,34 @@
 package inx
 
-import "strings"
+import (
+	"strings"
+)
+
+type Int interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64
+}
+
+type UInt interface {
+	~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64
+}
+
+type Float interface {
+	~float32 | ~float64
+}
+
+// In Check value in values, return true if in values, otherwise return false.
+// Value T is a generic value
+func In[T Int | UInt | Float | ~string | ~byte | ~rune | ~bool](value T, values []T) bool {
+	if values == nil || len(values) == 0 {
+		return false
+	}
+	for _, v := range values {
+		if v == value {
+			return true
+		}
+	}
+	return false
+}
 
 // StringIn 判断 s 是否在 ss 中（忽略大小写）
 func StringIn(s string, ss ...string) bool {
@@ -17,13 +45,5 @@ func StringIn(s string, ss ...string) bool {
 
 // IntIn 判断 i 是否在 ii 中
 func IntIn(i int, ii ...int) bool {
-	if len(ii) == 0 {
-		return false
-	}
-	for _, j := range ii {
-		if i == j {
-			return true
-		}
-	}
-	return false
+	return In(i, ii)
 }

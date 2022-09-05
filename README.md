@@ -48,6 +48,7 @@ Golang functions library
   - Clean
   - Tag
 - inx
+  - In
   - StringIn
   - IntIn
 - ipx
