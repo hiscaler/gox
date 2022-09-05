@@ -1,24 +1,13 @@
 package inx
 
 import (
+	"github.com/hiscaler/gox"
 	"strings"
 )
 
-type Int interface {
-	~int | ~int8 | ~int16 | ~int32 | ~int64
-}
-
-type UInt interface {
-	~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64
-}
-
-type Float interface {
-	~float32 | ~float64
-}
-
 // In Check value in values, return true if in values, otherwise return false.
 // Value T is a generic value
-func In[T Int | UInt | Float | ~string | ~byte | ~rune | ~bool](value T, values []T) bool {
+func In[T gox.Int | gox.UInt | gox.Float | ~string | ~byte | ~rune | ~bool](value T, values []T) bool {
 	if values == nil || len(values) == 0 {
 		return false
 	}
