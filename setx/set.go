@@ -1,9 +1,27 @@
 package setx
 
 import (
+	"github.com/hiscaler/gox"
 	"github.com/hiscaler/gox/inx"
 	"strings"
 )
+
+// ToSet change slice to unique values
+func ToSet[T gox.Int | gox.UInt | gox.Float | string | bool | byte | rune](values []T) []T {
+	if len(values) <= 1 {
+		return values
+	}
+
+	uniqueValues := make([]T, 0)
+	kv := make(map[T]T, len(values))
+	for _, value := range values {
+		if _, ok := kv[value]; !ok {
+			kv[value] = value
+			uniqueValues = append(uniqueValues, value)
+		}
+	}
+	return uniqueValues
+}
 
 func ToStringSet(values []string, caseSensitive bool) []string {
 	if len(values) <= 1 {

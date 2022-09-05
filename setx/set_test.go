@@ -1,6 +1,18 @@
 package setx
 
-import "testing"
+import (
+	"github.com/stretchr/testify/assert"
+	"testing"
+)
+
+func TestToSet(t *testing.T) {
+	assert.ElementsMatch(t, []int{1, 2, 3}, ToSet([]int{1, 2, 3}), "int1")
+	assert.ElementsMatch(t, []int{1, 2, 3}, ToSet([]int{1, 1, 2, 2, 3, 3}), "int2")
+	assert.ElementsMatch(t, []float32{1, 2, 3}, ToSet([]float32{1, 2, 3}), "float321")
+	assert.ElementsMatch(t, []float64{1, 2, 3}, ToSet([]float64{1, 1, 2, 2, 3, 3}), "float641")
+	assert.ElementsMatch(t, []string{"A", "B", "C"}, ToSet([]string{"A", "B", "C", "C", "B", "A"}), "string1")
+	assert.ElementsMatch(t, []string{"A", " A ", "B", "C"}, ToSet([]string{" A ", "B", "C", "C", "B", "A"}), "string2")
+}
 
 func TestToStringSet(t *testing.T) {
 	testCases := []struct {

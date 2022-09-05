@@ -110,6 +110,7 @@ Golang functions library
   - Number
   - Any
 - setx
+  - ToSet
   - ToStringSet
   - ToIntSet
 - slicex
