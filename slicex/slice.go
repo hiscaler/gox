@@ -1,33 +1,30 @@
 package slicex
 
 import (
+	"github.com/hiscaler/gox"
 	"strings"
 )
 
-// StringToInterface Change string slice to interface slice
-func StringToInterface(values []string) []interface{} {
+func ToInterface[T gox.Int | gox.UInt | gox.Float | string](values []T) []interface{} {
 	if values == nil || len(values) == 0 {
 		return []interface{}{}
 	}
 
-	is := make([]interface{}, len(values))
+	ifs := make([]interface{}, len(values))
 	for i, value := range values {
-		is[i] = value
+		ifs[i] = value
 	}
-	return is
+	return ifs
+}
+
+// StringToInterface Change string slice to interface slice
+func StringToInterface(values []string) []interface{} {
+	return ToInterface(values)
 }
 
 // IntToInterface Change int slice to interface slice
 func IntToInterface(values []int) []interface{} {
-	if values == nil || len(values) == 0 {
-		return []interface{}{}
-	}
-
-	is := make([]interface{}, len(values))
-	for i, value := range values {
-		is[i] = value
-	}
-	return is
+	return ToInterface(values)
 }
 
 // StringSliceEqual Check a, b is equal

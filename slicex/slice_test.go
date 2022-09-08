@@ -159,3 +159,29 @@ func TestIntSliceDiff(t *testing.T) {
 		}
 	}
 }
+
+func TestToInterface(t *testing.T) {
+	type args struct {
+		values interface{}
+	}
+	tests := []struct {
+		name string
+		args args
+		want []interface{}
+	}{
+		{"t1", args{[]int{1, 2, 3}}, []interface{}{1, 2, 3}},
+		{"t2", args{[]string{"A", "B", "C"}}, []interface{}{"A", "B", "C"}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			var value interface{}
+			switch tt.args.values.(type) {
+			case []string:
+				value = ToInterface(tt.args.values.([]string))
+			case []int:
+				value = ToInterface(tt.args.values.([]int))
+			}
+			assert.Equalf(t, tt.want, value, "ToInterface(%v)", tt.args.values)
+		})
+	}
+}
