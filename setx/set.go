@@ -13,10 +13,10 @@ func ToSet[T gox.Number | string | bool | byte | rune](values []T) []T {
 	}
 
 	uniqueValues := make([]T, 0)
-	kv := make(map[T]T, len(values))
+	kv := make(map[T]struct{}, len(values))
 	for _, value := range values {
 		if _, ok := kv[value]; !ok {
-			kv[value] = value
+			kv[value] = struct{}{}
 			uniqueValues = append(uniqueValues, value)
 		}
 	}
