@@ -11,3 +11,7 @@ type UInt interface {
 type Float interface {
 	~float32 | ~float64
 }
+
+type Number interface {
+	Int | UInt | Float
+}

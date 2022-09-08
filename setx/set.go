@@ -7,7 +7,7 @@ import (
 )
 
 // ToSet change slice to unique values
-func ToSet[T gox.Int | gox.UInt | gox.Float | string | bool | byte | rune](values []T) []T {
+func ToSet[T gox.Number | string | bool | byte | rune](values []T) []T {
 	if len(values) <= 1 {
 		return values
 	}
