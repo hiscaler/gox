@@ -114,6 +114,8 @@ Golang functions library
   - ToStringSet
   - ToIntSet
 - slicex
+  - Map
+  - Filter
   - ToInterface
   - StringToInterface
   - IntToInterface
