@@ -185,3 +185,22 @@ func StringSliceDiff(ss ...[]string) []string {
 func IntSliceDiff(ss ...[]int) []int {
 	return Diff(ss...)
 }
+
+// Chunk chunks a slice by size
+func Chunk[T comparable](items []T, size int) [][]T {
+	chunkItems := make([][]T, 0)
+	n := len(items)
+	if items == nil || n == 0 {
+		return chunkItems
+	} else if size <= 0 {
+		return [][]T{items}
+	}
+	for i := 0; i < n; i += size {
+		end := i + size
+		if end > n {
+			end = n
+		}
+		chunkItems = append(chunkItems, items[i:end])
+	}
+	return chunkItems
+}

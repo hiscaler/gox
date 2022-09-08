@@ -114,14 +114,17 @@ Golang functions library
   - ToStringSet
   - ToIntSet
 - slicex
+  - ToInterface
   - StringToInterface
   - IntToInterface
   - StringSliceEqual
   - IntSliceEqual
   - StringSliceReverse
   - IntSliceReverse
+  - Diff
   - StringSliceDiff
   - IntSliceDiff
+  - Chunk
 - spreedsheetx
   - NewColumn()
 ```go

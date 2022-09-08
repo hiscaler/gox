@@ -185,3 +185,10 @@ func TestToInterface(t *testing.T) {
 		})
 	}
 }
+
+func TestChunk(t *testing.T) {
+	assert.ElementsMatch(t, Chunk([]int{1, 2, 3}, 0), [][]int{{1, 2, 3}}, "int0")
+	assert.ElementsMatch(t, Chunk([]int{1, 2, 3}, 1), [][]int{{1}, {2}, {3}}, "int1")
+	assert.ElementsMatch(t, Chunk([]int{1, 2, 3}, 2), [][]int{{1, 2}, {3}}, "int2")
+	assert.ElementsMatch(t, Chunk([]int{1, 2, 3}, 3), [][]int{{1, 2, 3}}, "int3")
+}
