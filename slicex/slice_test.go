@@ -5,6 +5,31 @@ import (
 	"testing"
 )
 
+func TestMap(t *testing.T) {
+	a := []int{0, 1}
+	b := Map(a, func(v int) int {
+		return v + 1
+	})
+	assert.Equal(t, []int{0, 1}, a, "map.int")
+	assert.Equal(t, []int{1, 2}, b, "map.int")
+
+	a1 := []string{"a", "b"}
+	b1 := Map(a1, func(v string) string {
+		return v + "1"
+	})
+	assert.Equal(t, []string{"a", "b"}, a1, "map.string")
+	assert.Equal(t, []string{"a1", "b1"}, b1, "map.string")
+}
+
+func TestFilter(t *testing.T) {
+	assert.Equal(t, []int{1, 2, 3}, Filter([]int{0, 1, 2, 3}, func(v int) bool {
+		return v > 0
+	}), "map.int")
+	assert.Equal(t, []string{"c"}, Filter([]string{"a", "b", "c", "a", "b"}, func(v string) bool {
+		return v == "c"
+	}), "map.string")
+}
+
 func TestStringToInterface(t *testing.T) {
 	tests := []struct {
 		tag      string

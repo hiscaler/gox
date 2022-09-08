@@ -5,7 +5,39 @@ import (
 	"strings"
 )
 
-func ToInterface[T gox.Int | gox.UInt | gox.Float | string](values []T) []interface{} {
+// Map values all value execute f function, and return a new slice
+//
+// Example
+//	Map([]string{"A", "B", "C"}, func(v string) string {
+//		return strings.ToLower(v)
+//	})
+//	// Output: ["a", "b", "c"]
+func Map[T comparable](values []T, f func(v T) T) []T {
+	items := make([]T, len(values))
+	for i, v := range values {
+		items[i] = f(v)
+	}
+	return items
+}
+
+// Filter return matched f function condition value
+//
+// Example:
+//	Filter([]int{0, 1, 2, 3}, func(v int) bool {
+//		return v > 0
+//	})
+//	// Output: [1, 2, 3]
+func Filter[T comparable](values []T, f func(v T) bool) []T {
+	items := make([]T, 0)
+	for _, v := range values {
+		if ok := f(v); ok {
+			items = append(items, v)
+		}
+	}
+	return items
+}
+
+func ToInterface[T gox.Number | ~string](values []T) []interface{} {
 	if values == nil || len(values) == 0 {
 		return []interface{}{}
 	}
