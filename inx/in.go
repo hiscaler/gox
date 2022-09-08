@@ -1,13 +1,12 @@
 package inx
 
 import (
-	"github.com/hiscaler/gox"
 	"strings"
 )
 
 // In Check value in values, return true if in values, otherwise return false.
 // Value T is a generic value
-func In[T gox.Number | ~string | ~byte | ~rune | ~bool](value T, values []T) bool {
+func In[T comparable](value T, values []T) bool {
 	if values == nil || len(values) == 0 {
 		return false
 	}
