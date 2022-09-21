@@ -3,6 +3,7 @@ package ipx
 import (
 	"fmt"
 	"math"
+	"math/rand"
 	"net"
 	"net/http"
 	"strings"
@@ -97,6 +98,15 @@ func Number(ip string) (uint, error) {
 		return 0, fmt.Errorf("ipx: %s is invalid ip", ip)
 	}
 	return uint(addr[3]) | uint(addr[2])<<8 | uint(addr[1])<<16 | uint(addr[0])<<24, nil
+}
+
+func Random() string {
+	size := 4
+	ip := make([]byte, size)
+	for i := 0; i < size; i++ {
+		ip[i] = byte(rand.Intn(256))
+	}
+	return net.IP(ip).To4().String()
 }
 
 func String(ip uint) (string, error) {

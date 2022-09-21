@@ -57,6 +57,7 @@ Golang functions library
   - IsPrivate
   - IsPublic
   - Number
+  - Random
   - String
 - isx
   - Number
