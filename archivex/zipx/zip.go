@@ -28,17 +28,18 @@ func Compress(filename string, files []string, method uint16, compactDirectory b
 	defer zipWriter.Close()
 
 	zipFiles := make([]zipFile, len(files))
-	errGrp, errCtx := errgroup.WithContext(context.Background())
+	errGrp, ctx := errgroup.WithContext(context.Background())
 	for i, file := range files {
 		f := file
 		j := i
 		errGrp.Go(func() error {
 			select {
-			case <-errCtx.Done():
+			case <-ctx.Done():
 				return nil
 			default:
 				zf, e := addFile(f, method, compactDirectory)
 				if e != nil {
+					ctx.Done()
 					return e
 				}
 				zipFiles[j] = zf
@@ -51,23 +52,23 @@ func Compress(filename string, files []string, method uint16, compactDirectory b
 		return err
 	}
 
-	for _, file := range zipFiles {
-		if file.data == nil {
+	for i := range zipFiles {
+		if zipFiles[i].data == nil {
 			continue
 		}
-		err = func() error {
-			defer file.data.Close()
+		err = func(i int) error {
+			defer zipFiles[i].data.Close()
 			if err != nil {
 				return err // For close all opened files
 			}
-			writer, e := zipWriter.CreateHeader(file.header)
+			writer, e := zipWriter.CreateHeader(zipFiles[i].header)
 			if e != nil {
 				return e
 			}
 
-			_, e = io.Copy(writer, file.data)
+			_, e = io.Copy(writer, zipFiles[i].data)
 			return e
-		}()
+		}(i)
 	}
 	return err
 }
