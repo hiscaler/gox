@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-var rxNumber = regexp.MustCompile(`[\-]?\d+[\d.,]*\d*`)
+var rxNumber = regexp.MustCompile(`\-?\d+[\d.,]*\d*`)
 
 // 提取的内容默认为 1,234.56 格式的数字，未实现根据国家标准实现提取
 // https://zhuanlan.zhihu.com/p/157980325
