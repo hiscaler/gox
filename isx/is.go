@@ -15,6 +15,7 @@ import (
 var (
 	rxSafeCharacters = regexp.MustCompile("^[a-zA-Z0-9\\.\\-_][a-zA-Z0-9\\.\\-_]*$")
 	rxNumber         = regexp.MustCompile("^[+-]?\\d+$|^\\d+[.]\\d+$")
+	rxColorHex       = regexp.MustCompile("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$")
 )
 
 // OS type
@@ -168,4 +169,8 @@ func HttpURL(str string) bool {
 // Usage: isx.OS(isx.IsLinux)
 func OS(typ string) bool {
 	return runtime.GOOS == typ
+}
+
+func ColorHex(s string) bool {
+	return rxColorHex.MatchString(s)
 }

@@ -208,3 +208,24 @@ func TestHttpURL(t *testing.T) {
 		assert.Equal(t, test.except, equal, test.tag)
 	}
 }
+
+func TestColorHex(t *testing.T) {
+	tests := []struct {
+		tag    string
+		color  string
+		except bool
+	}{
+		{"t0", "#fff", true},
+		{"t1", "#ffffff", true},
+		{"t2", "#000000", true},
+		{"t3", "#ffff", false},
+		{"t4", "ffffff", false},
+		{"t5", "#ggg", false},
+		{"t6", "#-100000", false},
+	}
+
+	for _, test := range tests {
+		equal := ColorHex(test.color)
+		assert.Equal(t, test.except, equal, test.tag)
+	}
+}

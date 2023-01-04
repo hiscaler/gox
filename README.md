@@ -66,6 +66,7 @@ Golang functions library
   - SafeCharacters
   - HttpURL
   - OS
+  - ColorHex
 - jsonx
     - ToRawMessage
     - ToJson
