@@ -79,6 +79,8 @@ func addFile(filename string, method uint16, compactDirectory bool) (zipFile zip
 		return
 	}
 
+	defer pendingAddFile.Close()
+
 	zipFile.data = pendingAddFile
 	info, err := pendingAddFile.Stat()
 	if err != nil {
