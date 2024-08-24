@@ -80,14 +80,15 @@ func ToPrettyJson(i interface{}) string {
 // EmptyObjectRawMessage 空对象
 func EmptyObjectRawMessage() json.RawMessage {
 	v := json.RawMessage{}
-	v.UnmarshalJSON([]byte("{}"))
+	_ = v.UnmarshalJSON([]byte("{}"))
+
 	return v
 }
 
 // EmptyArrayRawMessage 空数组
 func EmptyArrayRawMessage() json.RawMessage {
 	v := json.RawMessage{}
-	v.UnmarshalJSON([]byte("[]"))
+	_ = v.UnmarshalJSON([]byte("[]"))
 	return v
 }
 
