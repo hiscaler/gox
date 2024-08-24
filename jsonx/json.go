@@ -113,3 +113,17 @@ func IsEmptyRawMessage(data json.RawMessage) bool {
 		return true
 	}
 }
+
+func Convert(from json.RawMessage, to any) error {
+	if from == nil {
+		return nil
+	}
+
+	var b []byte
+	b, err := from.MarshalJSON()
+	if err != nil {
+		return err
+	}
+
+	return json.Unmarshal(b, &to)
+}

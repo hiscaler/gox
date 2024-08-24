@@ -2,6 +2,7 @@ package jsonx
 
 import (
 	"encoding/json"
+	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
 )
@@ -103,5 +104,39 @@ func TestIsEmptyRawMessage(t *testing.T) {
 		if v != tc.Empty {
 			t.Errorf("%d except: %v, actual: %v", tc.Number, tc.Empty, v)
 		}
+	}
+}
+
+func TestConvert(t *testing.T) {
+	testCases := []struct {
+		Number int
+		From   json.RawMessage
+		Except any
+	}{
+		{1, nil, struct{}{}},
+		{2, EmptyArrayRawMessage(), struct{}{}},
+		{3, []byte(`{"ID":1,"Name":"hiscaler"}`), struct {
+			ID   int
+			Name string
+		}{}},
+		{4, []byte(`{"ID":1,"Name":"hiscaler","age":1}`), struct {
+			ID   int
+			Name string
+			age  int
+		}{}},
+	}
+	for _, testCase := range testCases {
+		exceptValue := testCase.Except
+		err := Convert(testCase.From, &exceptValue)
+		assert.Equalf(t, nil, err, "Test %d", testCase.Number)
+		actualValue := ""
+		if testCase.From != nil {
+			actualValue = ToJson(exceptValue, "null")
+		}
+		t.Logf(`
+#%d %s
+    ↓
+    %#v`, testCase.Number, testCase.From, exceptValue)
+		assert.Equalf(t, string(testCase.From), actualValue, "Test %d", testCase.Number)
 	}
 }
