@@ -12,15 +12,16 @@ func ToRawMessage(i interface{}, defaultValue string) (json.RawMessage, error) {
 	m := json.RawMessage{}
 	var b []byte
 	var err error
-	if b, err = json.Marshal(&i); err == nil {
-		b = bytes.TrimSpace(b)
-		if len(b) == 0 || bytes.EqualFold(b, []byte("null")) {
-			b = []byte(defaultValue)
-		}
-		if err = m.UnmarshalJSON(b); err != nil {
-			m = json.RawMessage{}
-		}
+	b, err = json.Marshal(&i)
+	if err != nil {
+		return m, err
 	}
+
+	b = bytes.TrimSpace(b)
+	if len(b) == 0 || bytes.EqualFold(b, []byte("null")) {
+		b = []byte(defaultValue)
+	}
+	err = m.UnmarshalJSON(b)
 	return m, err
 }
 
@@ -35,6 +36,7 @@ func ToJson(i interface{}, defaultValue string) string {
 		if vo.IsNil() {
 			return defaultValue
 		}
+	default:
 	}
 
 	b, err := json.Marshal(i)
@@ -48,9 +50,8 @@ func ToJson(i interface{}, defaultValue string) string {
 	}
 	if json.Valid(buf.Bytes()) {
 		return buf.String()
-	} else {
-		return defaultValue
 	}
+	return defaultValue
 }
 
 func ToPrettyJson(i interface{}) string {
@@ -63,6 +64,7 @@ func ToPrettyJson(i interface{}) string {
 		if vo.IsNil() {
 			return "null"
 		}
+	default:
 	}
 
 	b, err := json.Marshal(i)
@@ -99,19 +101,19 @@ func IsEmptyRawMessage(data json.RawMessage) bool {
 	}
 
 	b, err := data.MarshalJSON()
-	if err == nil {
-		s := string(bytes.TrimSpace(b))
-		if s == "" || s == "[]" || s == "{}" || strings.EqualFold(s, "null") {
-			return true
-		} else {
-			if strings.Index(s, " ") != -1 {
-				s = strings.Replace(s, " ", "", -1)
-			}
-			return s == "[]" || s == "{}"
-		}
-	} else {
+	if err != nil {
 		return true
 	}
+
+	s := string(bytes.TrimSpace(b))
+	if s == "" || s == "[]" || s == "{}" || strings.EqualFold(s, "null") {
+		return true
+	}
+
+	if strings.Index(s, " ") != -1 {
+		s = strings.ReplaceAll(s, " ", "")
+	}
+	return s == "[]" || s == "{}"
 }
 
 func Convert(from json.RawMessage, to any) error {
