@@ -3,6 +3,7 @@ package jsonx
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"reflect"
 	"strings"
@@ -128,4 +129,29 @@ func Convert(from json.RawMessage, to any) error {
 	}
 
 	return json.Unmarshal(b, &to)
+}
+
+// Extract 提取字符串中的有效 JSON 数据
+// 比如 `{"a": 1, "b": 2}}}}a` 提取后的数据为 `{"a": 1, "b": 2}`
+func Extract(str string) (string, error) {
+	str = strings.TrimSpace(str)
+	n := len(str)
+	if n == 0 {
+		return "", errors.New("jsonx: empty string")
+	}
+	if json.Valid([]byte(str)) {
+		return str, nil
+	}
+
+	for i := 0; i < n; i++ {
+		if str[i] == '{' || str[i] == '[' {
+			for j := n; j > i; j-- {
+				substr := str[i:j]
+				if json.Valid([]byte(substr)) {
+					return substr, nil
+				}
+			}
+		}
+	}
+	return "", errors.New("jsonx: not found")
 }

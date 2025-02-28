@@ -140,3 +140,27 @@ func TestConvert(t *testing.T) {
 		assert.Equalf(t, string(testCase.From), actualValue, "Test %d", testCase.Number)
 	}
 }
+
+func TestExtract(t *testing.T) {
+	testCases := []struct {
+		Number   int
+		From     string
+		Except   string
+		HasError bool
+	}{
+		{1, "", "", true},
+		{2, "{}", "{}", false},
+		{3, "  {}   ", "{}", false},
+		{4, `{"a": 1, "b": 2}`, `{"a": 1, "b": 2}`, false},
+		{5, `{"a": 1, "b": 2}}}}a`, `{"a": 1, "b": 2}`, false},
+		{6, `{"a": 1, "b": 2}}}}<!--This page has been excluded -->`, `{"a": 1, "b": 2}`, false},
+		{7, "[]", "[]", false},
+		{8, "[]1[]2", "[]", false},
+	}
+	for _, testCase := range testCases {
+		exceptValue := testCase.Except
+		actualValue, err := Extract(testCase.From)
+		assert.Equalf(t, testCase.HasError, err != nil, "Test HasError %d", testCase.Number)
+		assert.Equalf(t, exceptValue, actualValue, "Test Value %d", testCase.Number)
+	}
+}
