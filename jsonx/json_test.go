@@ -114,7 +114,7 @@ func TestConvert(t *testing.T) {
 		Except any
 	}{
 		{1, nil, struct{}{}},
-		{2, EmptyArrayRawMessage(), struct{}{}},
+		{2, EmptyArrayRawMessage(), []struct{}{}},
 		{3, []byte(`{"ID":1,"Name":"hiscaler"}`), struct {
 			ID   int
 			Name string
