@@ -118,7 +118,7 @@ func IsEmptyRawMessage(data json.RawMessage) bool {
 }
 
 func Convert(from json.RawMessage, to any) error {
-	if from == nil {
+	if IsEmptyRawMessage(from) {
 		return nil
 	}
 
